@@ -616,22 +616,22 @@ $modversion['config'][] = [
 
 //Uploads : max width/height for image upload
 $modversion['config'][] = [
-    'name'            => 'imguploadwd',
+    'name'         => 'imguploadwd',
     'title'        => "_MI_LEXIKON_IMGUPLOADWD",
-    'description'    => "_MI_LEXIKON_IMGUPLOADWD_DESC",
-    'formtype'        => 'textbox',
+    'description'  => "_MI_LEXIKON_IMGUPLOADWD_DESC",
+    'formtype'     => 'textbox',
     'valuetype'    => 'text',
-    'default'        => 200
+    'default'      => 200
 ];
 
 //Uploads : max size for image upload
 $modversion['config'][] = [
-    'name'            => 'imguploadsize',
+    'name'         => 'imguploadsize',
     'title'        => "_MI_LEXIKON_IMGUPLOADSIZE",
-    'description'    => "_MI_LEXIKON_IMGUPLOADSIZE_DESC",
-    'formtype'        => 'textbox',
+    'description'  => "_MI_LEXIKON_IMGUPLOADSIZE_DESC",
+    'formtype'     => 'textbox',
     'valuetype'    => 'text',
-    'default'        => 10485760
+    'default'      => 10485760
 ]; // 1 MB
 
 //to activate RSS Syndication for users / guests
@@ -652,6 +652,83 @@ $modversion['config'][] = [
     'formtype'    => 'yesno',
     'valuetype'   => 'int',
     'default'     => 1
+];
+
+//Lang Symbol
+//Num
+$modversion['config'][] = [
+    'name'        => 'on_off_lang_symbol_num',
+    'title'       => '_MI_LEXIKON_LANG_SYMBOL_NUM',
+    'description' => '_MI_LEXIKON_LANG_SYMBOLDSC_NUM',
+    'formtype'    => 'yesno',
+    'valuetype'   => 'int',
+    'default'     => 0
+];
+$modversion['config'][] = [
+    'name'         => 'on_off_lang_symbol_num_in',
+    'title'        => "_MI_LEXIKON_LANG_SYMBOL_NUM_IN",
+    'description'  => "_MI_LEXIKON_LANG_SYMBOLDSC_NUM_IN",
+    'formtype'     => 'textbox',
+    'valuetype'    => 'text',
+    'default'      => 48
+];
+$modversion['config'][] = [
+    'name'         => 'on_off_lang_symbol_num_out',
+    'title'        => "_MI_LEXIKON_LANG_SYMBOL_NUM_OUT",
+    'description'  => "_MI_LEXIKON_LANG_SYMBOLDSC_NUM_OUT",
+    'formtype'     => 'textbox',
+    'valuetype'    => 'text',
+    'default'      => 10
+];
+//Default
+$modversion['config'][] = [
+    'name'        => 'on_off_lang_symbol_def',
+    'title'       => '_MI_LEXIKON_LANG_SYMBOL_DEF',
+    'description' => '_MI_LEXIKON_LANG_SYMBOLDSC_DEF',
+    'formtype'    => 'yesno',
+    'valuetype'   => 'int',
+    'default'     => 1
+];
+$modversion['config'][] = [
+    'name'         => 'on_off_lang_symbol_def_in',
+    'title'        => "_MI_LEXIKON_LANG_SYMBOL_DEF_IN",
+    'description'  => "_MI_LEXIKON_LANG_SYMBOLDSC_DEF_IN",
+    'formtype'     => 'textbox',
+    'valuetype'    => 'text',
+    'default'      => 65
+];
+$modversion['config'][] = [
+    'name'         => 'on_off_lang_symbol_def_out',
+    'title'        => "_MI_LEXIKON_LANG_SYMBOL_DEF_OUT",
+    'description'  => "_MI_LEXIKON_LANG_SYMBOLDSC_DEF_OUT",
+    'formtype'     => 'textbox',
+    'valuetype'    => 'text',
+    'default'      => 26
+];
+//National
+$modversion['config'][] = [
+    'name'        => 'on_off_lang_symbol_nac',
+    'title'       => '_MI_LEXIKON_LANG_SYMBOL_NAC',
+    'description' => '_MI_LEXIKON_LANG_SYMBOLDSC_NAC',
+    'formtype'    => 'yesno',
+    'valuetype'   => 'int',
+    'default'     => 0
+];
+$modversion['config'][] = [
+    'name'         => 'on_off_lang_symbol_nac_in',
+    'title'        => "_MI_LEXIKON_LANG_SYMBOL_NAC_IN",
+    'description'  => "_MI_LEXIKON_LANG_SYMBOLDSC_NAC_IN",
+    'formtype'     => 'textbox',
+    'valuetype'    => 'text',
+    'default'      => 1040
+];
+$modversion['config'][] = [
+    'name'         => 'on_off_lang_symbol_nac_out',
+    'title'        => "_MI_LEXIKON_LANG_SYMBOL_NAC_OUT",
+    'description'  => "_MI_LEXIKON_LANG_SYMBOLDSC_NAC_OUT",
+    'formtype'     => 'textbox',
+    'valuetype'    => 'text',
+    'default'      => 32
 ];
 
 //Comments (Mondarse)

@@ -51,25 +51,8 @@ function b_lxentries_alpha_show($options)
     $block['title']         = _MB_LEXIKON_TERMINITIAL;
     $block['moduledirname'] = $lexikon->dirname();
     $count                  = 0;
-    for ($a = 48; $a < (48 + 10); ++$a) {
-        $letterlinks = [];
-        $initial     = uchr($a);
-        $sql                     = $xoopsDB->query('SELECT init FROM '
-                                                   . $xoopsDB->prefix('lxentries')
-                                                   . " WHERE init = '$initial' AND datesub < '"
-                                                   . time()
-                                                   . "' AND datesub > '0' AND offline= '0' AND submit='0' AND request='0' "
-                                                   . $catperms
-                                                   . ' ');
-        $howmany                 = $xoopsDB->getRowsNum($sql);
-        $letterlinks['total']    = $howmany;
-        $letterlinks['id']       = uchr($a);
-        $letterlinks['linktext'] = uchr($a);
-        $letterlinks['count']    = (int)$count;
-
-        $block['initstuff'][] = $letterlinks;
-    }    
-    for ($a = 65; $a < (65 + 26); ++$a) {
+    if ($GLOBALS['xoopsModuleConfig']['on_off_lang_symbol_num'] == 1) {
+    for ($a = $GLOBALS['xoopsModuleConfig']['on_off_lang_symbol_num_in']; $a < ($GLOBALS['xoopsModuleConfig']['on_off_lang_symbol_num_in'] + $GLOBALS['xoopsModuleConfig']['on_off_lang_symbol_num_out']); ++$a) {
         $letterlinks = [];
         $initial     = uchr($a);
         $sql                     = $xoopsDB->query('SELECT init FROM '
@@ -87,7 +70,29 @@ function b_lxentries_alpha_show($options)
 
         $block['initstuff'][] = $letterlinks;
     }
-    /*for ($a = 1040; $a < (1040 + 32); ++$a) {
+    }
+    if ($GLOBALS['xoopsModuleConfig']['on_off_lang_symbol_def'] == 1) {    
+    for ($a = $GLOBALS['xoopsModuleConfig']['on_off_lang_symbol_def_in']; $a < ($GLOBALS['xoopsModuleConfig']['on_off_lang_symbol_def_in'] + $GLOBALS['xoopsModuleConfig']['on_off_lang_symbol_def_out']); ++$a) {
+        $letterlinks = [];
+        $initial     = uchr($a);
+        $sql                     = $xoopsDB->query('SELECT init FROM '
+                                                   . $xoopsDB->prefix('lxentries')
+                                                   . " WHERE init = '$initial' AND datesub < '"
+                                                   . time()
+                                                   . "' AND datesub > '0' AND offline= '0' AND submit='0' AND request='0' "
+                                                   . $catperms
+                                                   . ' ');
+        $howmany                 = $xoopsDB->getRowsNum($sql);
+        $letterlinks['total']    = $howmany;
+        $letterlinks['id']       = uchr($a);
+        $letterlinks['linktext'] = uchr($a);
+        $letterlinks['count']    = (int)$count;
+
+        $block['initstuff'][] = $letterlinks;
+    }
+    }
+    if ($GLOBALS['xoopsModuleConfig']['on_off_lang_symbol_nac'] == 1) {
+    for ($a = $GLOBALS['xoopsModuleConfig']['on_off_lang_symbol_nac_in']; $a < ($GLOBALS['xoopsModuleConfig']['on_off_lang_symbol_nac_in'] + $GLOBALS['xoopsModuleConfig']['on_off_lang_symbol_nac_out']); ++$a) {
         $letterlinks = [];
         $initial     = uchr($a);
         $sql                     = $xoopsDB->query('SELECT init FROM '
@@ -104,8 +109,8 @@ function b_lxentries_alpha_show($options)
         $letterlinks['count']    = (int)$count;
         
         $block['initstuff'][] = $letterlinks;
-    }*/ 
-
+    } 
+    }
     return $block;
 }
 

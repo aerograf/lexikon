@@ -26,110 +26,84 @@ define('_MI_LEXIKON_SUB_SMNAME6', 'Authorlist');
 define('_MI_LEXIKON_SUB_SMNAME7', 'WebmasterContent');
 
 // module option
-$cf = 1;
-
-define('_MI_LEXIKON_MULTICATS', "$cf. Do you want to have glossary categories?");
+define('_MI_LEXIKON_MULTICATS', "Do you want to have glossary categories?");
 define('_MI_LEXIKON_MULTICATSDSC', "If set to 'Yes', will allow you to have glossary categories. If set to no, will have a single automatic category.");
 
-define('_MI_LEXIKON_ALLOWSUBMIT', "$cf. Can users submit entries?");
+define('_MI_LEXIKON_ALLOWSUBMIT', "Can users submit entries?");
 define('_MI_LEXIKON_ALLOWSUBMITDSC', "If set to 'Yes', users will have access to a submission form.");
 
-++$cf;
-
-define('_MI_LEXIKON_CATSINMENU', "$cf. Should the categories be shown in the menu?");
+define('_MI_LEXIKON_CATSINMENU', "Should the categories be shown in the menu?");
 define('_MI_LEXIKON_CATSINMENUDSC', "If set to 'Yes' if you want links to categories in the main menu.");
 
-define('_MI_LEXIKON_ANONSUBMIT', "$cf. Can guests submit entries?");
+define('_MI_LEXIKON_ANONSUBMIT', "Can guests submit entries?");
 define('_MI_LEXIKON_ANONSUBMITDSC', "If set to 'Yes', guests will have access to a submission form.");
 
-++$cf;
-
-define('_MI_LEXIKON_DATEFORMAT', "$cf. In what format should the date appear?");
+define('_MI_LEXIKON_DATEFORMAT', "In what format should the date appear?");
 define('_MI_LEXIKON_DATEFORMATDSC', "Use the final part of language/english/global.php to select a display style. Example: 'd-M-Y H:i' translates to '23-May-2011 22:35'");
 
-define('_MI_LEXIKON_ALLOWREQ', "$cf. Can guests request entries?");
+define('_MI_LEXIKON_ALLOWREQ', "Can guests request entries?");
 define('_MI_LEXIKON_ALLOWREQDSC', "If set to 'Yes', guests will as well have access to a request form.");
 
-++$cf;
-
-define('_MI_LEXIKON_PERPAGE', "$cf. Number of entries per page (Admin side)?");
+define('_MI_LEXIKON_PERPAGE', "Number of entries per page (Admin side)?");
 define('_MI_LEXIKON_PERPAGEDSC', 'Number of entries that will be shown at once in the table that displays active entries in the admin side.');
 
-++$cf;
-
-define('_MI_LEXIKON_PERPAGEINDEX', "$cf. Number of entries per page (User side)?");
+define('_MI_LEXIKON_PERPAGEINDEX', "Number of entries per page (User side)?");
 define('_MI_LEXIKON_PERPAGEINDEXDSC', 'Number of entries that will be shown on each page in the user side of the module.');
 
-++$cf;
-
-define('_MI_LEXIKON_BLOCKSPERPAGE', "$cf. Number of entries per Block?");
+define('_MI_LEXIKON_BLOCKSPERPAGE', "Number of entries per Block?");
 define('_MI_LEXIKON_BLOCKSPERPAGEDSC', 'How many entries do you want to show in the boxes in the main page ? (Default: 5)');
 
-++$cf;
-
-define('_MI_LEXIKON_AUTOAPPROVE', "$cf. Approve entries automatically?");
+define('_MI_LEXIKON_AUTOAPPROVE', "Approve entries automatically?");
 define('_MI_LEXIKON_AUTOAPPROVEDSC', "If set to 'Yes', XOOPS will publish submitted entries without admin intervention.");
 
-++$cf;
-
-define('_MI_LEXIKON_ALLOWADMINHITS', "$cf. Will the admin hits be included in the counter?");
+define('_MI_LEXIKON_ALLOWADMINHITS', "Will the admin hits be included in the counter?");
 define('_MI_LEXIKON_ALLOWADMINHITSDSC', "If set to 'Yes', will increase counter for each entry on admin visits.");
 
-++$cf;
-
-define('_MI_LEXIKON_MAILTOADMIN', "$cf. Send mail to admin on each new submission?");
+define('_MI_LEXIKON_MAILTOADMIN', "Send mail to admin on each new submission?");
 define('_MI_LEXIKON_MAILTOADMINDSC', "If set to 'Yes', the manager will receive an e-mail for every submitted entry.");
 
-++$cf;
-define('_MI_LEXIKON_MAILTOSENDER', "$cf. Send mail to user on each new submission?");
+define('_MI_LEXIKON_MAILTOSENDER', "Send mail to user on each new submission?");
 define('_MI_LEXIKON_MAILTOSENDERDSC',
        "If set to 'Yes', the user will receive a confirmation e-mail for every modified, submitted or requested entry. If 'Notify on publish' is ticked, the user will as well receive a confirmation e-mail on publication of the entry.");
-++$cf;
 
-define('_MI_LEXIKON_RANDOMLENGTH', "$cf. Length of string to show in random definitions?");
+define('_MI_LEXIKON_RANDOMLENGTH', "Length of string to show in random definitions?");
 define('_MI_LEXIKON_RANDOMLENGTHDSC', 'How many characters do you want to show in the random term boxes, both in the main page and in the block? (Default: 150)');
 
-++$cf;
-define('_MI_LEXIKON_LINKTERMS', "$cf. Show links to other glossary terms in the definitions?");
+define('_MI_LEXIKON_LINKTERMS', "Show links to other glossary terms in the definitions?");
 define('_MI_LEXIKON_LINKTERMSDSC', "If set to 'yes', will automatically link in your definitions those terms you already have in your glossaries.");
 
-++$cf;
-define('_MI_LEXIKON_FORM_OPTIONS', "$cf. Form Option");
+define('_MI_LEXIKON_FORM_OPTIONS', "Form Option");
 define('_MI_LEXIKON_FORM_OPTIONSDSC',
        'What kind of editor would you like to use. <br>Please note that if you choose any other editor than the Xoops-DHTML-Editor, it must be installed under class/xoopseditor.');
 
-++$cf;
-define('_MI_LEXIKON_EDIGUEST', "$cf. Form Options for submissions");
+define('_MI_LEXIKON_EDIGUEST', "Form Options for submissions");
 define('_MI_LEXIKON_EDIGUESTDSC', 'Shall Guests may use editors?');
 
-define('_MI_LEXIKON_DISPPROL', "$cf. Show Submitter on every entry?");
+define('_MI_LEXIKON_DISPPROL', "Show Submitter on every entry?");
 define('_MI_LEXIKON_DISPPROLDSC', "If set to 'yes', will display the author of the entry.");
 
-++$cf;
-define('_MI_LEXIKON_HEADER', "$cf. Main Page Introductory Text:");
+define('_MI_LEXIKON_HEADER', "Main Page Introductory Text:");
 define('_MI_LEXIKON_HEADERDSC', 'You can use this section to display some descriptive or introductory text. HTML is allowed.');
 
-++$cf;
-define('_MI_LEXIKON_AUTHORPROFILE', "$cf. Use author profile?");
+define('_MI_LEXIKON_AUTHORPROFILE', "Use author profile?");
 define('_MI_LEXIKON_AUTHORPROFILEDSC', "If set to 'yes', the submitter will be linked to the authors glossary-profile. additionally a link to the authorlist will show up in the menu.");
 
-++$cf;
-define('_MI_LEXIKON_SHOWDAT', "$cf. Show Date in block of recent Entries?");
+define('_MI_LEXIKON_SHOWDAT', "Show Date in block of recent Entries?");
 define('_MI_LEXIKON_SHOWDATDSC', "If set to 'yes', will display the Date of the recent Entries in the block on the Startpage.");
-++$cf;
-define('_MI_LEXIKON_SHOWCTR', "$cf. Show Counter in block of popular Entries?");
+
+define('_MI_LEXIKON_SHOWCTR', "Show Counter in block of popular Entries?");
 define('_MI_LEXIKON_SHOWCTRDSC', "If set to 'yes', will display the Counter of  popular Entries in the block on the Startpage.");
-++$cf;
-define('_MI_LEXIKON_CAPTCHA', "$cf. Use captcha for submissions?");
+
+define('_MI_LEXIKON_CAPTCHA', "Use captcha for submissions?");
 define('_MI_LEXIKON_CAPTCHADSC', 'Xoops Frameworks is required.');
-++$cf;
-define('_MI_LEXIKON_KEYWORDS_HIGH', "$cf. Use keywords highlighting search?");
+
+define('_MI_LEXIKON_KEYWORDS_HIGH', "Use keywords highlighting search?");
 define('_MI_LEXIKON_KEYWORDS_HIGHDSC', ' If you set this option to Yes, search keywords will be highlighted in the definitions');
-++$cf;
-define('_MI_LEXIKON_BOOKMARK_ME', "$cf. Display social bookmarks?");
+
+define('_MI_LEXIKON_BOOKMARK_ME', "Display social bookmarks?");
 define('_MI_LEXIKON_BOOKMARK_MEDSC', "The icons will be visible on the entry's page");
-++$cf;
-define('_MI_LEXIKON_METANUM', "$cf. Maximum count of meta keywords to auto-generate?");
+
+define('_MI_LEXIKON_METANUM', "Maximum count of meta keywords to auto-generate?");
 define('_MI_LEXIKON_METANUMDSC', 'Set here the maximum number of meta keywords to generate.<br> If set to Zero, the Module will use the sites Keywords');
 define('_MI_LEXIKON_METANUM_0', '0');
 define('_MI_LEXIKON_METANUM_5', '5');
@@ -141,31 +115,28 @@ define('_MI_LEXIKON_METANUM_50', '50');
 define('_MI_LEXIKON_METANUM_60', '60');
 define('_MI_LEXIKON_METANUM_70', '70');
 define('_MI_LEXIKON_METANUM_80', '80');
-++$cf;
-define('_MI_LEXIKON_USESHOTS', "$cf. Use category images?");
-define('_MI_LEXIKON_USESHOTSDSC', "If set to 'yes', will display the category image.<br> <em>The Uploadfolder is: uploads/lexikon/categories/images</em>");
-++$cf;
-define('_MI_LEXIKON_LOGOWIDTH', "$cf. Width of the category images in the menue:");
 
+define('_MI_LEXIKON_USESHOTS', "Use category images?");
+define('_MI_LEXIKON_USESHOTSDSC', "If set to 'yes', will display the category image.<br> <em>The Uploadfolder is: uploads/lexikon/categories/images</em>");
+
+define('_MI_LEXIKON_LOGOWIDTH', "Width of the category images in the menue:");
 define('_MI_LEXIKON_LOGOWIDTHDSC', 'Size of thumbnails in the menue (default:20px)');
 
-++$cf;
-define('_MI_LEXIKON_IMCATWD', "$cf. Width of the category images in category view:");
+define('_MI_LEXIKON_IMCATWD', "Width of the category images in category view:");
 define('_MI_LEXIKON_IMCATWDDSC', 'Size of thumbnails in category view mode (default:50px)');
-++$cf;
-define('_MI_LEXIKON_RSS', "$cf. Enable RSS Syndication for guests?");
-define('_MI_LEXIKON_RSSDSC', "If you set this option to 'Yes', newest entries will be available for guests. If `No` only users will have access to Syndication.");
-++$cf;
 
-define('_MI_LEXIKON_SYNDICATION', "$cf. Enable Webmaster Content Syndication?");
+define('_MI_LEXIKON_RSS', "Enable RSS Syndication for guests?");
+define('_MI_LEXIKON_RSSDSC', "If you set this option to 'Yes', newest entries will be available for guests. If `No` only users will have access to Syndication.");
+
+define('_MI_LEXIKON_SYNDICATION', "Enable Webmaster Content Syndication?");
 define('_MI_LEXIKON_SYNDICATIONDSC', "If you set this option to 'Yes', users will have access to content syndication.");
 
 // new configs in version 1.52
-$cf++;
-define("_MI_LEXIKON_IMGUPLOADWD","$cf. Max height/width for image upload");
+
+define("_MI_LEXIKON_IMGUPLOADWD","Max height/width for image upload");
 define("_MI_LEXIKON_IMGUPLOADWD_DESC","Define the maximum height/width in pixel for uploading an image");
-$cf++;
-define("_MI_LEXIKON_IMGUPLOADSIZE","$cf. Max size for image upload");
+
+define("_MI_LEXIKON_IMGUPLOADSIZE","Max size for image upload");
 define("_MI_LEXIKON_IMGUPLOADSIZE_DESC","Define the maximum size in bytes (10485760 = 1 MB) for uploading an image");
 // end new configs in 1.52
 
@@ -266,3 +237,25 @@ define('_MI_LEXIKON_HELP_HEADER', __DIR__ . '/help/helpheader.tpl');
 define('_MI_LEXIKON_BACK_2_ADMIN', 'Back to Administration of ');
 define('_MI_LEXIKON_HELP_OVERVIEW', 'Overview');
 define('_MI_LEXIKON_NAME', 'Lexikon');
+
+//Lang Symbol
+define('_MI_LEXIKON_LANG_SYMBOL_NAC', 'Enable filtering by national symbols');
+define('_MI_LEXIKON_LANG_SYMBOLDSC_NAC', 'Adds national characters to the alphabet search');
+define('_MI_LEXIKON_LANG_SYMBOL_NAC_IN', 'The number of the first character in the symbol table');
+define('_MI_LEXIKON_LANG_SYMBOLDSC_NAC_IN', 'The number of the symbol from which the national alphabet begins in the UTF8 table begins<br>The default language is Russian<br><a href="https://unicode-table.com/en/" target="_blank">You can learn here</a>');
+define('_MI_LEXIKON_LANG_SYMBOL_NAC_OUT', 'Characters');
+define('_MI_LEXIKON_LANG_SYMBOLDSC_NAC_OUT', 'Number of characters in the national alphabet<br>The default language is Russian');
+
+define('_MI_LEXIKON_LANG_SYMBOL_NUM', 'Enable filtering by numbers');
+define('_MI_LEXIKON_LANG_SYMBOLDSC_NUM', 'Adds numbers to a search in alphabetical order');
+define('_MI_LEXIKON_LANG_SYMBOL_NUM_IN', 'The number of the first character in the symbol table');
+define('_MI_LEXIKON_LANG_SYMBOLDSC_NUM_IN', 'The character number from which the numbers in the UTF8 table begin<br><a href="https://unicode-table.com/en/" target="_blank">You can learn here</a>');
+define('_MI_LEXIKON_LANG_SYMBOL_NUM_OUT', 'Characters');
+define('_MI_LEXIKON_LANG_SYMBOLDSC_NUM_OUT', 'Characters');
+
+define('_MI_LEXIKON_LANG_SYMBOL_DEF', 'Enable filtering in alphabetical order (English by default)');
+define('_MI_LEXIKON_LANG_SYMBOLDSC_DEF', 'Adds a search in alphabetical order');
+define('_MI_LEXIKON_LANG_SYMBOL_DEF_IN', 'The number of the first character in the symbol table');
+define('_MI_LEXIKON_LANG_SYMBOLDSC_DEF_IN', 'The character number from which the alphabet in the UTF8 table begins<br>The default language is English<br><a href="https://unicode-table.com/en/" target="_blank">You can learn here</a>');
+define('_MI_LEXIKON_LANG_SYMBOL_DEF_OUT', 'Characters');
+define('_MI_LEXIKON_LANG_SYMBOLDSC_DEF_OUT', 'Number of characters in the alphabet<br>The default language is English');

@@ -431,7 +431,8 @@ function lx_getinit($init)
     global $init;
     echo "<div><select name='init'>";
     echo "<option value='#'>&nbsp;#&nbsp;</option>";
-    for ($a = 48; $a < (48 + 10); ++$a) {
+    if ($GLOBALS['xoopsModuleConfig']['on_off_lang_symbol_num'] == 1) {
+    for ($a = $GLOBALS['xoopsModuleConfig']['on_off_lang_symbol_num_in']; $a < ($GLOBALS['xoopsModuleConfig']['on_off_lang_symbol_num_in'] + $GLOBALS['xoopsModuleConfig']['on_off_lang_symbol_num_out']); ++$a) {
         if (uchr($a) == $init) {
             $opt_selected = 'selected';
         } else {
@@ -439,7 +440,9 @@ function lx_getinit($init)
         }
         echo "<option value='" . uchr($a) . "' $opt_selected>&nbsp;" . uchr($a) . "&nbsp;</option>";
     }
-    for ($a = 65; $a < (65 + 26); ++$a) {
+    }
+    if ($GLOBALS['xoopsModuleConfig']['on_off_lang_symbol_def'] == 1) {
+    for ($a = $GLOBALS['xoopsModuleConfig']['on_off_lang_symbol_def_in']; $a < ($GLOBALS['xoopsModuleConfig']['on_off_lang_symbol_def_in'] + $GLOBALS['xoopsModuleConfig']['on_off_lang_symbol_def_out']); ++$a) {
         if (uchr($a) == $init) {
             $opt_selected = 'selected';
         } else {
@@ -447,14 +450,17 @@ function lx_getinit($init)
         }
         echo "<option value='" . uchr($a) . "' $opt_selected>&nbsp;" . uchr($a) . "&nbsp;</option>";
     }
-    /*for ($a = 1040; $a < (1040 + 32); ++$a) { 
+    }
+    if ($GLOBALS['xoopsModuleConfig']['on_off_lang_symbol_nac'] == 1) {
+    for ($a = $GLOBALS['xoopsModuleConfig']['on_off_lang_symbol_nac_in']; $a < ($GLOBALS['xoopsModuleConfig']['on_off_lang_symbol_nac_in'] + $GLOBALS['xoopsModuleConfig']['on_off_lang_symbol_nac_out']); ++$a) { 
         if (uchr($a) == $init) {    
             $opt_selected = 'selected';
         } else {
             $opt_selected = '';
         }
         echo "<option value='" . uchr($a) . "' $opt_selected>&nbsp;" . uchr($a) . "&nbsp;</option>";
-    }*/ 
+    }
+    } 
     echo "</select></div>";
 }
 function uchr($a) {

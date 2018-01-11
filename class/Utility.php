@@ -358,11 +358,12 @@ public static function getAlphaArray()
     $allowed_cats  = $gpermHandler->getItemIds('lexikon_view', $groups, $module_id);
     $catids        = implode(',', $allowed_cats);
     $catperms      = " AND categoryID IN ($catids) ";
-    $alpha         = array();
+    $alpha         = [];
     function unichr($a) {
     return mb_convert_encoding(pack("N",$a), mb_internal_encoding(), 'UCS-4BE');
     }
-    for ($a = 48; $a < (48 + 10); ++$a) {
+    if ($GLOBALS['xoopsModuleConfig']['on_off_lang_symbol_num'] == 1) {
+    for ($a = $GLOBALS['xoopsModuleConfig']['on_off_lang_symbol_num_in']; $a < ($GLOBALS['xoopsModuleConfig']['on_off_lang_symbol_num_in'] + $GLOBALS['xoopsModuleConfig']['on_off_lang_symbol_num_out']); ++$a) {
         $letterlinks             = [];
         $initial                 = unichr($a);
         $sql                     = $xoopsDB->query('SELECT entryID FROM '
@@ -377,7 +378,9 @@ public static function getAlphaArray()
 
         $alpha['initial'][] = $letterlinks;
     }
-    for ($a = 65; $a < (65 + 26); ++$a) {
+    }
+    if ($GLOBALS['xoopsModuleConfig']['on_off_lang_symbol_def'] == 1) {
+    for ($a = $GLOBALS['xoopsModuleConfig']['on_off_lang_symbol_def_in']; $a < ($GLOBALS['xoopsModuleConfig']['on_off_lang_symbol_def_in'] + $GLOBALS['xoopsModuleConfig']['on_off_lang_symbol_def_out']); ++$a) {
         $letterlinks             = [];
         $initial                 = unichr($a);
         $sql                     = $xoopsDB->query('SELECT entryID FROM '
@@ -392,7 +395,9 @@ public static function getAlphaArray()
 
         $alpha['initial'][] = $letterlinks;
     }
-    /*for ($a = 1040; $a < (1040 + 32); ++$a) {
+    }
+    if ($GLOBALS['xoopsModuleConfig']['on_off_lang_symbol_nac'] == 1) {
+    for ($a = $GLOBALS['xoopsModuleConfig']['on_off_lang_symbol_nac_in']; $a < ($GLOBALS['xoopsModuleConfig']['on_off_lang_symbol_nac_in'] + $GLOBALS['xoopsModuleConfig']['on_off_lang_symbol_nac_out']); ++$a) {
         $letterlinks             = [];
         $initial                 = unichr($a);
         $sql                     = $xoopsDB->query('SELECT entryID FROM '
@@ -405,8 +410,8 @@ public static function getAlphaArray()
         $letterlinks['id']       = unichr($a);
         $letterlinks['linktext'] = unichr($a);
         $alpha['initial'][] = $letterlinks;
-    }*/  
-    
+    }  
+    }
     return $alpha;
 }
 
