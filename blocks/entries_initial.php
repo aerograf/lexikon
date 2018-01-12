@@ -51,8 +51,17 @@ function b_lxentries_alpha_show($options)
     $block['title']         = _MB_LEXIKON_TERMINITIAL;
     $block['moduledirname'] = $lexikon->dirname();
     $count                  = 0;
-    if ($GLOBALS['xoopsModuleConfig']['on_off_lang_symbol_num'] == 1) {
-    for ($a = $GLOBALS['xoopsModuleConfig']['on_off_lang_symbol_num_in']; $a < ($GLOBALS['xoopsModuleConfig']['on_off_lang_symbol_num_in'] + $GLOBALS['xoopsModuleConfig']['on_off_lang_symbol_num_out']); ++$a) {
+    $symbol_num    = $GLOBALS['xoopsModuleConfig']['on_off_lang_symbol_num'];
+    $symbol_num_in = $GLOBALS['xoopsModuleConfig']['on_off_lang_symbol_num_in'];
+    $symbol_num_out= $GLOBALS['xoopsModuleConfig']['on_off_lang_symbol_num_out'];
+    $symbol_def    = $GLOBALS['xoopsModuleConfig']['on_off_lang_symbol_def'];
+    $symbol_def_in = $GLOBALS['xoopsModuleConfig']['on_off_lang_symbol_def_in'];
+    $symbol_def_out= $GLOBALS['xoopsModuleConfig']['on_off_lang_symbol_def_out'];
+    $symbol_nac    = $GLOBALS['xoopsModuleConfig']['on_off_lang_symbol_nac'];
+    $symbol_nac_in = $GLOBALS['xoopsModuleConfig']['on_off_lang_symbol_nac_in'];
+    $symbol_nac_out= $GLOBALS['xoopsModuleConfig']['on_off_lang_symbol_nac_out'];
+    if ($symbol_num == 1) {
+    for ($a = $symbol_num_in; $a < ($symbol_num_in + $symbol_num_out); ++$a) {
         $letterlinks = [];
         $initial     = uchr($a);
         $sql                     = $xoopsDB->query('SELECT init FROM '
@@ -71,8 +80,8 @@ function b_lxentries_alpha_show($options)
         $block['initstuff'][] = $letterlinks;
     }
     }
-    if ($GLOBALS['xoopsModuleConfig']['on_off_lang_symbol_def'] == 1) {    
-    for ($a = $GLOBALS['xoopsModuleConfig']['on_off_lang_symbol_def_in']; $a < ($GLOBALS['xoopsModuleConfig']['on_off_lang_symbol_def_in'] + $GLOBALS['xoopsModuleConfig']['on_off_lang_symbol_def_out']); ++$a) {
+    if ($symbol_def == 1) {    
+    for ($a = $symbol_def_in; $a < ($symbol_def_in + $symbol_def_out); ++$a) {
         $letterlinks = [];
         $initial     = uchr($a);
         $sql                     = $xoopsDB->query('SELECT init FROM '
@@ -91,8 +100,8 @@ function b_lxentries_alpha_show($options)
         $block['initstuff'][] = $letterlinks;
     }
     }
-    if ($GLOBALS['xoopsModuleConfig']['on_off_lang_symbol_nac'] == 1) {
-    for ($a = $GLOBALS['xoopsModuleConfig']['on_off_lang_symbol_nac_in']; $a < ($GLOBALS['xoopsModuleConfig']['on_off_lang_symbol_nac_in'] + $GLOBALS['xoopsModuleConfig']['on_off_lang_symbol_nac_out']); ++$a) {
+    if ($symbol_nac == 1) {
+    for ($a = $symbol_nac_in; $a < ($symbol_nac_in + $symbol_nac_out); ++$a) {
         $letterlinks = [];
         $initial     = uchr($a);
         $sql                     = $xoopsDB->query('SELECT init FROM '

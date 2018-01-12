@@ -315,7 +315,7 @@ public static function getCategoryArray()
                                     . ' ORDER BY weight ASC');
     while (list($catID, $name, $total, $logourl) = $xoopsDB->fetchRow($resultcat)) {
         if ($gpermHandler->checkRight('lexikon_view', $catID, $groups, $xoopsModule->getVar('mid'))) {
-            $catlinks = array();
+            $catlinks = [];
             ++$count;
             if ($logourl && $logourl !== 'http://') {
                 $logourl = $myts->htmlSpecialChars($logourl);
@@ -359,11 +359,20 @@ public static function getAlphaArray()
     $catids        = implode(',', $allowed_cats);
     $catperms      = " AND categoryID IN ($catids) ";
     $alpha         = [];
+    $symbol_num    = $GLOBALS['xoopsModuleConfig']['on_off_lang_symbol_num'];
+    $symbol_num_in = $GLOBALS['xoopsModuleConfig']['on_off_lang_symbol_num_in'];
+    $symbol_num_out= $GLOBALS['xoopsModuleConfig']['on_off_lang_symbol_num_out'];
+    $symbol_def    = $GLOBALS['xoopsModuleConfig']['on_off_lang_symbol_def'];
+    $symbol_def_in = $GLOBALS['xoopsModuleConfig']['on_off_lang_symbol_def_in'];
+    $symbol_def_out= $GLOBALS['xoopsModuleConfig']['on_off_lang_symbol_def_out'];
+    $symbol_nac    = $GLOBALS['xoopsModuleConfig']['on_off_lang_symbol_nac'];
+    $symbol_nac_in = $GLOBALS['xoopsModuleConfig']['on_off_lang_symbol_nac_in'];
+    $symbol_nac_out= $GLOBALS['xoopsModuleConfig']['on_off_lang_symbol_nac_out'];
     function unichr($a) {
     return mb_convert_encoding(pack("N",$a), mb_internal_encoding(), 'UCS-4BE');
     }
-    if ($GLOBALS['xoopsModuleConfig']['on_off_lang_symbol_num'] == 1) {
-    for ($a = $GLOBALS['xoopsModuleConfig']['on_off_lang_symbol_num_in']; $a < ($GLOBALS['xoopsModuleConfig']['on_off_lang_symbol_num_in'] + $GLOBALS['xoopsModuleConfig']['on_off_lang_symbol_num_out']); ++$a) {
+    if ($symbol_num == 1) {
+    for ($a = $symbol_num_in; $a < ($symbol_num_in + $symbol_num_out); ++$a) {
         $letterlinks             = [];
         $initial                 = unichr($a);
         $sql                     = $xoopsDB->query('SELECT entryID FROM '
@@ -379,8 +388,8 @@ public static function getAlphaArray()
         $alpha['initial'][] = $letterlinks;
     }
     }
-    if ($GLOBALS['xoopsModuleConfig']['on_off_lang_symbol_def'] == 1) {
-    for ($a = $GLOBALS['xoopsModuleConfig']['on_off_lang_symbol_def_in']; $a < ($GLOBALS['xoopsModuleConfig']['on_off_lang_symbol_def_in'] + $GLOBALS['xoopsModuleConfig']['on_off_lang_symbol_def_out']); ++$a) {
+    if ($symbol_def == 1) {
+    for ($a = $symbol_def_in; $a < ($symbol_def_in + $symbol_def_out); ++$a) {
         $letterlinks             = [];
         $initial                 = unichr($a);
         $sql                     = $xoopsDB->query('SELECT entryID FROM '
@@ -396,8 +405,8 @@ public static function getAlphaArray()
         $alpha['initial'][] = $letterlinks;
     }
     }
-    if ($GLOBALS['xoopsModuleConfig']['on_off_lang_symbol_nac'] == 1) {
-    for ($a = $GLOBALS['xoopsModuleConfig']['on_off_lang_symbol_nac_in']; $a < ($GLOBALS['xoopsModuleConfig']['on_off_lang_symbol_nac_in'] + $GLOBALS['xoopsModuleConfig']['on_off_lang_symbol_nac_out']); ++$a) {
+    if ($symbol_nac == 1) {
+    for ($a = $symbol_nac_in; $a < ($symbol_nac_in + $symbol_nac_out); ++$a) {
         $letterlinks             = [];
         $initial                 = unichr($a);
         $sql                     = $xoopsDB->query('SELECT entryID FROM '
@@ -967,13 +976,13 @@ public static function getWysiwygForm($caption, $name, $value = '', $width = '10
             case 'tinymce':
                 if (is_readable(XOOPS_ROOT_PATH . '/class/xoopseditor/tinyeditor/formtinyeditortextarea.php')) {
                     require_once XOOPS_ROOT_PATH . '/class/xoopseditor/tinyeditor/formtinyeditortextarea.php';
-                    $editor = new XoopsFormTinyeditorTextArea(array(
+                    $editor = new XoopsFormTinyeditorTextArea([
                                                                   'caption' => $caption,
                                                                   'name'    => $name,
                                                                   'value'   => $value,
                                                                   'width'   => '100%',
                                                                   'height'  => '400px'
-                                                              ));
+                                                              ]);
                 }
                 break;
 
@@ -1000,18 +1009,18 @@ public static function getModuleHeader()
         $xoTheme->addStylesheet('modules/lexikon/assets/css/style.css');
         if ($xoopsModuleConfig['linkterms'] == 3) {
             $xoTheme->addStylesheet('modules/lexikon/assets/css/linkterms.css');
-            $xoTheme->addScript('/modules/lexikon/assets/js/tooltipscript2.js', array('type' => 'text/javascript'));
+            $xoTheme->addScript('/modules/lexikon/assets/js/tooltipscript2.js', ['type' => 'text/javascript']);
         }
         if ($xoopsModuleConfig['linkterms'] == 4) {
-            $xoTheme->addScript('/modules/lexikon/assets/js/popup.js', array('type' => 'text/javascript'));
+            $xoTheme->addScript('/modules/lexikon/assets/js/popup.js', ['type' => 'text/javascript']);
         }
         if ($xoopsModuleConfig['linkterms'] == 5) {
             $xoTheme->addStylesheet('modules/lexikon/assets/css/linkterms.css');
-            $xoTheme->addScript('/modules/lexikon/assets/js/balloontooltip.js', array('type' => 'text/javascript'));
+            $xoTheme->addScript('/modules/lexikon/assets/js/balloontooltip.js', ['type' => 'text/javascript']);
         }
         if ($xoopsModuleConfig['linkterms'] == 6) {
             $xoTheme->addStylesheet('modules/lexikon/assets/css/linkterms.css');
-            $xoTheme->addScript('/modules/lexikon/assets/js/shadowtooltip.js', array('type' => 'text/javascript'));
+            $xoTheme->addScript('/modules/lexikon/assets/js/shadowtooltip.js', ['type' => 'text/javascript']);
         }
     } else {
         $lexikon_url = XOOPS_URL . '/modules/' . $xoopsModule->getVar('dirname');

@@ -377,7 +377,7 @@ function entrySave($entryID = '')
     $init = mb_substr($term, 0, 1);
     $init = preg_match('/[a-zA-Zа-яА-Я0-9]/', $init) ? mb_strtoupper($init) : '#';
     // Fin LionHell
-
+    
     $definition = $myts->xoopsCodeDecode($myts->censorString($_POST['definition']), $allowimage = 1);
     $ref        = isset($_POST['ref']) ? $myts->addSlashes($myts->censorString($_POST['ref'])) : '';
     $url        = isset($_POST['url']) ? $myts->addSlashes($_POST['url']) : '';

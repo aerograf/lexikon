@@ -431,8 +431,17 @@ function lx_getinit($init)
     global $init;
     echo "<div><select name='init'>";
     echo "<option value='#'>&nbsp;#&nbsp;</option>";
-    if ($GLOBALS['xoopsModuleConfig']['on_off_lang_symbol_num'] == 1) {
-    for ($a = $GLOBALS['xoopsModuleConfig']['on_off_lang_symbol_num_in']; $a < ($GLOBALS['xoopsModuleConfig']['on_off_lang_symbol_num_in'] + $GLOBALS['xoopsModuleConfig']['on_off_lang_symbol_num_out']); ++$a) {
+    $symbol_num    = $GLOBALS['xoopsModuleConfig']['on_off_lang_symbol_num'];
+    $symbol_num_in = $GLOBALS['xoopsModuleConfig']['on_off_lang_symbol_num_in'];
+    $symbol_num_out= $GLOBALS['xoopsModuleConfig']['on_off_lang_symbol_num_out'];
+    $symbol_def    = $GLOBALS['xoopsModuleConfig']['on_off_lang_symbol_def'];
+    $symbol_def_in = $GLOBALS['xoopsModuleConfig']['on_off_lang_symbol_def_in'];
+    $symbol_def_out= $GLOBALS['xoopsModuleConfig']['on_off_lang_symbol_def_out'];
+    $symbol_nac    = $GLOBALS['xoopsModuleConfig']['on_off_lang_symbol_nac'];
+    $symbol_nac_in = $GLOBALS['xoopsModuleConfig']['on_off_lang_symbol_nac_in'];
+    $symbol_nac_out= $GLOBALS['xoopsModuleConfig']['on_off_lang_symbol_nac_out'];
+    if ($symbol_num == 1) {
+    for ($a = $symbol_num_in; $a < ($symbol_num_in + $symbol_num_out); ++$a) {
         if (uchr($a) == $init) {
             $opt_selected = 'selected';
         } else {
@@ -441,8 +450,8 @@ function lx_getinit($init)
         echo "<option value='" . uchr($a) . "' $opt_selected>&nbsp;" . uchr($a) . "&nbsp;</option>";
     }
     }
-    if ($GLOBALS['xoopsModuleConfig']['on_off_lang_symbol_def'] == 1) {
-    for ($a = $GLOBALS['xoopsModuleConfig']['on_off_lang_symbol_def_in']; $a < ($GLOBALS['xoopsModuleConfig']['on_off_lang_symbol_def_in'] + $GLOBALS['xoopsModuleConfig']['on_off_lang_symbol_def_out']); ++$a) {
+    if ($symbol_def == 1) {
+    for ($a = $symbol_def_in; $a < ($symbol_def_in + $symbol_def_out); ++$a) {
         if (uchr($a) == $init) {
             $opt_selected = 'selected';
         } else {
@@ -451,8 +460,8 @@ function lx_getinit($init)
         echo "<option value='" . uchr($a) . "' $opt_selected>&nbsp;" . uchr($a) . "&nbsp;</option>";
     }
     }
-    if ($GLOBALS['xoopsModuleConfig']['on_off_lang_symbol_nac'] == 1) {
-    for ($a = $GLOBALS['xoopsModuleConfig']['on_off_lang_symbol_nac_in']; $a < ($GLOBALS['xoopsModuleConfig']['on_off_lang_symbol_nac_in'] + $GLOBALS['xoopsModuleConfig']['on_off_lang_symbol_nac_out']); ++$a) { 
+    if ($symbol_nac == 1) {
+    for ($a = $symbol_nac_in; $a < ($symbol_nac_in + $symbol_nac_out); ++$a) { 
         if (uchr($a) == $init) {    
             $opt_selected = 'selected';
         } else {
