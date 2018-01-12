@@ -676,6 +676,14 @@ $modversion['config'][] = [
 ];
 
 //Lang Symbol
+$modversion['config'][] = [
+    'name'        => 'on_off_lang_symbol',
+    'title'       => '_MI_LEXIKON_LANG_SYMBOL',
+    'description' => '_MI_LEXIKON_LANG_SYMBOLDSC',
+    'formtype'    => 'yesno',
+    'valuetype'   => 'int',
+    'default'     => 0
+];
 //Num
 $modversion['config'][] = [
     'name'        => 'on_off_lang_symbol_num',

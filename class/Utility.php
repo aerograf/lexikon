@@ -358,6 +358,7 @@ class Utility
          * @param $a
          * @return null|string|string[]
          */
+        $symbol        = $GLOBALS['xoopsModuleConfig']['on_off_lang_symbol'];
         $symbol_num    = $GLOBALS['xoopsModuleConfig']['on_off_lang_symbol_num'];
         $symbol_num_in = $GLOBALS['xoopsModuleConfig']['on_off_lang_symbol_num_in'];
         $symbol_num_out= $GLOBALS['xoopsModuleConfig']['on_off_lang_symbol_num_out'];
@@ -383,8 +384,14 @@ class Utility
             $letterlinks['total']    = $howmany;
             $letterlinks['id']       = unichr($a);
             $letterlinks['linktext'] = unichr($a);
-    
-            $alpha['initial'][] = $letterlinks;
+            if (0 == $symbol) {
+                if (0 == $letterlinks['total']) {                  
+                      } else {
+                      $alpha['initial'][] = $letterlinks;
+                      }
+                 } else {
+                 $alpha['initial'][] = $letterlinks;
+                 }
         }
         }
         if (1 == $symbol_def) {
@@ -400,8 +407,14 @@ class Utility
             $letterlinks['total']    = $howmany;
             $letterlinks['id']       = unichr($a);
             $letterlinks['linktext'] = unichr($a);
-    
-            $alpha['initial'][] = $letterlinks;
+            if (0 == $symbol) {
+                if (0 == $letterlinks['total']) {                  
+                      } else {
+                      $alpha['initial'][] = $letterlinks;
+                      }
+                 } else {
+                 $alpha['initial'][] = $letterlinks;
+                 }
         }
         }
         if (1 == $symbol_nac) {
@@ -417,7 +430,14 @@ class Utility
             $letterlinks['total']    = $howmany;
             $letterlinks['id']       = unichr($a);
             $letterlinks['linktext'] = unichr($a);
-            $alpha['initial'][] = $letterlinks;
+            if (0 == $symbol) {
+                if (0 == $letterlinks['total']) {                  
+                      } else {
+                      $alpha['initial'][] = $letterlinks;
+                      }
+                 } else {
+                 $alpha['initial'][] = $letterlinks;
+                 }
         }  
         }
         return $alpha;

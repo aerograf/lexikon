@@ -61,6 +61,7 @@ function b_lxentries_alpha_show($options)
     $block['title']         = _MB_LEXIKON_TERMINITIAL;
     $block['moduledirname'] = $lexikon->dirname();
     $count                  = 0;
+    $symbol        = $GLOBALS['xoopsModuleConfig']['on_off_lang_symbol'];
     $symbol_num    = $GLOBALS['xoopsModuleConfig']['on_off_lang_symbol_num'];
     $symbol_num_in = $GLOBALS['xoopsModuleConfig']['on_off_lang_symbol_num_in'];
     $symbol_num_out= $GLOBALS['xoopsModuleConfig']['on_off_lang_symbol_num_out'];
@@ -86,8 +87,14 @@ function b_lxentries_alpha_show($options)
         $letterlinks['id']       = uchr($a);
         $letterlinks['linktext'] = uchr($a);
         $letterlinks['count']    = (int)$count;
-
-        $block['initstuff'][] = $letterlinks;
+            if (0 == $symbol) {
+                if (0 == $letterlinks['total']) {                  
+                      } else {
+                      $block['initstuff'][] = $letterlinks;
+                      }
+                 } else {
+                 $block['initstuff'][] = $letterlinks;
+                 }
     }
     }
     if (1 == $symbol_def) {    
@@ -106,8 +113,14 @@ function b_lxentries_alpha_show($options)
         $letterlinks['id']       = uchr($a);
         $letterlinks['linktext'] = uchr($a);
         $letterlinks['count']    = (int)$count;
-
-        $block['initstuff'][] = $letterlinks;
+            if (0 == $symbol) {
+                if (0 == $letterlinks['total']) {                  
+                      } else {
+                      $block['initstuff'][] = $letterlinks;
+                      }
+                 } else {
+                 $block['initstuff'][] = $letterlinks;
+                 }
     }
     }
     if (1 == $symbol_nac) {
@@ -126,8 +139,14 @@ function b_lxentries_alpha_show($options)
         $letterlinks['id']       = uchr($a);
         $letterlinks['linktext'] = uchr($a);
         $letterlinks['count']    = (int)$count;
-        
-        $block['initstuff'][] = $letterlinks;
+            if (0 == $symbol) {
+                if (0 == $letterlinks['total']) {                  
+                      } else {
+                      $block['initstuff'][] = $letterlinks;
+                      }
+                 } else {
+                 $block['initstuff'][] = $letterlinks;
+                 }
     } 
     }
     return $block;
