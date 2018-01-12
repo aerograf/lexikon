@@ -7,7 +7,7 @@
  * Author: hsalazar
  * Licence: GNU
  */
-defined('XOOPS_ROOT_PATH') || exit('XOOPS root path not defined');
+defined('XOOPS_ROOT_PATH') || exit('Restricted access.');
 
 /**
  * @param $queryarray
@@ -23,10 +23,10 @@ function lx_search($queryarray, $andor, $limit, $offset, $userid)
     // -- search comments + highlighter
     $highlight        = false;
     $searchincomments = false;
-    include_once XOOPS_ROOT_PATH . '/modules/lexikon/include/common.inc.php';
-    include_once XOOPS_ROOT_PATH . '/modules/lexikon/class/Utility.php';
-    $hightlight_key = '';
-    $highlight      = LexikonUtility::getModuleOption('config_highlighter');
+    require_once XOOPS_ROOT_PATH . '/modules/lexikon/include/common.inc.php';
+    require_once XOOPS_ROOT_PATH . '/modules/lexikon/class/Utility.php';
+    $hightlight_key   = '';
+    $highlight        = $utility::getModuleOption('config_highlighter');
     $searchincomments = CONFIG_SEARCH_COMMENTS;
     /** @var XoopsModuleHandler $moduleHandler */
     $moduleHandler = xoops_getHandler('module');
@@ -41,15 +41,15 @@ function lx_search($queryarray, $andor, $limit, $offset, $userid)
     $sql = 'SELECT entryID, categoryID, term, definition, ref, uid, datesub FROM ' . $xoopsDB->prefix('lxentries') . ' WHERE submit = 0 AND offline = 0 ';
     $sql .= " AND categoryID IN ($catids) ";
 
-    if ($userid != 0) {
+    if (0 != $userid) {
         $sql .= ' AND uid=' . $userid . ' ';
     }
     if ($highlight) {
-        if ($queryarray == '') {
+        if ('' == $queryarray) {
             $keywords       = '';
             $hightlight_key = '';
         } else {
-            $keywords = implode('+', $queryarray);
+            $keywords       = implode('+', $queryarray);
             $hightlight_key = '&amp;keywords=' . $keywords;
         }
     }
@@ -90,12 +90,12 @@ function lx_search($queryarray, $andor, $limit, $offset, $userid)
     //}
     // --- comments search ---
     if ($searchincomments && (isset($limit) && $i <= $limit)) {
-        include_once XOOPS_ROOT_PATH . '/include/comment_constants.php';
+        require_once XOOPS_ROOT_PATH . '/include/comment_constants.php';
         $ind = $i;
         $sql = 'SELECT com_id, com_modid, com_itemid, com_created, com_uid, com_title, com_text, com_status
                FROM ' . $xoopsDB->prefix('xoopscomments') . "
                WHERE (com_id>0) AND (com_modid=$module_id) AND (com_status=" . XOOPS_COMMENT_ACTIVE . ') ';
-        if ($userid != 0) {
+        if (0 != $userid) {
             $sql .= ' AND com_uid=' . $userid . ' ';
         }
 
@@ -114,8 +114,8 @@ function lx_search($queryarray, $andor, $limit, $offset, $userid)
             $display = true;
             list($entryID, $offline) = $xoopsDB->fetchRow($xoopsDB->query('
                                          SELECT entryID, offline
-                                         FROM ' . $xoopsDB->prefix('lxentries') . ' WHERE entryID = ' . $myrow['com_itemid'] . ''));
-            if ($offline == 1) {
+                                         FROM ' . $xoopsDB->prefix('lxentries') . ' WHERE entryID = ' . $myrow['com_itemid'] . ' '));
+            if (1 == $offline) {
                 $display = false;
             }
             if ($i + 1 > $limit) {

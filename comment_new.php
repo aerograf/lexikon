@@ -24,21 +24,20 @@ $com_itemid = isset($_GET['com_itemid']) ? (int)$_GET['com_itemid'] : 0;
 if (!isset($xoopsModuleConfig)) {
     die();
 }
-if ($xoopsModuleConfig['com_rule'] == 0) {
+if (0 == $xoopsModuleConfig['com_rule']) {
     die();
 }    // Comments deactivated
-if ($xoopsModuleConfig['com_anonpost'] == 0 && !is_object($xoopsUser)) {
+if (0 == $xoopsModuleConfig['com_anonpost'] && !is_object($xoopsUser)) {
     die();
 } // Anonymous users can't post
 
 if ($com_itemid > 0) {
     // Get link title
-    $sql    = 'SELECT entryID, term FROM ' . $xoopsDB->prefix('lxentries') . ' WHERE entryID=' . $com_itemid . '';
+    $sql    = 'SELECT entryID, term FROM ' . $xoopsDB->prefix('lxentries') . ' WHERE entryID=' . $com_itemid . ' ';
     $result = $xoopsDB->query($sql);
     $row    = $xoopsDB->fetchArray($result);
     if (!$row['entryID']) {
         redirect_header('javascript:history.go(-1)', 3, _NOPERM);
-        exit;
     }
     $com_replytitle = $row['term'];
     include XOOPS_ROOT_PATH . '/include/comment_new.php';

@@ -9,18 +9,19 @@
 
 include __DIR__ . '/header.php';
 $GLOBALS['xoopsOption']['template_main'] = 'lx_authorlist.tpl';
-include_once XOOPS_ROOT_PATH . '/header.php';
+require_once XOOPS_ROOT_PATH . '/header.php';
 global $xoopsUser, $xoTheme, $xoopsTpl, $authortermstotal, $xoopsModule;
-include_once XOOPS_ROOT_PATH . '/modules/' . $xoopsModule->dirname() . '/class/Utility.php';
-include_once XOOPS_ROOT_PATH . '/modules/lexikon/include/common.inc.php';
+require_once XOOPS_ROOT_PATH . '/modules/' . $xoopsModule->dirname() . '/class/Utility.php';
+require_once XOOPS_ROOT_PATH . '/modules/lexikon/include/common.inc.php';
 $authorlistext = false;
-$myts          = MyTextSanitizer::getInstance();
+$myts          = \MyTextSanitizer::getInstance();
+$utility      = new lexikon\Utility();
 
 if (empty($xoopsUser) && !$xoopsModuleConfig['authorprofile']) {
     redirect_header(XOOPS_URL . '/user.php', 3, _MD_LEXIKON_MUSTREGFIRST);
 }
 $result = $xoopsDB->query('SELECT * FROM ' . $xoopsDB->prefix('lxcategories') . ' ');
-if ($xoopsDB->getRowsNum($result) == '0' && $xoopsModuleConfig['multicats'] == '1') {
+if ('0' == $xoopsDB->getRowsNum($result) && '1' == $xoopsModuleConfig['multicats']) {
     redirect_header('index.php', 3, _AM_LEXIKON_NOCOLEXISTS);
 }
 //permissions
@@ -37,11 +38,11 @@ $catperms      = " AND categoryID IN ($catids) ";
 // --- display a list of the authors of the site ---
 
 $uid_ids = [];
-$uid_ids = LexikonUtility::getAuthors();
+$uid_ids = $utility::getAuthors();
 if (count($uid_ids) > 0) {
     $lst_uid       = implode(',', $uid_ids);
     $memberHandler = xoops_getHandler('member');
-    $criteria      = new Criteria('uid', '(' . $lst_uid . ')', 'IN');
+    $criteria      = new \Criteria('uid', '(' . $lst_uid . ')', 'IN');
     $tbl_users     = $memberHandler->getUsers($criteria);
     $iu            = 0;
 
@@ -59,63 +60,50 @@ if (count($uid_ids) > 0) {
                                . XOOPS_URL
                                . "/images/icons/pm.gif' border='0' alt=\""
                                . sprintf(_SENDPMTO, $one_user->getVar('uname'))
-                               . "\"/></a>";
+                               . '"></a>';
             } else {
                 $user_pmlink = '';
             }
             if (is_object($xoopsUser)) {
                 if ($xoopsUserIsAdmin
-                    || ($one_user->getVar('user_viewemail') == 1
-                        && $one_user->getVar('email') != '')
-                ) {
-                    $user_maillink = "<a href='mailto:"
-                                     . $one_user->getVar('email')
-                                     . "'><img src='"
-                                     . XOOPS_URL
-                                     . "/images/icons/email.gif' border='0' alt=\""
-                                     . sprintf(_SENDEMAILTO, $one_user->getVar('uname'))
-                                     . "\"/></a>";
+                    || (1 == $one_user->getVar('user_viewemail')
+                        && '' != $one_user->getVar('email'))) {
+                    $user_maillink = "<a href='mailto:" . $one_user->getVar('email') . "'><img src='" . XOOPS_URL . "/images/icons/email.gif' border='0' alt=\"" . sprintf(_SENDEMAILTO, $one_user->getVar('uname')) . '"></a>';
                 } else {
                     $user_maillink = '';
                 }
             } else {
                 $user_maillink = '';
             }
-            if ($one_user->getVar('url') != '') {
+            if ('' != $one_user->getVar('url')) {
                 $url          = $one_user->getVar('url');
-                $user_wwwlink = "<a href='"
-                                . $one_user->getVar('url')
-                                . "'><img src='"
-                                . XOOPS_URL
-                                . "/images/icons/www.gif' border='0' alt='"
-                                . _VISITWEBSITE
-                                . "' /></a>";
+                $user_wwwlink = "<a href='" . $one_user->getVar('url') . "'><img src='" . XOOPS_URL . "/images/icons/www.gif' border='0' alt='" . _VISITWEBSITE . "' ></a>";
             } else {
                 $user_wwwlink = '';
             }
             // authortotals
             list($num) = $xoopsDB->fetchRow($xoopsDB->query('SELECT COUNT(*)
-                                                            FROM ' . $xoopsDB->prefix('lxentries') . "
+                                            FROM ' . $xoopsDB->prefix('lxentries') . "
                                                             WHERE uid='" . $one_user->getVar('uid') . "' " . $catperms . ' '));
             $authortotal = $num;
             // location
-            if ($one_user->getVar('user_from') != '') {
+            if ('' != $one_user->getVar('user_from')) {
                 $userfrom = $one_user->getVar('user_from');
             } else {
                 $userfrom = '';
             }
             ++$iu;
             $xoopsTpl->append('authors', [
-                                          'id'             => $iu,
-                                          'uid'            => $one_user->getVar('uid'),
-                                          'name'           => $uname,
-                                          'user_avatarurl' => XOOPS_URL . '/uploads/' . $one_user->getVar('user_avatar'),
-                                          'email'          => $user_maillink,
-                                          'pm'             => $user_pmlink,
-                                          'url'            => $user_wwwlink,
-                                          'total'          => $authortotal,
-                                          'location'       => $userfrom
-                                          ]);
+                'id'             => $iu,
+                'uid'            => $one_user->getVar('uid'),
+                'name'           => $uname,
+                'user_avatarurl' => XOOPS_URL . '/uploads/' . $one_user->getVar('user_avatar'),
+                'email'          => $user_maillink,
+                'pm'             => $user_pmlink,
+                'url'            => $user_wwwlink,
+                'total'          => $authortotal,
+                'location'       => $userfrom
+            ]);
         } else {
             $xoopsTpl->assign('authorlistext', false);
             // authortotals
@@ -131,11 +119,11 @@ if (count($uid_ids) > 0) {
             $user_wwwlink  = '';
             $userfrom      = '';
             $xoopsTpl->append('authors', [
-                                          'id'    => $iu,
-                                          'uid'   => $one_user->getVar('uid'),
-                                          'name'  => $uname,
-                                          'total' => $authortotal
-                                          ]);
+                'id'    => $iu,
+                'uid'   => $one_user->getVar('uid'),
+                'name'  => $uname,
+                'total' => $authortotal
+            ]);
         }
     }
 }
@@ -144,7 +132,7 @@ $xoopsTpl->assign('lang_modulename', $xoopsModule->name());
 $xoopsTpl->assign('lang_moduledirname', $xoopsModule->dirname());
 
 $xoopsTpl->assign('xoops_pagetitle', _MD_LEXIKON_CONTRIBUTORS . ' - ' . $myts->htmlSpecialChars($xoopsModule->name()));
-$xoopsTpl->assign('xoops_module_header', '<link rel="stylesheet" type="text/css" href="assets/css/style.css" />');
+$xoopsTpl->assign('xoops_module_header', '<link rel="stylesheet" type="text/css" href="assets/css/style.css">');
 
 // Meta data
 $meta_description = _MD_LEXIKON_CONTRIBUTORS . ' - ' . $myts->htmlSpecialChars($xoopsModule->name());
@@ -154,4 +142,4 @@ if (isset($xoTheme) && is_object($xoTheme)) {
     $xoopsTpl->assign('xoops_meta_description', $meta_description);
 }
 
-include_once XOOPS_ROOT_PATH . '/footer.php';
+require_once XOOPS_ROOT_PATH . '/footer.php';

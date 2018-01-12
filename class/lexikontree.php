@@ -1,4 +1,5 @@
-<?php
+<?php namespace Xoopsmodules\lexikon;
+
 /**
  * XOOPS tree handler
  *
@@ -9,14 +10,14 @@
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
  *
- * @copyright       XOOPS Project (http://xoops.org)
+ * @copyright       XOOPS Project (https://xoops.org)
  * @license         GNU GPL 2 (http://www.gnu.org/licenses/old-licenses/gpl-2.0.html)
  * @package         kernel
  * @since           2.0.0
  * @author          Kazumi Ono (AKA onokazu) http://www.myweb.ne.jp/, http://jp.xoops.org/
  */
 
-// defined('XOOPS_ROOT_PATH') || exit('XOOPS root path not defined');
+// defined('XOOPS_ROOT_PATH') || exit('Restricted access.');
 
 /**
  * Abstract base class for forms
@@ -43,12 +44,11 @@ class LexikonTree
      * @param $table_name
      * @param $id_name
      * @param $pid_name
-     * @return lexikontree
      */
     public function __construct($table_name, $id_name, $pid_name)
     {
         //        $GLOBALS['xoopsLogger']->addDeprecated("Class '" . __CLASS__ . "' is deprecated, check 'XoopsObjectTree' in tree.php");
-        $this->db    = XoopsDatabaseFactory::getDatabaseConnection();
+        $this->db    = \XoopsDatabaseFactory::getDatabaseConnection();
         $this->table = $table_name;
         $this->id    = $id_name;
         $this->pid   = $pid_name;
@@ -66,13 +66,13 @@ class LexikonTree
     {
         $sel_id = (int)$sel_id;
         $arr    = [];
-        $sql    = 'SELECT * FROM ' . $this->table . ' WHERE ' . $this->pid . '=' . $sel_id . '';
-        if ($order != '') {
+        $sql    = 'SELECT * FROM ' . $this->table . ' WHERE ' . $this->pid . '=' . $sel_id . ' ';
+        if ('' != $order) {
             $sql .= " ORDER BY $order";
         }
         $result = $this->db->query($sql);
         $count  = $this->db->getRowsNum($result);
-        if ($count == 0) {
+        if (0 == $count) {
             return $arr;
         }
         while ($myrow = $this->db->fetchArray($result)) {
@@ -95,7 +95,7 @@ class LexikonTree
         $idarray = [];
         $result  = $this->db->query('SELECT ' . $this->id . ' FROM ' . $this->table . ' WHERE ' . $this->pid . '=' . $sel_id . '');
         $count   = $this->db->getRowsNum($result);
-        if ($count == 0) {
+        if (0 == $count) {
             return $idarray;
         }
         while (list($id) = $this->db->fetchRow($result)) {
@@ -118,12 +118,12 @@ class LexikonTree
     {
         $sel_id = (int)$sel_id;
         $sql    = 'SELECT ' . $this->id . ' FROM ' . $this->table . ' WHERE ' . $this->pid . '=' . $sel_id . '';
-        if ($order != '') {
+        if ('' != $order) {
             $sql .= " ORDER BY $order";
         }
         $result = $this->db->query($sql);
         $count  = $this->db->getRowsNum($result);
-        if ($count == 0) {
+        if (0 == $count) {
             return $idarray;
         }
         while (list($r_id) = $this->db->fetchRow($result)) {
@@ -147,12 +147,12 @@ class LexikonTree
     {
         $sel_id = (int)$sel_id;
         $sql    = 'SELECT ' . $this->pid . ' FROM ' . $this->table . ' WHERE ' . $this->id . '=' . $sel_id . '';
-        if ($order != '') {
+        if ('' != $order) {
             $sql .= " ORDER BY $order";
         }
         $result = $this->db->query($sql);
         list($r_id) = $this->db->fetchRow($result);
-        if ($r_id == 0) {
+        if (0 == $r_id) {
             return $idarray;
         }
         array_push($idarray, $r_id);
@@ -174,14 +174,14 @@ class LexikonTree
     {
         $sel_id = (int)$sel_id;
         $result = $this->db->query('SELECT ' . $this->pid . ', ' . $title . ' FROM ' . $this->table . ' WHERE ' . $this->id . "=$sel_id");
-        if ($this->db->getRowsNum($result) == 0) {
+        if (0 == $this->db->getRowsNum($result)) {
             return $path;
         }
         list($parentid, $name) = $this->db->fetchRow($result);
-        $myts = MyTextSanitizer::getInstance();
+        $myts = \MyTextSanitizer::getInstance();
         $name = $myts->htmlspecialchars($name);
         $path = '/' . $name . $path . '';
-        if ($parentid == 0) {
+        if (0 == $parentid) {
             return $path;
         }
         $path = $this->getPathFromId($parentid, $title, $path);
@@ -202,17 +202,17 @@ class LexikonTree
      */
     public function makeMySelBox($title, $order = '', $preset_id = 0, $none = 0, $sel_name = '', $onchange = '')
     {
-        if ($sel_name == '') {
+        if ('' == $sel_name) {
             $sel_name = $this->id;
         }
-        $myts = MyTextSanitizer::getInstance();
+        $myts = \MyTextSanitizer::getInstance();
         echo "<select name='" . $sel_name . "'";
-        if ($onchange != '') {
+        if ('' != $onchange) {
             echo " onchange='" . $onchange . "'";
         }
         echo ">\n";
         $sql = 'SELECT ' . $this->id . ', ' . $title . ' FROM ' . $this->table . ' WHERE ' . $this->pid . '=0';
-        if ($order != '') {
+        if ('' != $order) {
             $sql .= " ORDER BY $order";
         }
         $result = $this->db->query($sql);
@@ -256,14 +256,14 @@ class LexikonTree
         $sel_id = (int)$sel_id;
         $sql    = 'SELECT ' . $this->pid . ', ' . $title . ' FROM ' . $this->table . ' WHERE ' . $this->id . "=$sel_id";
         $result = $this->db->query($sql);
-        if ($this->db->getRowsNum($result) == 0) {
+        if (0 == $this->db->getRowsNum($result)) {
             return $path;
         }
         list($parentid, $name) = $this->db->fetchRow($result);
-        $myts = MyTextSanitizer::getInstance();
+        $myts = \MyTextSanitizer::getInstance();
         $name = $myts->htmlspecialchars($name);
         $path = "<a href='" . $funcURL . '&amp;' . $this->id . '=' . $sel_id . "'>" . $name . '</a>' . $path . '';
-        if ($parentid == 0) {
+        if (0 == $parentid) {
             return $path;
         }
         $path = $this->getNicePathFromId($parentid, $title, $funcURL, $path);
@@ -283,12 +283,12 @@ class LexikonTree
     {
         $sel_id = (int)$sel_id;
         $result = $this->db->query('SELECT ' . $this->pid . ' FROM ' . $this->table . ' WHERE ' . $this->id . "=$sel_id");
-        if ($this->db->getRowsNum($result) == 0) {
+        if (0 == $this->db->getRowsNum($result)) {
             return $path;
         }
         list($parentid) = $this->db->fetchRow($result);
         $path = '/' . $sel_id . $path . '';
-        if ($parentid == 0) {
+        if (0 == $parentid) {
             return $path;
         }
         $path = $this->getIdPathFromId($parentid, $path);
@@ -303,18 +303,18 @@ class LexikonTree
      * @param string|mixed $order
      * @param array|mixed  $parray
      *
-     * @return array|unknown|unknown_type
+     * @return array|mixed
      */
     public function getAllChild($sel_id = 0, $order = '', $parray = [])
     {
         $sel_id = (int)$sel_id;
-        $sql    = 'SELECT * FROM ' . $this->table . ' WHERE ' . $this->pid . '=' . $sel_id . '';
-        if ($order != '') {
+        $sql    = 'SELECT * FROM ' . $this->table . ' WHERE ' . $this->pid . '=' . $sel_id . ' ';
+        if ('' != $order) {
             $sql .= " ORDER BY $order";
         }
         $result = $this->db->query($sql);
         $count  = $this->db->getRowsNum($result);
-        if ($count == 0) {
+        if (0 == $count) {
             return $parray;
         }
         while ($row = $this->db->fetchArray($result)) {
@@ -332,18 +332,18 @@ class LexikonTree
      * @param  string|mixed $order
      * @param  array|mixed  $parray
      * @param  string|mixed $r_prefix
-     * @return array|unknown|unknown_type
+     * @return array|mixed
      */
     public function getChildTreeArray($sel_id = 0, $order = '', $parray = [], $r_prefix = '')
     {
         $sel_id = (int)$sel_id;
-        $sql    = 'SELECT * FROM ' . $this->table . ' WHERE ' . $this->pid . '=' . $sel_id . '';
-        if ($order != '') {
+        $sql    = 'SELECT * FROM ' . $this->table . ' WHERE ' . $this->pid . '=' . $sel_id . ' ';
+        if ('' != $order) {
             $sql .= " ORDER BY $order";
         }
         $result = $this->db->query($sql);
         $count  = $this->db->getRowsNum($result);
-        if ($count == 0) {
+        if (0 == $count) {
             return $parray;
         }
         while ($row = $this->db->fetchArray($result)) {

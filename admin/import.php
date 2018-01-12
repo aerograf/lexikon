@@ -10,7 +10,7 @@
  */
 
 /**
- * @copyright    XOOPS Project (http://xoops.org)
+ * @copyright    XOOPS Project (https://xoops.org)
  * @license      GNU GPL 2 or later (http://www.gnu.org/licenses/gpl-2.0.html)
  * @package
  * @since
@@ -21,7 +21,7 @@ require_once __DIR__ . '/admin_header.php';
 
 xoops_cp_header();
 
-$adminObject  = \Xmf\Module\Admin::getInstance();
+$adminObject = \Xmf\Module\Admin::getInstance();
 $adminObject->displayNavigation(basename(__FILE__));
 lx_importMenu(9);
 $adminObject->addItemButton(_AM_LEXIKON_IMPORT_WORDBOOK, 'importwordbook.php', 'add');

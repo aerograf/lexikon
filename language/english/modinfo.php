@@ -238,24 +238,29 @@ define('_MI_LEXIKON_BACK_2_ADMIN', 'Back to Administration of ');
 define('_MI_LEXIKON_HELP_OVERVIEW', 'Overview');
 define('_MI_LEXIKON_NAME', 'Lexikon');
 
+//Menu
+define('_MI_LEXIKON_SHOWSUBMISSIONS', 'Submissions');
+define('_MI_LEXIKON_HOME', 'Home');
+define('_MI_LEXIKON_ABOUT', 'About');
+
 //Lang Symbol
 define('_MI_LEXIKON_LANG_SYMBOL_NAC', 'Enable filtering by national symbols');
 define('_MI_LEXIKON_LANG_SYMBOLDSC_NAC', 'Adds national characters to the alphabet search');
 define('_MI_LEXIKON_LANG_SYMBOL_NAC_IN', 'The number of the first character in the symbol table');
-define('_MI_LEXIKON_LANG_SYMBOLDSC_NAC_IN', 'The number of the symbol from which the national alphabet begins in the UTF8 table begins<br>The default language is Russian<br><a href="https://unicode-table.com/en/" target="_blank">You can learn here</a>');
+define('_MI_LEXIKON_LANG_SYMBOLDSC_NAC_IN', 'The number of the symbol from which the national alphabet begins in the UTF8 table begins<br>The default language is Russian<br>You can learn <a href="https://unicode-table.com/en/" target="_blank">here</a> - <a href="http://www.utf8-chartable.de/" target="_blank">here</a>');
 define('_MI_LEXIKON_LANG_SYMBOL_NAC_OUT', 'Characters');
 define('_MI_LEXIKON_LANG_SYMBOLDSC_NAC_OUT', 'Number of characters in the national alphabet<br>The default language is Russian');
 
 define('_MI_LEXIKON_LANG_SYMBOL_NUM', 'Enable filtering by numbers');
 define('_MI_LEXIKON_LANG_SYMBOLDSC_NUM', 'Adds numbers to a search in alphabetical order');
 define('_MI_LEXIKON_LANG_SYMBOL_NUM_IN', 'The number of the first character in the symbol table');
-define('_MI_LEXIKON_LANG_SYMBOLDSC_NUM_IN', 'The character number from which the numbers in the UTF8 table begin<br><a href="https://unicode-table.com/en/" target="_blank">You can learn here</a>');
+define('_MI_LEXIKON_LANG_SYMBOLDSC_NUM_IN', 'The character number from which the numbers in the UTF8 table begin<br>You can learn <a href="https://unicode-table.com/en/" target="_blank">here</a> - <a href="http://www.utf8-chartable.de/" target="_blank">here</a>');
 define('_MI_LEXIKON_LANG_SYMBOL_NUM_OUT', 'Characters');
 define('_MI_LEXIKON_LANG_SYMBOLDSC_NUM_OUT', 'Characters');
 
 define('_MI_LEXIKON_LANG_SYMBOL_DEF', 'Enable filtering in alphabetical order (English by default)');
 define('_MI_LEXIKON_LANG_SYMBOLDSC_DEF', 'Adds a search in alphabetical order');
 define('_MI_LEXIKON_LANG_SYMBOL_DEF_IN', 'The number of the first character in the symbol table');
-define('_MI_LEXIKON_LANG_SYMBOLDSC_DEF_IN', 'The character number from which the alphabet in the UTF8 table begins<br>The default language is English<br><a href="https://unicode-table.com/en/" target="_blank">You can learn here</a>');
+define('_MI_LEXIKON_LANG_SYMBOLDSC_DEF_IN', 'The character number from which the alphabet in the UTF8 table begins<br>The default language is English<br>You can learn <a href="https://unicode-table.com/en/" target="_blank">here</a> - <a href="http://www.utf8-chartable.de/" target="_blank">here</a>');
 define('_MI_LEXIKON_LANG_SYMBOL_DEF_OUT', 'Characters');
 define('_MI_LEXIKON_LANG_SYMBOLDSC_DEF_OUT', 'Number of characters in the alphabet<br>The default language is English');
