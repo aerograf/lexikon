@@ -239,6 +239,9 @@ define('_MI_LEXIKON_HOME', 'Главная');
 define('_MI_LEXIKON_ABOUT', 'О модуле');
 
 //Lang Symbol
+define('_MI_LEXIKON_LANG_SYMBOL', 'Показывать неактивные символы');
+define('_MI_LEXIKON_LANG_SYMBOLDSC', 'Показывать неактивные символы на странице пользователей. Неактивные символы будут скрыты.');
+
 define('_MI_LEXIKON_LANG_SYMBOL_NAC', 'Включить фильтрацию по национальным символам');
 define('_MI_LEXIKON_LANG_SYMBOLDSC_NAC', 'Добавляет национальные символы в поиск по алфавиту');
 define('_MI_LEXIKON_LANG_SYMBOL_NAC_IN', 'Номер первого символа в таблице символов');

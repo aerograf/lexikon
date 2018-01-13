@@ -5,11 +5,11 @@
                 <{if $block.profile}>
                     <a href="<{$xoops_url}>/modules/lexikon/profile.php?uid=<{$author.uid}>"
                        TITLE="<{$author.name}>"><{$author.name}></a>
-                    &nbsp;(&nbsp;<{$author.count}>&nbsp;)
+                    (<{$author.count}>)
                 <{else}>
                     <a href="<{$xoops_url}>/userinfo.php?uid=<{$author.uid}>"
                        TITLE="<{$author.name}>"><{$author.name}></a>
-                    &nbsp;(&nbsp;<{$author.count}>&nbsp;)
+                    (<{$author.count}>)
                 <{/if}>
             </li>
         <{/foreach}>

@@ -2,12 +2,12 @@
 /**
  * Tag info
  *
- * @copyright      XOOPS Project (https://xoops.org)
+ * @copyright      XOOPS Project (http://xoops.org)
  * @license        http://www.fsf.org/copyleft/gpl.html GNU public license
  * @author         Taiwen Jiang (phppp or D.J.) <php_pp@hotmail.com>
  * @package        module::tag
  */
-// defined('XOOPS_ROOT_PATH') || exit('Restricted access.');
+// defined('XOOPS_ROOT_PATH') || exit('XOOPS root path not defined');
 /**
  * Get item fields:
  * title
@@ -31,7 +31,7 @@ function lexikon_tag_iteminfo(&$items)
     }
 
     global $xoopsDB;
-    $myts = \MyTextSanitizer::getInstance();
+    $myts = MyTextSanitizer::getInstance();
 
     $items_id = [];
 
@@ -46,22 +46,22 @@ function lexikon_tag_iteminfo(&$items)
 
     foreach (array_keys($items) as $cat_id) {
         foreach (array_keys($items[$cat_id]) as $item_id) {
-            $sql                      = 'SELECT  l.entryID, l.categoryID, l.term AS ltitle, l.definition, l.uid, l.datesub, l.offline, c.name AS cname FROM '
-                                        . $xoopsDB->prefix('lxentries')
-                                        . ' l, '
-                                        . $xoopsDB->prefix('lxcategories')
-                                        . ' c WHERE l.entryID='
-                                        . $item_id
-                                        . ' AND l.categoryID=c.categoryID AND l.offline=0 ORDER BY l.datesub DESC';
+            $sql = 'SELECT  l.entryID, l.categoryID, l.term AS ltitle, l.definition, l.uid, l.datesub, l.offline, c.name AS cname FROM '
+                   . $xoopsDB->prefix('lxentries')
+                   . ' l, '
+                   . $xoopsDB->prefix('lxcategories')
+                   . ' c WHERE l.entryID='
+                   . $item_id
+                   . ' AND l.categoryID=c.categoryID AND l.offline=0 ORDER BY l.datesub DESC';
             $result                   = $xoopsDB->query($sql);
             $row                      = $xoopsDB->fetchArray($result);
             $items[$cat_id][$item_id] = [
-                'title'   => $row['ltitle'],
-                'uid'     => $row['uid'],
-                'link'    => "entry.php?entryID=$item_id",
-                'time'    => $row['datesub'],
-                'content' => $row['definition']
-            ];
+                                        'title'   => $row['ltitle'],
+                                        'uid'     => $row['uid'],
+                                        'link'    => "entry.php?entryID=$item_id",
+                                        'time'    => $row['datesub'],
+                                        'content' => $row['definition']
+                                        ];
         }
     }
 }

@@ -13,11 +13,10 @@
  * @package   keyhighlighter
  * @author    Setec Astronomy
  * @abstract  Highlight specific keywords.
- * @copyright 2004
  * @example   sample.php A sample code.
  * @link      http://setecastronomy.stufftoread.com
  */
-// defined('XOOPS_ROOT_PATH') || exit('Restricted access.');
+// defined('XOOPS_ROOT_PATH') || exit('XOOPS root path not defined');
 
 class lx_keyhighlighter
 {
@@ -67,7 +66,10 @@ class lx_keyhighlighter
         $this->keywords         = $keywords;
         $this->singlewords      = $singlewords;
         $this->replace_callback = $replace_callback;
-        //ob_start ([$this, 'highlight']);
+        //ob_start ([
+                    $this,
+                    'highlight'
+                    ]);
     }
 
     /**
@@ -109,7 +111,7 @@ class lx_keyhighlighter
     {
         $buffer              = '>' . $buffer . '<';
         $this->preg_keywords = preg_replace('/[^\w ]/si', '', $this->keywords);
-        $buffer              = preg_replace_callback("/(\>(((?" . ">[^><]+)|(?R))*)\<)/is", [&$this, 'replace'], $buffer);
+        $buffer              = preg_replace_callback("/(\>(((?" . ">[^><]+)|(?R))*)\<)/is", array(&$this, 'replace'), $buffer);
         $buffer              = xoops_substr($buffer, 1, -1, $trimmarker = '');
 
         return $buffer;

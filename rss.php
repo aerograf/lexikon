@@ -14,17 +14,17 @@ if (function_exists('mb_http_output')) {
 }
 //error_reporting(E_ALL |E_ERROR | E_WARNING | E_PARSE);
 header('Content-Type:text/xml; charset=utf-8');
-require_once $GLOBALS['xoops']->path('class/template.php');
-$tpl                 = new \XoopsTpl();
+include_once $GLOBALS['xoops']->path('class/template.php');
+$tpl                 = new XoopsTpl();
 $tpl->caching        = 0;
 $tpl->cache_lifetime = 3600;
 
-$db           = \XoopsDatabaseFactory::getDatabaseConnection();
-$myts         = \MyTextSanitizer::getInstance();
+$db           = XoopsDatabaseFactory::getDatabaseConnection();
+$myts         = MyTextSanitizer::getInstance();
 $category_rss = isset($_GET['categoryID']) ? $_GET['categoryID'] : 0;
 //permissions
 $gpermHandler = xoops_getHandler('groupperm');
-$groups       = is_object($xoopsUser) ? $xoopsUser->getGroups() : XOOPS_GROUP_ANONYMOUS;
+$groups        = is_object($xoopsUser) ? $xoopsUser->getGroups() : XOOPS_GROUP_ANONYMOUS;
 /** @var XoopsModuleHandler $moduleHandler */
 $moduleHandler = xoops_getHandler('module');
 $module        = $moduleHandler->getByDirname('lexikon');
@@ -34,10 +34,20 @@ $catids        = implode(',', $allowed_cats);
 $catperms      = " AND categoryID IN ($catids) ";
 
 if ($category_rss <= 0) {
-    $result = $db->query('SELECT * FROM ' . $db->prefix('lxentries') . '  WHERE offline=0 ' . $catperms . "  ORDER BY 'datesub' DESC LIMIT 0,50");
+    $result = $db->query('SELECT * FROM '
+                          . $db->prefix('lxentries')
+                          . '  WHERE offline=0 '
+                          . $catperms
+                          . "  ORDER BY 'datesub' DESC LIMIT 0,50");
 } else {
-    $result = $db->query('SELECT * FROM ' . $db->prefix('lxentries') . " WHERE categoryID='$category_rss'  " . $catperms . '  ORDER BY `datesub` DESC LIMIT 0,50');
-    $info   = $db->fetchArray($db->query('SELECT * FROM ' . $db->prefix('lxcategories') . " WHERE categoryID='$category_rss'"));
+    $result = $db->query('SELECT * FROM '
+                          . $db->prefix('lxentries')
+                          . " WHERE categoryID='$category_rss'  "
+                          . $catperms
+                          . '  ORDER BY `datesub` DESC LIMIT 0,50');
+    $info   = $db->fetchArray($db->query('SELECT * FROM '
+                                          . $db->prefix('lxcategories')
+                                          . " WHERE categoryID='$category_rss'"));
 }
 if (!$tpl->is_cached('db:lexikon_rss.tpl')) {
     xoops_load('XoopsLocal');
@@ -91,13 +101,13 @@ if (!$tpl->is_cached('db:lexikon_rss.tpl')) {
         $tpl->assign('image_height', $height);
     }
     while ($row = $db->fetchArray($result)) {
-        $tpl->append('items', [
+        $tpl->append('items', array(
             'title'       => htmlspecialchars($row['term'], ENT_QUOTES, 'utf-8'),
             'link'        => XOOPS_URL . '/modules/lexikon/entry.php?entryID=' . $row['entryID'],
             'guid'        => XOOPS_URL . '/modules/lexikon/entry.php?entryID=' . $row['entryID'],
             'pubdate'     => formatTimestamp($row['datesub'], 'rss'),
             'description' => htmlspecialchars($myts->displayTarea($row['definition'], 1, 1, 1), ENT_QUOTES)
-        ]);
+        ));
     }
 }
 $tpl->display('db:lexikon_rss.tpl');

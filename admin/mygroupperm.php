@@ -1,6 +1,6 @@
 <?php
 
-defined('XOOPS_ROOT_PATH') || exit('Restricted access.');
+defined('XOOPS_ROOT_PATH') || exit('XOOPS root path not defined');
 
 /**
  * @param       $db
@@ -11,11 +11,11 @@ defined('XOOPS_ROOT_PATH') || exit('Restricted access.');
  */
 function myDeleteByModule(XoopsDatabase $db, $gperm_modid, $gperm_name = null, $gperm_itemid = null)
 {
-    $criteria = new \CriteriaCompo(new \Criteria('gperm_modid', (int)$gperm_modid));
+    $criteria = new CriteriaCompo(new Criteria('gperm_modid', (int)$gperm_modid));
     if (isset($gperm_name)) {
-        $criteria->add(new \Criteria('gperm_name', $gperm_name));
+        $criteria->add(new Criteria('gperm_name', $gperm_name));
         if (isset($gperm_itemid)) {
-            $criteria->add(new \Criteria('gperm_itemid', (int)$gperm_itemid));
+            $criteria->add(new Criteria('gperm_itemid', (int)$gperm_itemid));
         }
     }
     $sql = 'DELETE FROM ' . $db->prefix('group_permission') . ' ' . $criteria->renderWhere();
@@ -26,7 +26,7 @@ function myDeleteByModule(XoopsDatabase $db, $gperm_modid, $gperm_name = null, $
     return true;
 }
 
-// require_once __DIR__ . '/../../../include/cp_header.php'; GIJ
+// include_once __DIR__ . '/../../../include/cp_header.php'; GIJ
 $modid = isset($_POST['modid']) ? (int)$_POST['modid'] : 1;
 // we dont want system module permissions to be changed here ( 1 -> 0 GIJ)
 if ($modid <= 0 || !is_object($xoopsUser) || !$xoopsUser->isAdmin($modid)) {
@@ -48,21 +48,24 @@ if (is_array($_POST['perms']) && !empty($_POST['perms'])) {
             // echo "<pre>" ;
             // var_dump( $_POST['perms'] ) ;
             // exit ;
-            if (false !== myDeleteByModule($gpermHandler->db, $modid, $perm_name, $item_id)) {
+            if (false != myDeleteByModule($gpermHandler->db, $modid, $perm_name, $item_id)) {
                 if (empty($perm_data['groups'])) {
                     continue;
                 }
                 foreach ($perm_data['groups'] as $group_id => $item_ids) {
                     //              foreach ($item_ids as $item_id => $selected) {
                     $selected = isset($item_ids[$item_id]) ? $item_ids[$item_id] : 0;
-                    if (1 == $selected) {
+                    if ($selected == 1) {
                         // make sure that all parent ids are selected as well
-                        if ('' != $perm_data['parents'][$item_id]) {
+                        if ($perm_data['parents'][$item_id] != '') {
                             $parent_ids = explode(':', $perm_data['parents'][$item_id]);
                             foreach ($parent_ids as $pid) {
-                                if (0 != $pid && !in_array($pid, array_keys($item_ids))) {
+                                if ($pid != 0 && !in_array($pid, array_keys($item_ids))) {
                                     // one of the parent items were not selected, so skip this item
-                                    $msg[] = sprintf(_MD_AM_PERMADDNG, '<b>' . $perm_name . '</b>', '<b>' . $perm_data['itemname'][$item_id] . '</b>', '<b>' . $group_list[$group_id] . '</b>') . ' (' . _MD_AM_PERMADDNGP . ')';
+                                    $msg[] = sprintf(_MD_AM_PERMADDNG, '<b>' . $perm_name . '</b>', '<b>' . $perm_data['itemname'][$item_id] . '</b>', '<b>' . $group_list[$group_id] . '</b>')
+                                             . ' ('
+                                             . _MD_AM_PERMADDNGP
+                                             . ')';
                                     continue 2;
                                 }
                             }
@@ -86,3 +89,4 @@ if (is_array($_POST['perms']) && !empty($_POST['perms'])) {
         }
     }
 }
+

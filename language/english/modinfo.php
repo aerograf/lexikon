@@ -244,6 +244,9 @@ define('_MI_LEXIKON_HOME', 'Home');
 define('_MI_LEXIKON_ABOUT', 'About');
 
 //Lang Symbol
+define('_MI_LEXIKON_LANG_SYMBOL', 'Show inactive characters');
+define('_MI_LEXIKON_LANG_SYMBOLDSC', 'Show inactive characters on the users page. Inactive characters will be hidden.');
+
 define('_MI_LEXIKON_LANG_SYMBOL_NAC', 'Enable filtering by national symbols');
 define('_MI_LEXIKON_LANG_SYMBOLDSC_NAC', 'Adds national characters to the alphabet search');
 define('_MI_LEXIKON_LANG_SYMBOL_NAC_IN', 'The number of the first character in the symbol table');

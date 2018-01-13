@@ -2,7 +2,7 @@
 //
 //  ------------------------------------------------------------------------ //
 
-defined('XOOPS_ROOT_PATH') || exit('Restricted access.');
+defined('XOOPS_ROOT_PATH') || exit('XOOPS root path not defined');
 
 /**
  * @param $category
@@ -19,8 +19,8 @@ function lexikon_notify_iteminfo($category, $item_id)
         $configHandler = xoops_getHandler('config');
         $config = $configHandler->getConfigsByCat(0,$module->getVar('mid'));
     } else {
-        $module = $xoopsModule;
-        $config = $xoopsModuleConfig;
+        $module =& $xoopsModule;
+        $config =& $xoopsModuleConfig;
     }*/
     if (strpos(__DIR__, '/') > 0) {
         $pathparts = explode('/', __DIR__);
@@ -29,7 +29,7 @@ function lexikon_notify_iteminfo($category, $item_id)
     }
     $moduleDirName = $pathparts[array_search('modules', $pathparts) + 1];// checken
 
-    if ('global' === $category) {
+    if ($category === 'global') {
         $item['name'] = '';
         $item['url']  = '';
 
@@ -38,7 +38,7 @@ function lexikon_notify_iteminfo($category, $item_id)
     $item_id = (int)$item_id;
 
     global $xoopsDB;
-    if ('category' === $category) {
+    if ($category === 'category') {
         // Assume we have a valid category id
         $sql = 'SELECT name FROM ' . $xoopsDB->prefix('lxcategories') . ' WHERE categoryID = ' . $item_id;
         if (!$result = $xoopsDB->query($sql)) {
@@ -52,7 +52,7 @@ function lexikon_notify_iteminfo($category, $item_id)
         return $item;
     }
 
-    if ('term' === $category) {
+    if ($category === 'term') {
         // Assume we have a valid entry id
         $sql = 'SELECT entryID,term FROM ' . $xoopsDB->prefix('lxentries') . ' WHERE entryID = ' . $item_id;
         if (!$result = $xoopsDB->query($sql)) {

@@ -8,7 +8,7 @@
  * Licence: GNU
  */
 
-require_once __DIR__ . '/../../../include/cp_header.php';
+include_once __DIR__ . '/../../../include/cp_header.php';
 xoops_cp_header();
 require_once __DIR__ . '/admin_header.php';
 global $xoopsModuleConfig, $xoopsUser, $xoopsModule, $xoopsDB;
@@ -20,7 +20,7 @@ $go = isset($_POST['go']) ? $_POST['go'] : 0;
 function showerror($msg)
 {
     global $xoopsDB;
-    if ('' != $xoopsDB->error()) {
+    if ($xoopsDB->error() != '') {
         echo '<br>' . $msg . '  -  ERROR: ' . $xoopsDB->error();
     } else {
         echo '<br>' . $msg . ' O.K.!';
@@ -41,7 +41,7 @@ if ($go) {
         }
 
         // 2) if multicats OFF set categoryID to '1' (prior '0')
-        if (0 == $xoopsModuleConfig['multicats']) {
+        if ($xoopsModuleConfig['multicats'] == 0) {
             $result = $xoopsDB->query('SELECT COUNT(*)
                                            FROM ' . $xoopsDB->prefix('lxentries') . '
                                            WHERE categoryID = 0  ');
@@ -53,7 +53,7 @@ if ($go) {
         }
         // 3) tag module
         if (!lx_FieldExists('item_tag', $xoopsDB->prefix('lxentries'))) {
-            $sql = $xoopsDB->queryF('ALTER TABLE ' . $xoopsDB->prefix('lxentries') . ' ADD item_tag TEXT NULL AFTER comments');
+            $sql = $xoopsDB->queryF('ALTER TABLE ' . $xoopsDB->prefix('lxentries') . " ADD item_tag text NULL AFTER comments");
             showerror('Update table "lxentries" ...');
         }
         //-------------
@@ -69,8 +69,8 @@ if ($go) {
     The script will adapt the database-structure to the new module-functions.<br>
     Excute only once. Dont forget to update the Module-templates. <br><br>
     <form method='post' action='upgrade.php' name='frmAct'>
-    <input type='hidden' name='go' value='1' >
-    <input type='submit' name='sbt' value='Start' class='formButton' >
+    <input type='hidden' name='go' value='1' />
+    <input type='submit' name='sbt' value='Start' class='formButton' />
     </form></td></tr></table>";
     xoops_cp_footer();
 }

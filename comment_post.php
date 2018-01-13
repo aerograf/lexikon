@@ -23,10 +23,10 @@ global $xoopsModuleConfig, $xoopsUser;
 if (!isset($xoopsModuleConfig)) {
     die();
 }
-if (0 == $xoopsModuleConfig['com_rule']) {
+if ($xoopsModuleConfig['com_rule'] == 0) {
     die();
 }    // Comments deactivated
-if (0 == $xoopsModuleConfig['com_anonpost'] && !is_object($xoopsUser)) {
+if ($xoopsModuleConfig['com_anonpost'] == 0 && !is_object($xoopsUser)) {
     die();
 } // Anonymous users can't post
 

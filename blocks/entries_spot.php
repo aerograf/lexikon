@@ -5,7 +5,7 @@
  * Licence: GNU
  */
 
-defined('XOOPS_ROOT_PATH') || exit('Restricted access.');
+defined('XOOPS_ROOT_PATH') || exit('XOOPS root path not defined');
 
 /* This function spotlights a category, with a spotlight definition and links to others */
 /**
@@ -34,27 +34,27 @@ function b_lxspot_show($options)
     $block = [];
 
     // To handle options in the template
-    if (1 == $options[2]) {
+    if ($options[2] == 1) {
         $block['showdateask'] = 1;
     } else {
         $block['showdateask'] = 0;
     }
-    if (1 == $options[3]) {
+    if ($options[3] == 1) {
         $block['showbylineask'] = 1;
     } else {
         $block['showbylineask'] = 0;
     }
-    if (1 == $options[4]) {
+    if ($options[4] == 1) {
         $block['showstatsask'] = 1;
     } else {
         $block['showstatsask'] = 0;
     }
-    if ('ver' === $options[5]) {
+    if ($options[5] === 'ver') {
         $block['verticaltemplate'] = 1;
     } else {
         $block['verticaltemplate'] = 0;
     }
-    if (1 == $options[6]) {
+    if ($options[6] == 1) {
         $block['showpicask'] = 1;
     } else {
         $block['showpicask'] = 0;
@@ -70,7 +70,7 @@ function b_lxspot_show($options)
     list($entryID, $categoryID, $term, $definition, $authorID, $datesub, $counter, $html, $smiley, $xcodes, $breaks, $comments) = $xoopsDB->fetchRow($resultA);
     $eID = (int)$entryID;
     // If there's no result - which means there's no definition yet...
-    if (0 == $eID) {
+    if ($eID == 0) {
         $block['display'] = 0;
     } else {
         $block['display'] = 1;
@@ -95,21 +95,39 @@ function b_lxspot_show($options)
             $block['date']      = formatTimestamp($datesub, 'd M Y');
             //$block['date'] = formatTimestamp( $datesub, $lxConfig['dateformat'] );
             $block['hits'] = (int)$counter;
-            if ((0 != $lxConfig['com_rule']) || ((0 != $lxConfig['com_rule']) && is_object($xoopsUser))) {
-                if (0 != $comments) {
-                    $block['comments'] = "<a href='" . XOOPS_URL . '/modules/' . $lexikon->dirname() . '/entry.php?entryID=' . $block['termID'] . "'>" . _COMMENTS . '&nbsp;:&nbsp; ' . $comments . '</a>';
+            if (($lxConfig['com_rule'] != 0) || (($lxConfig['com_rule'] != 0) && is_object($xoopsUser))) {
+                if ($comments != 0) {
+                    $block['comments'] = "<a href='"
+                                         . XOOPS_URL
+                                         . '/modules/'
+                                         . $lexikon->dirname()
+                                         . '/entry.php?entryID='
+                                         . $block['termID']
+                                         . "'>"
+                                         . _COMMENTS
+                                         . '&nbsp;:&nbsp; '
+                                         . $comments
+                                         . '</a>';
                 } else {
                     $block['comments'] = "<a href='" . XOOPS_URL . '/modules/' . $lexikon->dirname() . '/entry.php?entryID=' . $block['termID'] . "'>" . _COMMENTS . '?</a>';
                 }
             }
 
             // get the other terms
-            $resultC = $xoopsDB->query('SELECT entryID, term, datesub FROM ' . $xoopsDB->prefix('lxentries') . ' WHERE categoryID = ' . $options[0] . ' AND entryID != ' . $block['termID'] . ' AND submit = 0 AND offline = 0 AND block= 1 ORDER BY ' . $options[7] . ' DESC ', $options[1], 0);
+            $resultC = $xoopsDB->query('SELECT entryID, term, datesub FROM '
+                                       . $xoopsDB->prefix('lxentries')
+                                       . ' WHERE categoryID = '
+                                       . $options[0]
+                                       . ' AND entryID != '
+                                       . $block['termID']
+                                       . ' AND submit = 0 AND offline = 0 AND block= 1 ORDER BY '
+                                       . $options[7]
+                                       . ' DESC ', $options[1], 0);
 
             $i = 0;
             while ($myrow = $xoopsDB->fetchArray($resultC)) {
                 if ($i < $options[1]) {
-                    $morelinks         = [];
+                    $morelinks         = array();
                     $morelinks['id']   = $myrow['entryID'];
                     $morelinks['head'] = xoops_substr($myts->htmlSpecialChars($myrow['term']), 0, (int)$options[9]);
 
@@ -136,43 +154,55 @@ function b_lxspot_edit($options)
     $myts      = MyTextSanitizer:: getInstance();
     $resultcat = $xoopsDB->query('SELECT categoryID, name FROM ' . $xoopsDB->prefix('lxcategories') . ' ORDER BY categoryID');
     $form      = "<table border='0'>";
-    $form      .= '<tr><td>' . _MB_LEXIKON_SELECTCAT . '</td><td><select name="options[]">';
+    $form      .= '<tr><td>' . _MB_LEXIKON_SELECTCAT . "</td><td><select name=\"options[]\">";
     while (list($categoryID, $name) = $xoopsDB->fetchRow($resultcat)) {
         $form .= '<option value=' . $categoryID . ' ' . (($options[0] == $categoryID) ? ' selected' : '') . ">$categoryID : $name</option>\n";
     }
     $form .= "</select><br></td></tr>\n";
 
-    $form .= '<tr><td>' . _MB_LEXIKON_TERMSTOSHOW . "</td><td><input type='text' name='options[]' value='" . $options[1] . "' >&nbsp; " . _MB_LEXIKON_TERMS . '.<br></td></tr>';
+    $form .= '<tr><td>' . _MB_LEXIKON_TERMSTOSHOW . "</td><td><input type='text' name='options[]' value='" . $options[1] . "' />&nbsp; " . _MB_LEXIKON_TERMS . '.<br></td></tr>';
 
     $form .= '<tr><td>' . _MB_LEXIKON_SHOWDATE . '</td><td>';
-    $form .= "<input type='radio' name='options[2]' value='1'" . ((1 == $options[2]) ? ' checked' : '') . ' >' . _YES . '&nbsp;';
-    $form .= "<input type='radio' name='options[2]' value='0'" . ((0 == $options[2]) ? ' checked' : '') . ' >' . _NO . '<br></td></tr>';
+    $form .= "<input type='radio' name='options[2]' value='1'" . (($options[2] == 1) ? ' checked' : '') . ' />' . _YES . '&nbsp;';
+    $form .= "<input type='radio' name='options[2]' value='0'" . (($options[2] == 0) ? ' checked' : '') . ' />' . _NO . '<br></td></tr>';
 
     $form .= '<tr><td>' . _MB_LEXIKON_SHOWBYLINE . '</td><td>';
-    $form .= "<input type='radio' name='options[3]' value='1'" . ((1 == $options[3]) ? ' checked' : '') . ' >' . _YES . '&nbsp;';
-    $form .= "<input type='radio' name='options[3]' value='0'" . ((0 == $options[3]) ? ' checked' : '') . ' >' . _NO . '<br></td></tr>';
+    $form .= "<input type='radio' name='options[3]' value='1'" . (($options[3] == 1) ? ' checked' : '') . ' />' . _YES . '&nbsp;';
+    $form .= "<input type='radio' name='options[3]' value='0'" . (($options[3] == 0) ? ' checked' : '') . ' />' . _NO . '<br></td></tr>';
 
     $form .= '<tr><td>' . _MB_LEXIKON_SHOWSTATS . '</td><td>';
-    $form .= "<input type='radio' name='options[4]' value='1'" . ((1 == $options[4]) ? ' checked' : '') . ' >' . _YES . '&nbsp;';
-    $form .= "<input type='radio' name='options[4]' value='0'" . ((0 == $options[4]) ? ' checked' : '') . ' >' . _NO . '<br></td></tr>';
+    $form .= "<input type='radio' name='options[4]' value='1'" . (($options[4] == 1) ? ' checked' : '') . ' />' . _YES . '&nbsp;';
+    $form .= "<input type='radio' name='options[4]' value='0'" . (($options[4] == 0) ? ' checked' : '') . ' />' . _NO . '<br></td></tr>';
 
     $form .= '<tr><td>' . _MB_LEXIKON_TEMPLATE . "</td><td><select name='options[]'>";
-    $form .= "<option value='ver' " . (('ver' === $options[5]) ? ' selected' : '') . '>' . _MB_LEXIKON_VERTICAL . "</option>\n";
-    $form .= "<option value='hor' " . (('hor' === $options[5]) ? ' selected' : '') . '>' . _MB_LEXIKON_HORIZONTAL . "</option>\n";
+    $form .= "<option value='ver' " . (($options[5] === 'ver') ? ' selected' : '') . '>' . _MB_LEXIKON_VERTICAL . "</option>\n";
+    $form .= "<option value='hor' " . (($options[5] === 'hor') ? ' selected' : '') . '>' . _MB_LEXIKON_HORIZONTAL . "</option>\n";
     $form .= '</select><br></td></tr>';
 
     $form .= '<tr><td>' . _MB_LEXIKON_SHOWPIC . '</td><td>';
-    $form .= "<input type='radio' name='options[6]' value='1'" . ((1 == $options[6]) ? ' checked' : '') . ' >' . _YES . '&nbsp;';
-    $form .= "<input type='radio' name='options[6]' value='0'" . ((0 == $options[6]) ? ' checked' : '') . ' >' . _NO . '<br></td></tr>';
+    $form .= "<input type='radio' name='options[6]' value='1'" . (($options[6] == 1) ? ' checked' : '') . ' />' . _YES . '&nbsp;';
+    $form .= "<input type='radio' name='options[6]' value='0'" . (($options[6] == 0) ? ' checked' : '') . ' />' . _NO . '<br></td></tr>';
 
     $form .= '<tr><td>' . _MB_LEXIKON_ORDER . "</td><td>&nbsp;<select name='options[7]'>";
-    $form .= "<option value='datesub' " . (('datesub' === $options[7]) ? ' selected' : '') . '>' . _MB_LEXIKON_DATE . "</option>\n";
-    $form .= "<option value='counter' " . (('counter' === $options[7]) ? ' selected' : '') . '>' . _MB_LEXIKON_HITS . "</option>\n";
-    $form .= "<option value='term' " . (('term' === $options[7]) ? ' selected' : '') . '>' . _MB_LEXIKON_NAME . "</option>\n";
+    $form .= "<option value='datesub' " . (($options[7] === 'datesub') ? ' selected' : '') . '>' . _MB_LEXIKON_DATE . "</option>\n";
+    $form .= "<option value='counter' " . (($options[7] === 'counter') ? ' selected' : '') . '>' . _MB_LEXIKON_HITS . "</option>\n";
+    $form .= "<option value='term' " . (($options[7] === 'term') ? ' selected' : '') . '>' . _MB_LEXIKON_NAME . "</option>\n";
     $form .= "</select>\n";
 
-    $form .= "&nbsp;<tr><td style='vertical-align: top;'>" . _MB_LEXIKON_CHARS . "</td><td>&nbsp;<input type='text' name='options[8]' value='" . $myts->htmlSpecialChars($options[8]) . "' >&nbsp;" . _MB_LEXIKON_LENGTH . '';
-    $form .= "&nbsp;<tr><td style='vertical-align: top;'>" . _MB_LEXIKON_CHARSTERM . "</td><td>&nbsp;<input type='text' name='options[9]' value='" . $myts->htmlSpecialChars($options[9]) . "' >&nbsp;" . _MB_LEXIKON_LENGTH . '';
+    $form .= "&nbsp;<tr><td style='vertical-align: top;'>"
+             . _MB_LEXIKON_CHARS
+             . "</td><td>&nbsp;<input type='text' name='options[8]' value='"
+             . $myts->htmlSpecialChars($options[8])
+             . "' />&nbsp;"
+             . _MB_LEXIKON_LENGTH
+             . '';
+    $form .= "&nbsp;<tr><td style='vertical-align: top;'>"
+             . _MB_LEXIKON_CHARSTERM
+             . "</td><td>&nbsp;<input type='text' name='options[9]' value='"
+             . $myts->htmlSpecialChars($options[9])
+             . "' />&nbsp;"
+             . _MB_LEXIKON_LENGTH
+             . '';
 
     $form .= '</td></tr>';
     $form .= '</table>';

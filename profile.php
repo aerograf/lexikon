@@ -7,10 +7,10 @@
 
 include __DIR__ . '/header.php';
 $GLOBALS['xoopsOption']['template_main'] = 'lx_profile.tpl';
-require_once XOOPS_ROOT_PATH . '/header.php';
+include_once XOOPS_ROOT_PATH . '/header.php';
 global $xoopsModule, $xoopsUser;
-require_once XOOPS_ROOT_PATH . '/modules/' . $xoopsModule->getVar('dirname') . '/class/Utility.php';
-$myts = \MyTextSanitizer::getInstance();
+include_once XOOPS_ROOT_PATH . '/modules/' . $xoopsModule->getVar('dirname') . '/class/Utility.php';
+$myts = MyTextSanitizer::getInstance();
 
 if (empty($xoopsUser) && !$xoopsModuleConfig['authorprofile']) {
     redirect_header(XOOPS_URL . '/user.php', 3, _MD_LEXIKON_MUSTREGFIRST);
@@ -21,7 +21,7 @@ $uid = isset($_GET['uid']) ? (int)$_GET['uid'] : 0;
 if (empty($uid)) {
     redirect_header('index.php', 2, _ERRORS);
 }
-$data = $utility::getUserData($uid);
+$data = LexikonUtility::getUserData($uid);
 if (!$data) {
     redirect_header('index.php', 2, _MD_LEXIKON_UNKNOWNERROR);
 }
@@ -37,7 +37,7 @@ $catids        = implode(',', $allowed_cats);
 $catperms      = " AND categoryID IN ($catids) ";
 
 // basic functions_navi and get user data
-$thisuser = new \XoopsUser($uid);
+$thisuser = new XoopsUser($uid);
 $authname = $thisuser->getVar('uname');
 
 // get usertotals
@@ -56,7 +56,7 @@ if ($authortermstotal >= $xoopsModuleConfig['indexperpage']) {
 } else {
     $xoopsTpl->assign('navi', false);
 }
-if (0 == $authortermstotal) {
+if ($authortermstotal == 0) {
     $xoopsTpl->assign('nothing', sprintf(_MD_LEXIKON_AUTHORPROFILENOTERM, $authname));
 } else {
     $xoopsTpl->assign('nothing', false);
@@ -74,7 +74,7 @@ if (!$totalwaiting) {
 }
 
 // Get all terms of this author
-$utility::getAuthorProfile($uid);
+LexikonUtility::getAuthorProfile($uid);
 
 // various strings
 $xoopsTpl->assign('lang_modulename', $xoopsModule->name());
@@ -86,7 +86,7 @@ $xoopsTpl->assign('user_avatarurl', XOOPS_URL . '/uploads/' . $thisuser->getVar(
 $xoopsTpl->assign('lang_authorprofile', _MD_LEXIKON_AUTHORPROFILE);
 $xoopsTpl->assign('author_name_with_link', sprintf("<a href='%s'>%s</a>", XOOPS_URL . '/userinfo.php?uid=' . $uid, $authname));
 
-$xoopsTpl->assign('xoops_module_header', '<link rel="stylesheet" type="text/css" href="assets/css/style.css" >');
+$xoopsTpl->assign('xoops_module_header', '<link rel="stylesheet" type="text/css" href="assets/css/style.css" />');
 $xoopsTpl->assign('xoops_pagetitle', _MD_LEXIKON_AUTHORPROFILE . ' - ' . $authname . ' - ' . $myts->htmlSpecialChars($xoopsModule->name()));
 
 // Meta data
@@ -97,4 +97,4 @@ if (isset($xoTheme) && is_object($xoTheme)) {
     $xoopsTpl->assign('xoops_meta_description', $meta_description);
 }
 
-require_once XOOPS_ROOT_PATH . '/footer.php';
+include_once XOOPS_ROOT_PATH . '/footer.php';
