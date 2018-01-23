@@ -433,13 +433,13 @@ function lx_getinit($init)
     echo "<option value='#'>&nbsp;#&nbsp;</option>";
     $symbol_num    = $GLOBALS['xoopsModuleConfig']['on_off_lang_symbol_num'];
     $symbol_num_in = $GLOBALS['xoopsModuleConfig']['on_off_lang_symbol_num_in'];
-    $symbol_num_out= $GLOBALS['xoopsModuleConfig']['on_off_lang_symbol_num_out'];
+    $symbol_num_out= $GLOBALS['xoopsModuleConfig']['on_off_lang_symbol_n_out'];
     $symbol_def    = $GLOBALS['xoopsModuleConfig']['on_off_lang_symbol_def'];
     $symbol_def_in = $GLOBALS['xoopsModuleConfig']['on_off_lang_symbol_def_in'];
-    $symbol_def_out= $GLOBALS['xoopsModuleConfig']['on_off_lang_symbol_def_out'];
+    $symbol_def_out= $GLOBALS['xoopsModuleConfig']['on_off_lang_symbol_d_out'];
     $symbol_nac    = $GLOBALS['xoopsModuleConfig']['on_off_lang_symbol_nac'];
     $symbol_nac_in = $GLOBALS['xoopsModuleConfig']['on_off_lang_symbol_nac_in'];
-    $symbol_nac_out= $GLOBALS['xoopsModuleConfig']['on_off_lang_symbol_nac_out'];
+    $symbol_nac_out= $GLOBALS['xoopsModuleConfig']['on_off_lang_symbol_l_out'];
     if (1 == $symbol_num) {
     for ($a = $symbol_num_in; $a < ($symbol_num_in + $symbol_num_out); ++$a) {
         if (uchr($a) == $init) {

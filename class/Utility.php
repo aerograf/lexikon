@@ -362,13 +362,13 @@ public static function getAlphaArray()
     $symbol        = $GLOBALS['xoopsModuleConfig']['on_off_lang_symbol'];
     $symbol_num    = $GLOBALS['xoopsModuleConfig']['on_off_lang_symbol_num'];
     $symbol_num_in = $GLOBALS['xoopsModuleConfig']['on_off_lang_symbol_num_in'];
-    $symbol_num_out= $GLOBALS['xoopsModuleConfig']['on_off_lang_symbol_num_out'];
+    $symbol_num_out= $GLOBALS['xoopsModuleConfig']['on_off_lang_symbol_n_out'];
     $symbol_def    = $GLOBALS['xoopsModuleConfig']['on_off_lang_symbol_def'];
     $symbol_def_in = $GLOBALS['xoopsModuleConfig']['on_off_lang_symbol_def_in'];
-    $symbol_def_out= $GLOBALS['xoopsModuleConfig']['on_off_lang_symbol_def_out'];
+    $symbol_def_out= $GLOBALS['xoopsModuleConfig']['on_off_lang_symbol_d_out'];
     $symbol_nac    = $GLOBALS['xoopsModuleConfig']['on_off_lang_symbol_nac'];
     $symbol_nac_in = $GLOBALS['xoopsModuleConfig']['on_off_lang_symbol_nac_in'];
-    $symbol_nac_out= $GLOBALS['xoopsModuleConfig']['on_off_lang_symbol_nac_out'];
+    $symbol_nac_out= $GLOBALS['xoopsModuleConfig']['on_off_lang_symbol_l_out'];
     function unichr($a) {
     return mb_convert_encoding(pack("N",$a), mb_internal_encoding(), 'UCS-4BE');
     }

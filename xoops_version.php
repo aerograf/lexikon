@@ -684,7 +684,7 @@ $modversion['config'][] = [
     'default'      => 48
 ];
 $modversion['config'][] = [
-    'name'         => 'on_off_lang_symbol_num_out',
+    'name'         => 'on_off_lang_symbol_n_out',
     'title'        => "_MI_LEXIKON_LANG_SYMBOL_NUM_OUT",
     'description'  => "_MI_LEXIKON_LANG_SYMBOLDSC_NUM_OUT",
     'formtype'     => 'textbox',
@@ -709,7 +709,7 @@ $modversion['config'][] = [
     'default'      => 65
 ];
 $modversion['config'][] = [
-    'name'         => 'on_off_lang_symbol_def_out',
+    'name'         => 'on_off_lang_symbol_d_out',
     'title'        => "_MI_LEXIKON_LANG_SYMBOL_DEF_OUT",
     'description'  => "_MI_LEXIKON_LANG_SYMBOLDSC_DEF_OUT",
     'formtype'     => 'textbox',
@@ -734,7 +734,7 @@ $modversion['config'][] = [
     'default'      => 1040
 ];
 $modversion['config'][] = [
-    'name'         => 'on_off_lang_symbol_nac_out',
+    'name'         => 'on_off_lang_symbol_l_out',
     'title'        => "_MI_LEXIKON_LANG_SYMBOL_NAC_OUT",
     'description'  => "_MI_LEXIKON_LANG_SYMBOLDSC_NAC_OUT",
     'formtype'     => 'textbox',
