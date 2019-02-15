@@ -1,3 +1,14 @@
+<h5>1.53 Beta 1     [NOT RELEASED]</h5>  Dev: Xoops 2.5.9, PHP 7.2.0
+<hr>
+- replaced $xoopsGTicket to $GLOBALS['xoopsSecurity'] (mamba)
+- added namespaces (mamba)
+- added Request (mamba)
+- added LetterChoice highlighting available items (mamba)
+
+WORK IN PROGRESS
+
+
+
 1.52 Beta 2       NOT RELEASED
 =================================
 - started conversion to XMF (mamba)
@@ -7,7 +18,6 @@
 - adjusted DB defaults for 'item_tag' (mamba)
 - changed extensions to .tpl (mamba)
 - redirect changes it case of error (aerograf/bleekk)
-
 
 1.52 Beta 1       NOT RELEASED
 =================================

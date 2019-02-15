@@ -1,17 +1,33 @@
 <div id="help-template" class="outer">
+<<<<<<< HEAD
     <{include file=$smarty.const._MI_LEXIKON_HELP_HEADER}>
 
     <h4 class="odd">DESCRIPTION</h4>
+=======
+    <h1 class="head">Help:
+        <a class="ui-corner-all tooltip" href="<{$xoops_url}>/modules/lexikon/admin/index.php"
+           title="Back to the administration of Lexikon"> Lexikon
+            <img src="<{xoAdminIcons home.png}>"
+                 alt="Back to the Administration of Lexikon">
+        </a></h1>
+
+    <h4 class="odd">Description</h4>
+>>>>>>> f647f3534809e24590f87b815c527a51008c378b
 
     <p class="even">Lexikon is designed as a user-friendly glossary application for XOOPS. <br> <br>
     </p>
 
+<<<<<<< HEAD
     <h4 class="odd">INSTALL/UNINSTALL</h4>
+=======
+    <h4 class="odd">Install/uninstall</h4>
+>>>>>>> f647f3534809e24590f87b815c527a51008c378b
 
     <p class="even">No special measures necessary, follow the standard installation process –
         extract the module folder into the ../modules directory. Then install the
         module through Admin -> System Module -> Modules.<br> <br>
         Detailed instructions on installing modules are available in the
+<<<<<<< HEAD
         <a href="https://www.gitbook.com/book/xoops/xoops-operations-guide/" target="_blank">Chapter 2.12 of our XOOPS
             Operations Manual</a></p>
 
@@ -52,5 +68,19 @@
         Go check it out, and <strong>GET INVOLVED</strong>
 
     </p>
+=======
+        <a href="http://goo.gl/adT2i">XOOPS Operations Manual</a></p>
+
+
+    <h4 class="odd">Operating instructions</h4>
+
+    This module and its operations are very simple.<br> <br>
+    Detailed instructions on configuring the access rights for user groups are available in the
+    <a href="http://goo.gl/adT2i">XOOPS Operations Manual</a><br> <br>
+
+    <h4 class="odd">Tutorial</h4>
+
+    <p class="even">There is no tutorial available at the moment.</p>
+>>>>>>> f647f3534809e24590f87b815c527a51008c378b
 
 </div>

@@ -1,4 +1,4 @@
-<?PHP
+<?php
 /**
  * Module: Lexikon -  glossary module
  * Author: hsalazar
@@ -6,24 +6,26 @@
  */
 #$xoopsOption['pagetype'] = "search";
 
+use Xmf\Request;
+
 include __DIR__ . '/header.php';
 $GLOBALS['xoopsOption']['template_main'] = 'lx_search.tpl';
 include XOOPS_ROOT_PATH . '/header.php';
 
 global $xoTheme, $xoopsDB, $xoopsModule, $xoopsModuleConfig, $searchtype;
-$myts = MyTextSanitizer::getInstance();
+$myts = \MyTextSanitizer::getInstance();
 // -- options
-include_once XOOPS_ROOT_PATH . '/modules/lexikon/include/common.inc.php';
-$highlight = false;
-$highlight = ($xoopsModuleConfig['config_highlighter'] = 1) ? 1 : 0;
+require_once XOOPS_ROOT_PATH . '/modules/lexikon/include/common.inc.php';
+$highlight      = false;
+$highlight      = ($xoopsModuleConfig['config_highlighter'] = 1) ? 1 : 0;
 $hightlight_key = '';
 
-include_once XOOPS_ROOT_PATH . '/class/pagenav.php';
+require_once XOOPS_ROOT_PATH . '/class/pagenav.php';
 
 // Check if search is enabled site-wide
 $configHandler     = xoops_getHandler('config');
 $xoopsConfigSearch = $configHandler->getConfigsByCat(XOOPS_CONF_SEARCH);
-if ($xoopsConfigSearch['enable_search'] != 1) {
+if (1 != $xoopsConfigSearch['enable_search']) {
     header('location: ' . XOOPS_URL . '/modules/' . $xoopsModule->dirname() . '/index.php');
     exit();
 }
@@ -35,19 +37,19 @@ $module_id    = $xoopsModule->getVar('mid');
 $allowed_cats = $gpermHandler->getItemIds('lexikon_view', $groups, $module_id);
 $catids       = implode(',', $allowed_cats);
 
-extract($_GET);
-extract($_POST, EXTR_OVERWRITE);
+//extract($_GET);
+//extract($_POST, EXTR_OVERWRITE);
 
-$action     = isset($action) ? trim($action) : 'search';
-$query      = isset($term) ? trim($term) : '';
-$start      = isset($start) ? (int)$start : 0;
-$categoryID = isset($categoryID) ? (int)$categoryID : 0;
-$type       = isset($type) ? (int)$type : 3;
-$queries    = array();
+$action     = Request::getCmd('action', 'search', 'GET'); //isset($action) ? trim($action) : 'search';
+$query      = Request::getString('term', '', 'GET'); //isset($term) ? trim($term) : '';
+$start      = Request::getInt('start', 0, 'GET'); //isset($start) ? (int)$start : 0;
+$categoryID = Request::getInt('categoryID', 0, 'GET'); //isset($categoryID) ? (int)$categoryID : 0;
+$type       = Request::getInt('type', 3, 'GET'); //isset($type) ? (int)$type : 3;
+$queries    = [];
 
-if ($xoopsModuleConfig['multicats'] == 1) {
+if (1 == $xoopsModuleConfig['multicats']) {
     $xoopsTpl->assign('multicats', 1);
-    $totalcats = LexikonUtility::countCats();
+    $totalcats = $utility::countCats();
     $xoopsTpl->assign('totalcats', $totalcats);
 } else {
     $xoopsTpl->assign('multicats', 0);
@@ -55,17 +57,17 @@ if ($xoopsModuleConfig['multicats'] == 1) {
 
 // Configure search parameters according to selector
 $query = stripslashes($query);
-if ($type == '1') {
+if ('1' == $type) {
     $searchtype = "( w.term LIKE '%$query%' )";
 }
-if ($type == '2') {
+if ('2' == $type) {
     $searchtype = "( definition LIKE '%$query%' )";
 }
-if ($type == '3') {
+if ('3' == $type) {
     $searchtype = "(( term LIKE '%$query%' OR definition LIKE '%$query%' OR ref LIKE '%$query%' ))";
 }
 
-if ($xoopsModuleConfig['multicats'] == 1) {
+if (1 == $xoopsModuleConfig['multicats']) {
     // If the search is in a particular category
     if ($categoryID > 0) {
         $andcatid = "AND categoryID = '$categoryID' ";
@@ -77,7 +79,7 @@ if ($xoopsModuleConfig['multicats'] == 1) {
 }
 
 // Counter
-$publishedwords = LexikonUtility::countWords();
+$publishedwords = $utility::countWords();
 $xoopsTpl->assign('publishedwords', $publishedwords);
 
 // If there's no term here (calling directly search page)
@@ -85,26 +87,20 @@ if (!$query) {
     // Display message saying there's no term and explaining how to search
     $xoopsTpl->assign('intro', _MD_LEXIKON_NOSEARCHTERM);
     // Display search form
-    $searchform = LexikonUtility::showSearchForm();
+    $searchform = $utility::showSearchForm();
     $xoopsTpl->assign('searchform', $searchform);
 } else {
     // IF results, count number
     $catrestrict = " categoryID IN ($catids) ";
-    $searchquery = $xoopsDB->query('SELECT COUNT(*) as nrows FROM '
-                                   . $xoopsDB->prefix('lxentries')
-                                   . " w WHERE offline='0' AND "
-                                   . $catrestrict
-                                   . ' '
-                                   . $andcatid
-                                   . " AND $searchtype   ORDER BY term DESC");
+    $searchquery = $xoopsDB->query('SELECT COUNT(*) as nrows FROM ' . $xoopsDB->prefix('lxentries') . " w WHERE offline='0' AND " . $catrestrict . ' ' . $andcatid . " AND $searchtype   ORDER BY term DESC");
     list($results) = $xoopsDB->fetchRow($searchquery);
 
-    if ($results == 0) {
+    if (0 == $results) {
         // There's been no correspondences with the searched terms
         $xoopsTpl->assign('intro', _MD_LEXIKON_NORESULTS);
 
         // Display search form
-        $searchform = LexikonUtility::showSearchForm();
+        $searchform = $utility::showSearchForm();
         $xoopsTpl->assign('searchform', $searchform);
         // $results > 0 -> there were search results
     } else {
@@ -123,7 +119,7 @@ if (!$query) {
         }
 
         // How many results will we show in this page?
-        if ($xoopsModuleConfig['multicats'] == 1) {
+        if (1 == $xoopsModuleConfig['multicats']) {
             // If the search is in a particular category
             if ($categoryID > 0) {
                 $andcatid2 = "AND w.categoryID = '$categoryID' ";
@@ -156,15 +152,15 @@ if (!$query) {
             $eachresult['categoryID'] = $categoryID;
             $eachresult['term']       = ucfirst($myts->htmlSpecialChars($term));
             $eachresult['date']       = formatTimestamp($datesub, $xoopsModuleConfig['dateformat']);
-            $eachresult['ref']        = LexikonUtility::getHTMLHighlight($query, $myts->htmlSpecialChars($ref), '<b style="background-color: #FFFF80; ">', '</b>');
+            $eachresult['ref']        = $utility::getHTMLHighlight($query, $myts->htmlSpecialChars($ref), '<b style="background-color: #FFFF80; ">', '</b>');
             $eachresult['catname']    = $myts->htmlSpecialChars($catname);
             $tempdef                  = $myts->displayTarea($definition, 1, 1, 1, 1, 1);
-            $eachresult['definition'] = LexikonUtility::getHTMLHighlight($query, $tempdef, '<b style="background-color: #FFFF80; ">', '</b>');
+            $eachresult['definition'] = $utility::getHTMLHighlight($query, $tempdef, '<b style="background-color: #FFFF80; ">', '</b>');
             if ($highlight) {
                 $eachresult['keywords'] = $hightlight_key;
             }
             // Functional links
-            $microlinks               = LexikonUtility::getServiceLinks($eachresult);
+            $microlinks               = $utility::getServiceLinks($eachresult);
             $eachresult['microlinks'] = $microlinks;
             $resultset['match'][]     = $eachresult;
         }
@@ -173,13 +169,13 @@ if (!$query) {
         $xoopsTpl->assign('intro', sprintf(_MD_LEXIKON_THEREWERE, $results, $query));
 
         $linkstring          = 'term=' . $query . '&start';
-        $pagenav             = new XoopsPageNav($results, $xoopsModuleConfig['indexperpage'], $start, $linkstring);
+        $pagenav             = new \XoopsPageNav($results, $xoopsModuleConfig['indexperpage'], $start, $linkstring);
         $resultset['navbar'] = '<div style="text-align:right;">' . $pagenav->renderNav(6) . '</div>';
 
         $xoopsTpl->assign('resultset', $resultset);
 
         // Display search form
-        $searchform = LexikonUtility::showSearchForm();
+        $searchform = $utility::showSearchForm();
         $xoopsTpl->assign('searchform', $searchform);
     }
 }
@@ -187,7 +183,7 @@ if (!$query) {
 $xoopsTpl->assign('lang_modulename', $xoopsModule->name());
 $xoopsTpl->assign('lang_moduledirname', $xoopsModule->getVar('dirname'));
 
-$xoopsTpl->assign('xoops_module_header', '<link rel="stylesheet" type="text/css" href="assets/css/style.css" />');
+$xoopsTpl->assign('xoops_module_header', '<link rel="stylesheet" type="text/css" href="assets/css/style.css">');
 $xoopsTpl->assign('xoops_pagetitle', _MD_LEXIKON_SEARCHENTRY . ' - ' . $myts->htmlSpecialChars($xoopsModule->name()));
 
 // Meta data

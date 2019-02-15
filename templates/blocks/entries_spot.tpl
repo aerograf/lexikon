@@ -3,8 +3,13 @@
         <{if $block.showpicask == 1}>
             <{if $block.catimage}>
                 <div style="float: left; width: 80px; margin-right: 10px; border: 1px solid black; "><img
+<<<<<<< HEAD
                             src="<{$xoops_url}>/uploads/lexikon/categories/images/<{$block.catimage}>" width="80"
                             ALT="<{$block.name}>"/></div>
+=======
+                            src="<{$xoops_url}>/uploads/lexikon/categories/images/<{$block.catimage}>" style="width:80px;"
+                            alt="<{$block.name}>"></div>
+>>>>>>> f647f3534809e24590f87b815c527a51008c378b
             <{/if}>
         <{/if}>
         <h3 style="margin: 6px 0;"><{*$block.userlinks*}><a
@@ -27,7 +32,7 @@
             <br><br></div>
         <div style="font-size: 12px; font-weight: bold; padding: 2px 6px; margin: 6px 0 0 0; border-bottom: solid 1px #ddd;float: left; width: 49%;">
             <img src="<{$xoops_url}>/assets/images/pointer.gif"
-                 alt=""/> <a
+                 alt=""> <a
                     href="<{$xoops_url}>/modules/lexikon/category.php?categoryID=<{$block.catID}>"
                     TITLE="<{$block.name}>: <{$block.cattitle}>"><{$smarty.const._MB_LEXIKON_MOREHERE}></a></div>
         <div style="clear:both; padding-left: 5px;">
@@ -45,7 +50,7 @@
                 <{if $block.catimage}>
                     <div style="float: left; width: 80px; margin: 10px 10px 0 2px; border: 1px solid black; "><img
                                 src="<{$xoops_url}>/uploads/lexikon/categories/images/<{$block.catimage}>"
-                                width="80" ALT="<{$block.name}>"/></div>
+                                width="80" ALT="<{$block.name}>"></div>
                 <{/if}>
             <{/if}>
             <h3 style="margin: 6px 0;"><a
@@ -64,7 +69,11 @@
         </div>
         <div style="clear:right; float:left; padding-left: 5px;width: 48%;">
             <div style="font-size: 12px; font-weight: bold; padding: 1px 1px; margin: 0 0 0 0; border-bottom: solid 1px #ddd;">
+<<<<<<< HEAD
                 <img src="<{$xoops_url}>/assets/images/pointer.gif" alt=""/> <a
+=======
+                <img src="<{$xoops_url}>/assets/images/pointer.gif" alt="">&nbsp;<a
+>>>>>>> f647f3534809e24590f87b815c527a51008c378b
                         href="<{$xoops_url}>/modules/lexikon/category.php?categoryID=<{$block.catID}>"
                         TITLE="<{$block.name}>"><{$smarty.const._MB_LEXIKON_MOREHERE}></a></div>
             <ul style="list-style: disc outside;">

@@ -17,6 +17,12 @@ If this is an error or you wish not to receive further such notifications, pleas
 Please do not reply to this message.
 
 -----------
+<<<<<<< HEAD
 {X_SITENAME} ({X_SITEURL}) 
 The webmaster
 {X_ADMINMAIL}
+=======
+{X_SITENAME} ({X_SITEURL})
+The webmaster
+{X_ADMINMAIL}
+>>>>>>> f647f3534809e24590f87b815c527a51008c378b

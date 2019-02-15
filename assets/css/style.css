@@ -2,7 +2,20 @@
     width: 100%;
     padding: 0;
     margin: 0;
+<<<<<<< HEAD
     border-bottom: 1px solid #2F5376;
+=======
+    /* height: 35px;
+     border-bottom: 1px solid #2F5376; */
+    clear: both;
+}
+
+fieldset {
+    border: 1px solid #778;
+    margin: 1em 0;
+    text-align: left;
+    background-color: transparent;
+>>>>>>> f647f3534809e24590f87b815c527a51008c378b
 }
 
 h1, h2, h3, h4, h5 {
@@ -22,6 +35,14 @@ h4 a:hover img {
 .leftheader {
     font-size: 10px;
     line-height: 18px;
+<<<<<<< HEAD
+=======
+    font-weight: bold;
+    margin: 5px;
+    display: inline-block;
+    float: left;
+    padding: 10px;
+>>>>>>> f647f3534809e24590f87b815c527a51008c378b
 }
 
 .rightheader {
@@ -32,6 +53,13 @@ h4 a:hover img {
     letter-spacing: -1.5px;
     margin: 0;
     line-height: 18px;
+<<<<<<< HEAD
+=======
+    vertical-align: top;
+    display: inline-block;
+    float: right;
+    padding: 10px;
+>>>>>>> f647f3534809e24590f87b815c527a51008c378b
 }
 
 .empty {
@@ -41,16 +69,39 @@ h4 a:hover img {
     color: #900;
     font-size: 14px;
     text-align: center;
+<<<<<<< HEAD
+=======
+    clear: both;
+}
+
+.rss_bottom {
+    padding: 24px;
+    text-align: center;
+    clear: both;
+>>>>>>> f647f3534809e24590f87b815c527a51008c378b
 }
 
 .toprow {
     margin-top: 12px;
+<<<<<<< HEAD
+=======
+    vertical-align: middle;
+    clear: both;
+>>>>>>> f647f3534809e24590f87b815c527a51008c378b
 }
 
 #search {
     float: left;
+<<<<<<< HEAD
     width: 60%;
     margin-right: 10px;
+=======
+    width: 40%;
+    margin: 10px;
+    vertical-align: middle;
+    /* border: 1px dotted #e2a35c; */
+    display: inline-block;
+>>>>>>> f647f3534809e24590f87b815c527a51008c378b
 }
 
 .searchBox {
@@ -80,12 +131,27 @@ legend {
 .inventory {
     text-align: center;
     line-height: 150%;
+<<<<<<< HEAD
     padding: 12px 18px;
+=======
+    margin: 10px;
+    width: 40%;
+    vertical-align: middle;
+    /* border: 1px dotted #e2a35c;  */
+    display: inline-block;
+    float: right;
+>>>>>>> f647f3534809e24590f87b815c527a51008c378b
 }
 
 .clearer {
     clear: both;
+<<<<<<< HEAD
     width: 99.9%;
+=======
+    width: 100%;
+    text-align: center;
+    vertical-align: middle;
+>>>>>>> f647f3534809e24590f87b815c527a51008c378b
 }
 
 .clearer2 {
@@ -96,8 +162,48 @@ legend {
 
 .letters {
     text-align: center;
+<<<<<<< HEAD
     font-size: x-small;
     padding: 10px 0;
+=======
+    font-size: 14px;
+    padding: 10px 0;
+    color: #900;
+}
+
+.search_abc_l {
+    text-align: center;
+    font-size: 12px;
+    padding: 10px 0;
+    color: #900;
+    width: 10%;
+    vertical-align: middle;
+    display: inline-block;
+    float: left;
+    letter-spacing: 1.5px;
+}
+
+.search_abc_r {
+    text-align: center;
+    font-size: 12px;
+    padding: 10px 0;
+    color: #900;
+    width: 10%;
+    vertical-align: middle;
+    display: inline-block;
+    float: right;
+    letter-spacing: 1.5px;
+}
+
+.search_abc_c {
+    text-align: center;
+    font-size: 12px;
+    padding: 10px 0;
+    color: #900;
+    vertical-align: middle;
+    width: 80%;
+    display: inline-block;
+>>>>>>> f647f3534809e24590f87b815c527a51008c378b
 }
 
 .introcen {
@@ -110,12 +216,25 @@ legend {
     float: left;
     width: 30%;
     margin-right: 10px;
+<<<<<<< HEAD
 }
 
 .float30random {
     float: left;
     width: 30%;
     margin-right: 10px;
+=======
+    border: 0 solid #ccc;
+    vertical-align: middle;
+    display: inline-block;
+}
+
+.float30random {
+    float: right;
+    width: 33%;
+    margin-left: 0;
+    border: 0 solid #ccc;
+>>>>>>> f647f3534809e24590f87b815c527a51008c378b
 }
 
 .catname {
@@ -252,6 +371,15 @@ p {
     margin: 0;
 }
 
+<<<<<<< HEAD
+=======
+.pad5 {
+    padding: 3px;
+    margin: 3px;
+    text-align: center;
+}
+
+>>>>>>> f647f3534809e24590f87b815c527a51008c378b
 .btnDefault {
     margin: 2px 0;
     font-family: Arial, verdana, helvetica, sans-serif;
@@ -266,6 +394,14 @@ p {
     border-bottom: 1px solid silver;
 }
 
+<<<<<<< HEAD
+=======
+.standard {
+    font-size: 11px;
+    line-height: 15px;
+}
+
+>>>>>>> f647f3534809e24590f87b815c527a51008c378b
 .teaser {
     border: 1px solid #ccc;
     padding: 24px;
@@ -284,6 +420,13 @@ img.floatLeft {
     overflow: hidden;
 }
 
+<<<<<<< HEAD
+=======
+img.navig {
+    vertical-align: middle;
+}
+
+>>>>>>> f647f3534809e24590f87b815c527a51008c378b
 /* Bookmark tags */
 div.socbookmark a img {
     -moz-opacity: .4;
@@ -313,4 +456,20 @@ div.socbookmark a:hover img {
     font-weight: normal;
     vertical-align: top;
     white-space: normal;
+}
+
+/*****************************************
+ truncate styles
+******************************************/
+
+.table-truncate {
+    position: relative;
+}
+
+.table-truncate__body {
+    position: absolute;
+    max-width: 95%;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
 }

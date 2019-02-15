@@ -5,7 +5,7 @@
  * Licence: GNU
  */
 
-defined('XOOPS_ROOT_PATH') || exit('XOOPS root path not defined');
+defined('XOOPS_ROOT_PATH') || exit('Restricted access.');
 
 /**
  * @return array
@@ -13,7 +13,7 @@ defined('XOOPS_ROOT_PATH') || exit('XOOPS root path not defined');
 function b_lxentries_random_show()
 {
     global $xoopsDB, $xoopsUser, $xoopsConfig, $xoopsModule;
-    $myts = MyTextSanitizer::getInstance();
+    $myts = \MyTextSanitizer::getInstance();
 
     /** @var XoopsModuleHandler $moduleHandler */
     $moduleHandler = xoops_getHandler('module');
@@ -65,46 +65,46 @@ function b_lxentries_random_show()
 
         if ($xoopsUser) {
             if ($xoopsUser->isAdmin()) {
-                $adminlinks = "<a href=\""
+                $adminlinks = '<a href="'
                               . XOOPS_URL
                               . '/modules/'
                               . $lexikon->dirname()
                               . '/admin/entry.php?op=mod&entryID='
                               . $entryID
-                              . "\" target=\"_blank\"><img src=\""
+                              . '" target="_blank"><img src="'
                               . XOOPS_URL
                               . '/modules/'
                               . $lexikon->dirname()
-                              . "/assets/images/edit.gif\" alt=\""
+                              . '/assets/images/edit.gif" alt="'
                               . _MB_LEXIKON_EDITTERM
-                              . "\" width=\"16\" height=\"16\" /></a>&nbsp;<a href=\""
+                              . '" width="16" height="16" ></a>&nbsp;<a href="'
                               . XOOPS_URL
                               . '/modules/'
                               . $lexikon->dirname()
                               . '/admin/entry.php?op=del&entryID='
                               . $entryID
-                              . "\" target=\"_self\"><img src=\""
+                              . '" target="_self"><img src="'
                               . XOOPS_URL
                               . '/modules/'
                               . $lexikon->dirname()
-                              . "/assets/images/delete.gif\" alt=\""
+                              . '/assets/images/delete.gif" alt="'
                               . _MB_LEXIKON_DELTERM
-                              . "\" width=\"16\" height=\"16\" /></a>&nbsp;";
+                              . '" width="16" height="16" ></a>&nbsp;';
             }
         }
-        $userlinks = "<a href=\""
+        $userlinks = '<a href="'
                      . XOOPS_URL
                      . '/modules/'
                      . $lexikon->dirname()
                      . '/print.php?entryID='
                      . $entryID
-                     . "\" target=\"_blank\"><img src=\""
+                     . '" target="_blank"><img src="'
                      . XOOPS_URL
                      . '/modules/'
                      . $lexikon->dirname()
-                     . "/assets/images/print.gif\" alt=\""
+                     . '/assets/images/print.gif" alt="'
                      . _MB_LEXIKON_PRINTTERM
-                     . "\" width=\"16\" height=\"16\" /></a>&nbsp;<a href=\"mailto:?subject="
+                     . '" width="16" height="16" ></a>&nbsp;<a href="mailto:?subject='
                      . sprintf(_MB_LEXIKON_INTENTRY, $xoopsConfig['sitename'])
                      . '&amp;body='
                      . sprintf(_MB_LEXIKON_INTENTRYFOUND, $xoopsConfig['sitename'])
@@ -114,35 +114,23 @@ function b_lxentries_random_show()
                      . $lexikon->dirname()
                      . '/entry.php?entryID='
                      . $entryID
-                     . "\" target=\"_blank\"><img src=\""
+                     . '" target="_blank"><img src="'
                      . XOOPS_URL
                      . '/modules/'
                      . $lexikon->dirname()
-                     . "/assets/images/friend.gif\" alt=\""
+                     . '/assets/images/friend.gif" alt="'
                      . _MB_LEXIKON_SENDTOFRIEND
-                     . "\" width=\"16\" height=\"16\" /></a>&nbsp;";
+                     . '" width="16" height="16" ></a>&nbsp;';
 
-        if ($lxConfig['multicats'] == 1) {
-            $block['content'] = "<div style=\"font-size: 12px; font-weight: bold; background-color: #ccc; padding: 4px; margin: 0;\"><a href=\""
-                                . XOOPS_URL
-                                . '/modules/'
-                                . $lexikon->dirname()
-                                . "/category.php?categoryID=$categoryID\">$categoryname</a></div>";
-            $block['content'] .= "<div style=\"padding: 4px 0 0 0; color: #456;\"><h5 style=\"margin: 0;\">$adminlinks $userlinks <a href=\""
-                                 . XOOPS_URL
-                                 . '/modules/'
-                                 . $lexikon->dirname()
-                                 . "/entry.php?entryID=$entryID\">$term</a></h5>$definition</div>";
+        if (1 == $lxConfig['multicats']) {
+            $block['content'] = '<div style="font-size: 12px; font-weight: bold; background-color: #ccc; padding: 4px; margin: 0;"><a href="' . XOOPS_URL . '/modules/' . $lexikon->dirname() . "/category.php?categoryID=$categoryID\">$categoryname</a></div>";
+            $block['content'] .= "<div style=\"padding: 4px 0 0 0; color: #456;\"><h5 style=\"margin: 0;\">$adminlinks $userlinks <a href=\"" . XOOPS_URL . '/modules/' . $lexikon->dirname() . "/entry.php?entryID=$entryID\">$term</a></h5>$definition</div>";
         } else {
-            $block['content'] = "<div style=\"padding: 4px; color: #456;\"><h5 style=\"margin: 0;\">$adminlinks $userlinks <a style=\"margin: 0;\" href=\""
-                                . XOOPS_URL
-                                . '/modules/'
-                                . $lexikon->dirname()
-                                . "/entry.php?entryID=$entryID\">$term</a></h5>$definition</div>";
+            $block['content'] = "<div style=\"padding: 4px; color: #456;\"><h5 style=\"margin: 0;\">$adminlinks $userlinks <a style=\"margin: 0;\" href=\"" . XOOPS_URL . '/modules/' . $lexikon->dirname() . "/entry.php?entryID=$entryID\">$term</a></h5>$definition</div>";
         }
     }
 
-    $block['content'] .= "<div style=\"text-align: right; font-size: x-small;\"><a href=\"" . XOOPS_URL . '/modules/' . $lexikon->dirname() . "/index.php\">" . _MB_LEXIKON_SEEMORE . '</a></div>';
+    $block['content'] .= '<div style="text-align: right; font-size: x-small;"><a href="' . XOOPS_URL . '/modules/' . $lexikon->dirname() . '/index.php">' . _MB_LEXIKON_SEEMORE . '</a></div>';
 
     return $block;
 }

@@ -62,9 +62,16 @@ define('_MI_LEXIKON_ALLOWADMINHITSDSC', "If set to 'Yes', will increase counter 
 define('_MI_LEXIKON_MAILTOADMIN', "Send mail to admin on each new submission?");
 define('_MI_LEXIKON_MAILTOADMINDSC', "If set to 'Yes', the manager will receive an e-mail for every submitted entry.");
 
+<<<<<<< HEAD
 define('_MI_LEXIKON_MAILTOSENDER', "Send mail to user on each new submission?");
 define('_MI_LEXIKON_MAILTOSENDERDSC',
        "If set to 'Yes', the user will receive a confirmation e-mail for every modified, submitted or requested entry. If 'Notify on publish' is ticked, the user will as well receive a confirmation e-mail on publication of the entry.");
+=======
+++$cf;
+define('_MI_LEXIKON_MAILTOSENDER', "$cf. Send mail to user on each new submission?");
+define('_MI_LEXIKON_MAILTOSENDERDSC', "If set to 'Yes', the user will receive a confirmation e-mail for every modified, submitted or requested entry. If 'Notify on publish' is ticked, the user will as well receive a confirmation e-mail on publication of the entry.");
+++$cf;
+>>>>>>> f647f3534809e24590f87b815c527a51008c378b
 
 define('_MI_LEXIKON_RANDOMLENGTH', "Length of string to show in random definitions?");
 define('_MI_LEXIKON_RANDOMLENGTHDSC', 'How many characters do you want to show in the random term boxes, both in the main page and in the block? (Default: 150)');
@@ -72,9 +79,15 @@ define('_MI_LEXIKON_RANDOMLENGTHDSC', 'How many characters do you want to show i
 define('_MI_LEXIKON_LINKTERMS', "Show links to other glossary terms in the definitions?");
 define('_MI_LEXIKON_LINKTERMSDSC', "If set to 'yes', will automatically link in your definitions those terms you already have in your glossaries.");
 
+<<<<<<< HEAD
 define('_MI_LEXIKON_FORM_OPTIONS', "Form Option");
 define('_MI_LEXIKON_FORM_OPTIONSDSC',
        'What kind of editor would you like to use. <br>Please note that if you choose any other editor than the Xoops-DHTML-Editor, it must be installed under class/xoopseditor.');
+=======
+++$cf;
+define('_MI_LEXIKON_FORM_OPTIONS', "$cf. Form Option");
+define('_MI_LEXIKON_FORM_OPTIONSDSC', 'What kind of editor would you like to use. <br>Please note that if you choose any other editor than the Xoops-DHTML-Editor, it must be installed under class/xoopseditor.');
+>>>>>>> f647f3534809e24590f87b815c527a51008c378b
 
 define('_MI_LEXIKON_EDIGUEST', "Form Options for submissions");
 define('_MI_LEXIKON_EDIGUESTDSC', 'Shall Guests may use editors?');
@@ -132,14 +145,22 @@ define('_MI_LEXIKON_SYNDICATION', "Enable Webmaster Content Syndication?");
 define('_MI_LEXIKON_SYNDICATIONDSC', "If you set this option to 'Yes', users will have access to content syndication.");
 
 // new configs in version 1.52
+<<<<<<< HEAD
 
 define("_MI_LEXIKON_IMGUPLOADWD","Max height/width for image upload");
 define("_MI_LEXIKON_IMGUPLOADWD_DESC","Define the maximum height/width in pixel for uploading an image");
 
 define("_MI_LEXIKON_IMGUPLOADSIZE","Max size for image upload");
 define("_MI_LEXIKON_IMGUPLOADSIZE_DESC","Define the maximum size in bytes (10485760 = 1 MB) for uploading an image");
+=======
+$cf++;
+define('_MI_LEXIKON_IMGUPLOADWD', "$cf. Max height/width for image upload");
+define('_MI_LEXIKON_IMGUPLOADWD_DESC', 'Define the maximum height/width in pixel for uploading an image');
+$cf++;
+define('_MI_LEXIKON_IMGUPLOADSIZE', "$cf. Max size for image upload");
+define('_MI_LEXIKON_IMGUPLOADSIZE_DESC', 'Define the maximum size in bytes (10485760 = 1 MB) for uploading an image');
+>>>>>>> f647f3534809e24590f87b815c527a51008c378b
 // end new configs in 1.52
-
 
 // bookmarks
 define('_MI_LEXIKON_ADDTHIS1', 'Use Addthis Popup window');
@@ -238,11 +259,15 @@ define('_MI_LEXIKON_BACK_2_ADMIN', 'Back to Administration of ');
 define('_MI_LEXIKON_HELP_OVERVIEW', 'Overview');
 define('_MI_LEXIKON_NAME', 'Lexikon');
 
+<<<<<<< HEAD
 //Menu
+=======
+>>>>>>> f647f3534809e24590f87b815c527a51008c378b
 define('_MI_LEXIKON_SHOWSUBMISSIONS', 'Submissions');
 define('_MI_LEXIKON_HOME', 'Home');
 define('_MI_LEXIKON_ABOUT', 'About');
 
+<<<<<<< HEAD
 //Lang Symbol
 define('_MI_LEXIKON_LANG_SYMBOL', 'Show inactive characters');
 define('_MI_LEXIKON_LANG_SYMBOLDSC', 'Show inactive characters on the users page. Inactive characters will be hidden.');
@@ -267,3 +292,119 @@ define('_MI_LEXIKON_LANG_SYMBOL_DEF_IN', 'The number of the first character in t
 define('_MI_LEXIKON_LANG_SYMBOLDSC_DEF_IN', 'The character number from which the alphabet in the UTF8 table begins<br>The default language is English<br>You can learn <a href="https://unicode-table.com/en/" target="_blank">here</a> - <a href="http://www.utf8-chartable.de/" target="_blank">here</a>');
 define('_MI_LEXIKON_LANG_SYMBOL_DEF_OUT', 'Characters');
 define('_MI_LEXIKON_LANG_SYMBOLDSC_DEF_OUT', 'Number of characters in the alphabet<br>The default language is English');
+=======
+
+
+
+
+
+// Admin
+define('MI_LEXIKON_NAME', 'Lexikon');
+define('MI_LEXIKON_DESC', 'This module is for doing following...');
+//Menu
+define('MI_LEXIKON_ADMENU1', 'Home');
+define('MI_LEXIKON_ADMENU2', 'Category');
+define('MI_LEXIKON_ADMENU3', 'Entries');
+define('MI_LEXIKON_ADMENU4', 'Permissions');
+define('MI_LEXIKON_ADMENU5', 'About');
+//Blocks
+define('MI_LEXIKON_CATEGORY_BLOCK', 'Category block');
+define('MI_LEXIKON_ENTRIES_BLOCK', 'Entries block');
+//Config
+define('MI_LEXIKON_EDITOR_ADMIN', 'Editor: Admin');
+define('MI_LEXIKON_EDITOR_ADMIN_DESC', 'Select the Editor to use by the Admin');
+define('MI_LEXIKON_EDITOR_USER', 'Editor: User');
+define('MI_LEXIKON_EDITOR_USER_DESC', 'Select the Editor to use by the User');
+define('MI_LEXIKON_KEYWORDS', 'Keywords');
+define('MI_LEXIKON_KEYWORDS_DESC', 'Insert here the keywords (separate by comma)');
+define('MI_LEXIKON_ADMINPAGER', 'Admin: records / page');
+define('MI_LEXIKON_ADMINPAGER_DESC', 'Admin: # of records shown per page');
+define('MI_LEXIKON_USERPAGER', 'User: records / page');
+define('MI_LEXIKON_USERPAGER_DESC', 'User: # of records shown per page');
+define('MI_LEXIKON_MAXSIZE', 'Max size');
+define('MI_LEXIKON_MAXSIZE_DESC', 'Set a number of max size uploads file in byte');
+define('MI_LEXIKON_MIMETYPES', 'Mime Types');
+define('MI_LEXIKON_MIMETYPES_DESC', 'Set the mime types selected');
+define('MI_LEXIKON_IDPAYPAL', 'Paypal ID');
+define('MI_LEXIKON_IDPAYPAL_DESC', 'Insert here your PayPal ID for donactions.');
+define('MI_LEXIKON_ADVERTISE', 'Advertisement Code');
+define('MI_LEXIKON_ADVERTISE_DESC', 'Insert here the advertisement code');
+define('MI_LEXIKON_BOOKMARKS', 'Social Bookmarks');
+define('MI_LEXIKON_BOOKMARKS_DESC', 'Show Social Bookmarks in the form');
+define('MI_LEXIKON_FBCOMMENTS', 'Facebook comments');
+define('MI_LEXIKON_FBCOMMENTS_DESC', 'Allow Facebook comments in the form');
+// Notifications
+define('MI_LEXIKON_GLOBAL_NOTIFY', 'Allow Facebook comments in the form');
+define('MI_LEXIKON_GLOBAL_NOTIFY_DESC', 'Allow Facebook comments in the form');
+define('MI_LEXIKON_CATEGORY_NOTIFY', 'Allow Facebook comments in the form');
+define('MI_LEXIKON_CATEGORY_NOTIFY_DESC', 'Allow Facebook comments in the form');
+define('MI_LEXIKON_FILE_NOTIFY', 'Allow Facebook comments in the form');
+define('MI_LEXIKON_FILE_NOTIFY_DESC', 'Allow Facebook comments in the form');
+define('MI_LEXIKON_GLOBAL_NEWCATEGORY_NOTIFY', 'Allow Facebook comments in the form');
+define('MI_LEXIKON_GLOBAL_NEWCATEGORY_NOTIFY_CAPTION', 'Allow Facebook comments in the form');
+define('MI_LEXIKON_GLOBAL_NEWCATEGORY_NOTIFY_DESC', 'Allow Facebook comments in the form');
+define('MI_LEXIKON_GLOBAL_NEWCATEGORY_NOTIFY_SUBJECT', 'Allow Facebook comments in the form');
+define('MI_LEXIKON_GLOBAL_FILEMODIFY_NOTIFY', 'Allow Facebook comments in the form');
+define('MI_LEXIKON_GLOBAL_FILEMODIFY_NOTIFY_CAPTION', 'Allow Facebook comments in the form');
+define('MI_LEXIKON_GLOBAL_FILEMODIFY_NOTIFY_DESC', 'Allow Facebook comments in the form');
+define('MI_LEXIKON_GLOBAL_FILEMODIFY_NOTIFY_SUBJECT', 'Allow Facebook comments in the form');
+define('MI_LEXIKON_GLOBAL_FILEBROKEN_NOTIFY', 'Allow Facebook comments in the form');
+define('MI_LEXIKON_GLOBAL_FILEBROKEN_NOTIFY_CAPTION', 'Allow Facebook comments in the form');
+define('MI_LEXIKON_GLOBAL_FILEBROKEN_NOTIFY_DESC', 'Allow Facebook comments in the form');
+define('MI_LEXIKON_GLOBAL_FILEBROKEN_NOTIFY_SUBJECT', 'Allow Facebook comments in the form');
+define('MI_LEXIKON_GLOBAL_FILESUBMIT_NOTIFY', 'Allow Facebook comments in the form');
+define('MI_LEXIKON_GLOBAL_FILESUBMIT_NOTIFY_CAPTION', 'Allow Facebook comments in the form');
+define('MI_LEXIKON_GLOBAL_FILESUBMIT_NOTIFY_DESC', 'Allow Facebook comments in the form');
+define('MI_LEXIKON_GLOBAL_FILESUBMIT_NOTIFY_SUBJECT', 'Allow Facebook comments in the form');
+define('MI_LEXIKON_GLOBAL_NEWFILE_NOTIFY', 'Allow Facebook comments in the form');
+define('MI_LEXIKON_GLOBAL_NEWFILE_NOTIFY_CAPTION', 'Allow Facebook comments in the form');
+define('MI_LEXIKON_GLOBAL_NEWFILE_NOTIFY_DESC', 'Allow Facebook comments in the form');
+define('MI_LEXIKON_GLOBAL_NEWFILE_NOTIFY_SUBJECT', 'Allow Facebook comments in the form');
+define('MI_LEXIKON_CATEGORY_FILESUBMIT_NOTIFY', 'Allow Facebook comments in the form');
+define('MI_LEXIKON_CATEGORY_FILESUBMIT_NOTIFY_CAPTION', 'Allow Facebook comments in the form');
+define('MI_LEXIKON_CATEGORY_FILESUBMIT_NOTIFY_DESC', 'Allow Facebook comments in the form');
+define('MI_LEXIKON_CATEGORY_FILESUBMIT_NOTIFY_SUBJECT', 'Allow Facebook comments in the form');
+define('MI_LEXIKON_CATEGORY_NEWFILE_NOTIFY', 'Allow Facebook comments in the form');
+define('MI_LEXIKON_CATEGORY_NEWFILE_NOTIFY_CAPTION', 'Allow Facebook comments in the form');
+define('MI_LEXIKON_CATEGORY_NEWFILE_NOTIFY_DESC', 'Allow Facebook comments in the form');
+define('MI_LEXIKON_CATEGORY_NEWFILE_NOTIFY_SUBJECT', 'Allow Facebook comments in the form');
+define('MI_LEXIKON_FILE_APPROVE_NOTIFY', 'Allow Facebook comments in the form');
+define('MI_LEXIKON_FILE_APPROVE_NOTIFY_CAPTION', 'Allow Facebook comments in the form');
+define('MI_LEXIKON_FILE_APPROVE_NOTIFY_DESC', 'Allow Facebook comments in the form');
+define('MI_LEXIKON_FILE_APPROVE_NOTIFY_SUBJECT', 'Allow Facebook comments in the form');
+
+// Help
+define('MI_LEXIKON_DIRNAME', basename(dirname(dirname(__DIR__))));
+define('MI_LEXIKON_HELP_HEADER', __DIR__.'/help/helpheader.tpl');
+define('MI_LEXIKON_BACK_2_ADMIN', 'Back to Administration of ');
+define('MI_LEXIKON_OVERVIEW', 'Overview');
+// The name of this module
+//define('MI_LEXIKON_NAME', 'YYYYY Module Name');
+
+
+//define('MI_LEXIKON_HELP_DIR', __DIR__);
+
+
+//help multi-page
+define('MI_LEXIKON_DISCLAIMER', 'Disclaimer');
+define('MI_LEXIKON_LICENSE', 'License');
+define('MI_LEXIKON_SUPPORT', 'Support');
+//define('MI_LEXIKON_REQUIREMENTS', 'Requirements');
+//define('MI_LEXIKON_CREDITS', 'Credits');
+//define('MI_LEXIKON_HOWTO', 'How To');
+//define('MI_LEXIKON_UPDATE', 'Update');
+//define('MI_LEXIKON_INSTALL', 'Install');
+//define('MI_LEXIKON_HISTORY', 'History');
+//define('MI_LEXIKON_HELP1', 'YYYYY');
+//define('MI_LEXIKON_HELP2', 'YYYYY');
+//define('MI_LEXIKON_HELP3', 'YYYYY');
+//define('MI_LEXIKON_HELP4', 'YYYYY');
+//define('MI_LEXIKON_HELP5', 'YYYYY');
+//define('MI_LEXIKON_HELP6', 'YYYYY');
+
+// Permissions Groups
+define('MI_LEXIKON_GROUPS', 'Groups access');
+define('MI_LEXIKON_GROUPS_DESC', 'Select general access permission for groups.');
+define('MI_LEXIKON_ADMINGROUPS', 'Admin Group Permissions');
+define('MI_LEXIKON_ADMINGROUPS_DESC', 'Which groups have access to tools and permissions page');
+>>>>>>> f647f3534809e24590f87b815c527a51008c378b

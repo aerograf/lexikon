@@ -8,16 +8,16 @@ if (function_exists('mb_http_output')) {
     mb_http_output('pass');
 }
 include __DIR__ . '/../../mainfile.php';
-include_once XOOPS_ROOT_PATH . '/header.php';
-include_once XOOPS_ROOT_PATH . '/class/template.php';
-$tpl = new XoopsTpl();
-$tpl->xoops_setCaching(0);
+require_once XOOPS_ROOT_PATH . '/header.php';
+require_once XOOPS_ROOT_PATH . '/class/template.php';
+$tpl = new \XoopsTpl();
+$tpl->caching=0;
 
 global $xoopsUser, $xoopsDB, $xoopsConfig, $xoopsModuleConfig;
 $myts = MyTextSanitizer:: getInstance();
 
 //if ( !is_object( $xoopsUser ) && $xoopsModuleConfig['contentsyndication'] == 0 ) {
-if ($xoopsModuleConfig['contentsyndication'] == 0) {
+if (0 == $xoopsModuleConfig['contentsyndication']) {
     echo ' ' . _NOPERM . ' ';
     exit();
 }
@@ -52,22 +52,18 @@ $resultZ = $xoopsDB->query('SELECT a.entryID, a.categoryID, a.term, a.definition
                            . " AND a.offline = '0' AND a.submit = '0' LIMIT $entrynumber, 1");
 
 $zerotest = $xoopsDB->getRowsNum($resultZ);
-if ($zerotest != 0) {
+if (0 != $zerotest) {
     while ($myrow = $xoopsDB->fetchArray($resultZ)) {
-        $syndication         = array();
+        $syndication         = [];
         $syndication['id']   = $myrow['entryID'];
         $syndication['term'] = ucfirst($myrow['term']);
         if (!XOOPS_USE_MULTIBYTES) {
             $syndication['definition'] = $myts->displayTarea(xoops_substr($myrow['definition'], 0, $xoopsModuleConfig['rndlength'] - 3), 1, 1, 1, 1, 1);
             // note: if the definitions are too long try : $xoopsModuleConfig['rndlength'] -20 ) and decrease font-size:x-small below ...
         }
-        if ($xoopsModuleConfig['multicats'] == 1) {
+        if (1 == $xoopsModuleConfig['multicats']) {
             $syndication['catID'] = $myrow['categoryID'];
-            $resultY              = $xoopsDB->query('SELECT categoryID, name FROM '
-                                                    . $xoopsDB->prefix('lxcategories')
-                                                    . ' WHERE categoryID = '
-                                                    . $myrow['categoryID']
-                                                    . ' ');
+            $resultY              = $xoopsDB->query('SELECT categoryID, name FROM ' . $xoopsDB->prefix('lxcategories') . ' WHERE categoryID = ' . $myrow['categoryID'] . ' ');
             list($categoryID, $name) = $xoopsDB->fetchRow($resultY);
             $syndication['categoryname'] = $myts->displayTarea($name);
         }

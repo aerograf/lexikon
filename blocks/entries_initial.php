@@ -5,22 +5,32 @@
  * adapted from xwords
  * Licence: GNU
  */
-defined('XOOPS_ROOT_PATH') || exit('XOOPS root path not defined');
+defined('XOOPS_ROOT_PATH') || exit('Restricted access.');
+
+/**
+ * @param $a
+ * @return string
+ */
+function uchr($a)
+{
+    if (is_scalar($a)) {
+        $a = func_get_args();
+    }
+    $str = '';
+    foreach ($a as $code) {
+        $str .= html_entity_decode('&#' . $code . ';', ENT_NOQUOTES, 'UTF-8');
+    }
+    return $str;
+}
 
 /**
  * @param $options
  * @return array
  */
-function uchr($a) {
-    if (is_scalar($a)) $a= func_get_args();
-    $str= '';
-    foreach ($a as $code) $str.= html_entity_decode('&#'.$code.';',ENT_NOQUOTES,'UTF-8');
-    return $str;
-} 
 function b_lxentries_alpha_show($options)
 {
     global $xoopsDB, $xoopsUser, $xoopsModule;
-    $myts = MyTextSanitizer::getInstance();
+    $myts = \MyTextSanitizer::getInstance();
 
     /** @var XoopsModuleHandler $moduleHandler */
     $moduleHandler = xoops_getHandler('module');
@@ -38,7 +48,7 @@ function b_lxentries_alpha_show($options)
 
     $block = [];
     // To handle options in the template
-    if ($options[0] == 1) {
+    if (1 == $options[0]) {
         $block['layout'] = 1;
     } else {
         $block['layout'] = 0;
@@ -51,6 +61,7 @@ function b_lxentries_alpha_show($options)
     $block['title']         = _MB_LEXIKON_TERMINITIAL;
     $block['moduledirname'] = $lexikon->dirname();
     $count                  = 0;
+<<<<<<< HEAD
     $symbol        = $GLOBALS['xoopsModuleConfig']['on_off_lang_symbol'];
     $symbol_num    = $GLOBALS['xoopsModuleConfig']['on_off_lang_symbol_num'];
     $symbol_num_in = $GLOBALS['xoopsModuleConfig']['on_off_lang_symbol_num_in'];
@@ -72,10 +83,17 @@ function b_lxentries_alpha_show($options)
                                                    . "' AND datesub > '0' AND offline= '0' AND submit='0' AND request='0' "
                                                    . $catperms
                                                    . ' ');
+=======
+    for ($a = 48; $a < (48 + 10); ++$a) {
+        $letterlinks             = [];
+        $initial                 = uchr($a);
+        $sql                     = $xoopsDB->query('SELECT init FROM ' . $xoopsDB->prefix('lxentries') . " WHERE init = '$initial' AND datesub < '" . time() . "' AND datesub > '0' AND offline= '0' AND submit='0' AND request='0' " . $catperms . ' ');
+>>>>>>> f647f3534809e24590f87b815c527a51008c378b
         $howmany                 = $xoopsDB->getRowsNum($sql);
         $letterlinks['total']    = $howmany;
         $letterlinks['id']       = uchr($a);
         $letterlinks['linktext'] = uchr($a);
+<<<<<<< HEAD
         $letterlinks['count']    = (int)$count;
             if (0 == $symbol) {
                 if (0 == $letterlinks['total']) {                  
@@ -98,10 +116,21 @@ function b_lxentries_alpha_show($options)
                                                    . "' AND datesub > '0' AND offline= '0' AND submit='0' AND request='0' "
                                                    . $catperms
                                                    . ' ');
+=======
+        $letterlinks['count']    = $count;
+
+        $block['initstuff'][] = $letterlinks;
+    }
+    for ($a = 65; $a < (65 + 26); ++$a) {
+        $letterlinks             = [];
+        $initial                 = uchr($a);
+        $sql                     = $xoopsDB->query('SELECT init FROM ' . $xoopsDB->prefix('lxentries') . " WHERE init = '$initial' AND datesub < '" . time() . "' AND datesub > '0' AND offline= '0' AND submit='0' AND request='0' " . $catperms . ' ');
+>>>>>>> f647f3534809e24590f87b815c527a51008c378b
         $howmany                 = $xoopsDB->getRowsNum($sql);
         $letterlinks['total']    = $howmany;
         $letterlinks['id']       = uchr($a);
         $letterlinks['linktext'] = uchr($a);
+<<<<<<< HEAD
         $letterlinks['count']    = (int)$count;
             if (0 == $symbol) {
                 if (0 == $letterlinks['total']) {                  
@@ -111,6 +140,11 @@ function b_lxentries_alpha_show($options)
                  } else {
                  $block['initstuff'][] = $letterlinks;
                  }
+=======
+        $letterlinks['count']    = $count;
+
+        $block['initstuff'][] = $letterlinks;
+>>>>>>> f647f3534809e24590f87b815c527a51008c378b
     }
     }
     if (1 == $symbol_nac) {
@@ -129,6 +163,7 @@ function b_lxentries_alpha_show($options)
         $letterlinks['id']       = uchr($a);
         $letterlinks['linktext'] = uchr($a);
         $letterlinks['count']    = (int)$count;
+<<<<<<< HEAD
             if (0 == $symbol) {
                 if (0 == $letterlinks['total']) {                  
                       } else {
@@ -139,6 +174,12 @@ function b_lxentries_alpha_show($options)
                  }
     } 
     }
+=======
+
+        $block['initstuff'][] = $letterlinks;
+    }*/
+
+>>>>>>> f647f3534809e24590f87b815c527a51008c378b
     return $block;
 }
 
@@ -149,9 +190,9 @@ function b_lxentries_alpha_show($options)
 function b_lxentries_alpha_edit($options)
 {
     $form = _ALIGN;
-    $form .= "<input type='radio' name='options[0]' value='1'" . (($options[0] == 1) ? ' checked' : '') . ' />' . _YES . '&nbsp;';
-    $form .= "<input type='radio' name='options[0]' value='0'" . (($options[0] == 0) ? ' checked' : '') . ' />' . _NO . '<br>';
-    $form .= '' . _MB_LEXIKON_LETTERS . " <input type='text' name='options[]' value='" . $options[1] . "' />&nbsp; <br>";
+    $form .= "<input type='radio' name='options[0]' value='1'" . ((1 == $options[0]) ? ' checked' : '') . ' >' . _YES . '&nbsp;';
+    $form .= "<input type='radio' name='options[0]' value='0'" . ((0 == $options[0]) ? ' checked' : '') . ' >' . _NO . '<br>';
+    $form .= '' . _MB_LEXIKON_LETTERS . " <input type='text' name='options[]' value='" . $options[1] . "' >&nbsp; <br>";
 
     //------------
     return $form;

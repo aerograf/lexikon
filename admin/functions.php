@@ -27,29 +27,29 @@ if (is_object($xoopsUser)) {
 
 function lx_adminMenu($currentoption = 0, $breadcrumb = '')
 {
-    include_once XOOPS_ROOT_PATH . '/class/template.php';
+    require_once XOOPS_ROOT_PATH . '/class/template.php';
 
     global $xoopsDB, $xoopsModule, $xoopsConfig;
     if (file_exists(XOOPS_ROOT_PATH . '/modules/' . $xoopsModule->dirname() . '/language/' . $xoopsConfig['language'] . '/modinfo.php')) {
-        include_once XOOPS_ROOT_PATH . '/modules/lexikon/language/' . $xoopsConfig['language'] . '/modinfo.php';
+        require_once XOOPS_ROOT_PATH . '/modules/lexikon/language/' . $xoopsConfig['language'] . '/modinfo.php';
     } else {
-        include_once XOOPS_ROOT_PATH . '/modules/lexikon/language/english/modinfo.php';
+        require_once XOOPS_ROOT_PATH . '/modules/lexikon/language/english/modinfo.php';
     }
     if (file_exists(XOOPS_ROOT_PATH . '/modules/' . $xoopsModule->dirname() . '/language/' . $xoopsConfig['language'] . '/admin.php')) {
-        include_once XOOPS_ROOT_PATH . '/modules/lexikon/language/' . $xoopsConfig['language'] . '/admin.php';
+        require_once XOOPS_ROOT_PATH . '/modules/lexikon/language/' . $xoopsConfig['language'] . '/admin.php';
     } else {
-        include_once XOOPS_ROOT_PATH . '/modules/lexikon/language/english/admin.php';
+        require_once XOOPS_ROOT_PATH . '/modules/lexikon/language/english/admin.php';
     }
 
     include __DIR__ . '/menu.php';
 
-    $tpl = new XoopsTpl();
+    $tpl = new \XoopsTpl();
     $tpl->assign([
-                  'headermenu'      => $headermenu,
-                  'adminmenu'       => $adminmenu,
-                  'current'         => $currentoption,
-                  'breadcrumb'      => $breadcrumb,
-                  'headermenucount' => count($headermenu)
+                     'headermenu'      => $headermenu,
+                     'adminmenu'       => $adminmenu,
+                     'current'         => $currentoption,
+                     'breadcrumb'      => $breadcrumb,
+                     'headermenucount' => count($headermenu)
                  ]);
     $tpl->display('db:lx_adminmenu.tpl');
     echo "<br>\n";
@@ -81,14 +81,14 @@ function lx_FieldExists($fieldname, $table)
  * @copyright (c) Instant Zero
  * @param $field
  * @param $table
- * @return
+ * @return bool|\mysqli_result
  */
 
 function lx_AddField($field, $table)
 {
     global $xoopsDB;
     //naja !
-    $result = $xoopsDB->queryF('ALTER TABLE ' . $table . ' ADD ' . $field . '');
+    $result = $xoopsDB->queryF('ALTER TABLE ' . $table . ' ADD ' . $field . ' ');
 
     return $result;
 }
@@ -109,7 +109,7 @@ function lx_alterTable($field, $table)
     global $xoopsDB;
     $sql    = 'SHOW COLUMNS FROM ' . $table . " LIKE '" . $field . "'";
     $result = $xoopsDB->queryF($sql);
-    if ($xoopsDB->getRowsNum($result) == 0) {
+    if (0 == $xoopsDB->getRowsNum($result)) {
         $sql = 'ALTER TABLE ' . $xoopsDB->prefix($table) . ' ADD `' . $field . '`';
 
         return $xoopsDB->query($sql);
@@ -134,11 +134,10 @@ function lx_importMenu($currentoption = 0, $breadcrumb = '')
     global $cf;
     echo "<table style='border:0; width:99%;'>
               <tr><td style='vertical-align:top;'>
-              <strong style='color: #2F5376; margin-top:6px; font-size:medium'>"
-              . _AM_LEXIKON_IMPORT_MENU
-              . "</strong><br>";
+              <strong style='color: #2F5376; margin-top:6px; font-size:medium'>" . _AM_LEXIKON_IMPORT_MENU . '</strong><br>';
     if ($cf > 0) {
         echo '<span style="font-size:x-small">' . _AM_LEXIKON_OTHERMODS . '</span><br><br>';
+
     } else {
         echo '<span style="font-size:x-small; color:red;">' . _AM_LEXIKON_NOOTHERMODS . '</span><br><br>';
     }
@@ -155,9 +154,7 @@ function lx_importMenu($currentoption = 0, $breadcrumb = '')
         $wb_imgurl = XOOPS_URL . '/modules/wordbook/images';
         ++$cf;
         echo "<a href='importwordbook.php'>
-                  <img src='" . $wb_imgurl . "/wb_slogo.png' alt='wb_slogo.png' title='Wordbook' style='height:39px; width:69px;'><span>"
-                  . _AM_LEXIKON_IMPORT_WORDBOOK
-                  . "</span></a>";
+                  <img src='" . $wb_imgurl . "/wb_slogo.png' alt='wb_slogo.png' title='Wordbook' style='height:39px; width:69px;'><span>" . _AM_LEXIKON_IMPORT_WORDBOOK . '</span></a>';
     } //else { echo "". 'wordbook' ."";}
     $dictionaryModule = $moduleHandler->getByDirname('dictionary');
     $got_options      = false;
@@ -165,9 +162,7 @@ function lx_importMenu($currentoption = 0, $breadcrumb = '')
         $dic_imgurl = XOOPS_URL . '/modules/dictionary/images';
         ++$cf;
         echo "<a href='importdictionary.php'>
-                  <img src='" . $dic_imgurl . "/dictionary_logo.png' alt='Dictionary' title='Dictionary' style='height:39px; width:69px;'><span>"
-                  . _AM_LEXIKON_IMPORT_DICTIONARY
-                  . "</span></a>";
+                  <img src='" . $dic_imgurl . "/dictionary_logo.png' alt='Dictionary' title='Dictionary' style='height:39px; width:69px;'><span>" . _AM_LEXIKON_IMPORT_DICTIONARY . '</span></a>';
     } //else { echo "<B>&middot;</B>". 'dictionary' ."";}
     $glossaireModule = $moduleHandler->getByDirname('glossaire');
     $got_options     = false;
@@ -175,9 +170,7 @@ function lx_importMenu($currentoption = 0, $breadcrumb = '')
         $glo_imgurl = XOOPS_URL . '/modules/glossaire.';
         ++$cf;
         echo "<a href='importglossaire.php'>
-                  <img src='" . $glo_imgurl . "/glossaire_logo.jpg' alt='Glossaire' title='Glossaire' style='height:31px; width:88px;'><span>"
-                  . _AM_LEXIKON_IMPORT_GLOSSAIRE
-                  . "</span></a>";
+                  <img src='" . $glo_imgurl . "/glossaire_logo.jpg' alt='Glossaire' title='Glossaire' style='height:31px; width:88px;'><span>" . _AM_LEXIKON_IMPORT_GLOSSAIRE . '</span></a>';
     } //else { echo "<B>&middot;</B>". 'glossaire' ."";}
     $wiwimodModule = $moduleHandler->getByDirname('wiwimod');
     $got_options   = false;
@@ -185,9 +178,7 @@ function lx_importMenu($currentoption = 0, $breadcrumb = '')
         $wiwi_imgurl = XOOPS_URL . '/modules/wiwimod/images';
         ++$cf;
         echo "<a href='importwiwimod.php'>
-                  <img src='" . $wiwi_imgurl . "/wiwilogo.gif' alt='Wiwimod' title='Wiwimod' style='height:39px; width:69px;'><span>"
-                  . _AM_LEXIKON_IMPORT_WIWIMOD
-                  . "</span></a>";
+                  <img src='" . $wiwi_imgurl . "/wiwilogo.gif' alt='Wiwimod' title='Wiwimod' style='height:39px; width:69px;'><span>" . _AM_LEXIKON_IMPORT_WIWIMOD . '</span></a>';
     } //else { echo "<B>&middot;</B>". 'wiwimod' ."";}
     $xwordsModule = $moduleHandler->getByDirname('xwords');
     $got_options  = false;
@@ -195,9 +186,7 @@ function lx_importMenu($currentoption = 0, $breadcrumb = '')
         $xwd_imgurl = XOOPS_URL . '/modules/xwords/images';
         ++$cf;
         echo "<a href='importxwords.php'>
-                  <img src='" . $xwd_imgurl . "/xwords_slogo.png' alt='Xwords' title='Xwords' style='height:39px; width:69px;'><span>"
-                  . _AM_LEXIKON_IMPORT_XWORDS
-                  . "</span></a>";
+                  <img src='" . $xwd_imgurl . "/xwords_slogo.png' alt='Xwords' title='Xwords' style='height:39px; width:69px;'><span>" . _AM_LEXIKON_IMPORT_XWORDS . '</span></a>';
     }// else { echo "<B>&middot;</B>". 'xwords' ."";}
     echo '</div></td><tr></table>';
 }
@@ -205,7 +194,7 @@ function lx_importMenu($currentoption = 0, $breadcrumb = '')
 /**
  * collapsable bar for items lists
  * @package       lexikon
- * @copyright (c) XOOPS Project (http://xoops.org)
+ * @copyright (c) XOOPS Project (https://xoops.org)
  * @param string $tablename
  * @param string $iconname
  */
@@ -229,7 +218,7 @@ function lx_collapsableBar($tablename = '', $iconname = '')
                 obj = document.layers[id];
             }
             if (obj) {
-                if (obj.style.display == "none") {
+                if (obj.style.display === "none") {
                     obj.style.display = "";
                 } else {
                     obj.style.display = "none";
@@ -270,11 +259,11 @@ function lx_collapsableBar($tablename = '', $iconname = '')
 function lx_GetStatistics($limit)
 {
     $ret  = [];
-    $db   = XoopsDatabaseFactory::getDatabaseConnection();
+    $db   = \XoopsDatabaseFactory::getDatabaseConnection();
     $tbls = $db->prefix('lxentries');
     $tblt = $db->prefix('lxcategories');
 
-    $db = XoopsDatabaseFactory::getDatabaseConnection();
+    $db = \XoopsDatabaseFactory::getDatabaseConnection();
     // Number of Definitions per Category, including offline and submitted terms
     $ret2   = [];
     $sql    = "SELECT count(s.entryID) as cpt, s.categoryID, t.name FROM $tbls s, $tblt t WHERE s.categoryID=t.categoryID GROUP BY s.categoryID ORDER BY t.name";
@@ -361,31 +350,17 @@ function lx_GetStatistics($limit)
 function lx_buildTable()
 {
     global $xoopsConfig, $xoopsModuleConfig, $xoopsModule;
-    echo "<div style='color:#2F5376; margin:6px 0 0 0;'>";
+    echo "<div style='color: #2F5376; margin: 6px 0 0 0; '>";
     echo "<table class='outer' style='width:100%;'>";
-    echo '<tr>';
-    echo "<th style='width:40px; text-align:center;'>"
-    . _AM_LEXIKON_ENTRYID
-    . "</td>";
-    echo "<th style='width:100px; text-align:center;'>"
-    . _AM_LEXIKON_ENTRYCATNAME
-    . "</td>";
-    echo "<th style='text-align:center;'>"
-    . _AM_LEXIKON_TERM
-    . "</td>";
-    echo "<th style='width:90px; text-align:center;'>"
-    . _AM_LEXIKON_AUTHOR
-    . "</td>";
-    echo "<th style='width:90px; text-align:center;'>"
-    . _AM_LEXIKON_ENTRYCREATED
-    . "</td>";
-    echo "<th style='width:40px; text-align:center;'>"
-    . _AM_LEXIKON_STATUS
-    . "</td>";
-    echo "<th style='width:60px; text-align:center;'>"
-    . _AM_LEXIKON_ACTION
-    . "</td>";
-    echo "</tr>";
+    echo '<tr >';
+    echo "<th style='width:40px; text-align:center;'>" . _AM_LEXIKON_ENTRYID . '</td>';
+    echo "<th style='width:100px; text-align:center;'>" . _AM_LEXIKON_ENTRYCATNAME . '</td>';
+    echo "<th style='text-align:center;'>" . _AM_LEXIKON_TERM . '</td>';
+    echo "<th style='width:90px; text-align:center;'>" . _AM_LEXIKON_AUTHOR . '</td>';
+    echo "<th style='width:90px; text-align:center;'>" . _AM_LEXIKON_ENTRYCREATED . '</td>';
+    echo "<th style='width:40px; text-align:center;'>" . _AM_LEXIKON_STATUS . '</td>';
+    echo "<th style='width:60px; text-align:center;'>" . _AM_LEXIKON_ACTION . '</td>';
+    echo '</tr>';
 }
 
 /**
@@ -403,7 +378,7 @@ function lx_save_Permissions($groups, $id, $perm_name)
     $hModule  = xoops_getHandler('module');
     $lxModule = $hModule->getByDirname('lexikon');
 
-    $module_id     = $lxModule->getVar('mid');
+    $module_id    = $lxModule->getVar('mid');
     $gpermHandler = xoops_getHandler('groupperm');
 
     /*
@@ -427,9 +402,10 @@ function lx_save_Permissions($groups, $id, $perm_name)
  * @param $init
  */
 function lx_getinit($init)
-{  
+{
     global $init;
     echo "<div><select name='init'>";
+<<<<<<< .merge_file_a06236
     echo "<option value='#'>&nbsp;#&nbsp;</option>";
     $symbol_num    = $GLOBALS['xoopsModuleConfig']['on_off_lang_symbol_num'];
     $symbol_num_in = $GLOBALS['xoopsModuleConfig']['on_off_lang_symbol_num_in'];
@@ -442,12 +418,16 @@ function lx_getinit($init)
     $symbol_nac_out= $GLOBALS['xoopsModuleConfig']['on_off_lang_symbol_l_out'];
     if (1 == $symbol_num) {
     for ($a = $symbol_num_in; $a < ($symbol_num_in + $symbol_num_out); ++$a) {
+=======
+    echo "<option value='#'>&nbsp; # &nbsp;</option>";
+    for ($a = 48; $a < (48 + 10); ++$a) {
+>>>>>>> .merge_file_a07544
         if (uchr($a) == $init) {
             $opt_selected = 'selected';
         } else {
             $opt_selected = '';
         }
-        echo "<option value='" . uchr($a) . "' $opt_selected>&nbsp;" . uchr($a) . "&nbsp;</option>";
+        echo "<option value='" . uchr($a) . "' $opt_selected>&nbsp;" . uchr($a) . '&nbsp;</option>';
     }
     }
     if (1 == $symbol_def) {
@@ -457,24 +437,43 @@ function lx_getinit($init)
         } else {
             $opt_selected = '';
         }
-        echo "<option value='" . uchr($a) . "' $opt_selected>&nbsp;" . uchr($a) . "&nbsp;</option>";
+        echo "<option value='" . uchr($a) . "' $opt_selected>&nbsp;" . uchr($a) . '&nbsp;</option>';
     }
+<<<<<<< .merge_file_a06236
     }
     if (1 == $symbol_nac) {
     for ($a = $symbol_nac_in; $a < ($symbol_nac_in + $symbol_nac_out); ++$a) { 
         if (uchr($a) == $init) {    
+=======
+    /*for ($a = 1040; $a < (1040 + 32); ++$a) {
+        if (uchr($a) == $init) {
+>>>>>>> .merge_file_a07544
             $opt_selected = 'selected';
         } else {
             $opt_selected = '';
         }
         echo "<option value='" . uchr($a) . "' $opt_selected>&nbsp;" . uchr($a) . "&nbsp;</option>";
+<<<<<<< .merge_file_a06236
     }
     } 
     echo "</select></div>";
+=======
+    }*/
+    echo '</select></div>';
+>>>>>>> .merge_file_a07544
 }
-function uchr($a) {
-    if (is_scalar($a)) $a= func_get_args();
-    $str= '';
-    foreach ($a as $code) $str.= html_entity_decode('&#'.$code.';',ENT_NOQUOTES,'UTF-8');
+/**
+ * @param $a
+ * @return string
+ */
+function uchr($a)
+{
+    if (is_scalar($a)) {
+        $a = func_get_args();
+    }
+    $str = '';
+    foreach ($a as $code) {
+        $str .= html_entity_decode('&#' . $code . ';', ENT_NOQUOTES, 'UTF-8');
+    }
     return $str;
 }

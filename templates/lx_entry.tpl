@@ -24,6 +24,7 @@
         <div class="bubble_bottom"></div>
     </div>
 <{/if}>
+<<<<<<< HEAD
 <table id="moduleheader">
     <tr>
         <td width="100%"><span class="leftheader"><a href="<{$xoops_url}>"><{$smarty.const._MD_LEXIKON_HOME}></a>
@@ -55,9 +56,36 @@
                     <{if $totalother > 0}></a><{/if}>
             </div></td></tr></table>
         </fieldset>
-    </div>
-</div>
+=======
+<div id="moduleheader">
+    <div class="leftheader"><{$smarty.const._MD_LEXIKON_HOME}>&nbsp;<img src='assets/images/arrow.gif' style="vertical-align:middle;" alt="<{$lang_modulename}>">&nbsp;
+        <a href="<{$xoops_url}>/modules/<{$lang_moduledirname}>/"><{$lang_modulename}></a>&nbsp;<img src='assets/images/arrow.gif' style="vertical-align:middle;" alt="<{$thisterm.init}>">&nbsp;
+        <a href="<{$xoops_url}>/modules/<{$lang_moduledirname}>/letter.php?init=<{$thisterm.init}>"><{$thisterm.init}></a>&nbsp;<img src='assets/images/arrow.gif' style="vertical-align:middle;" alt="<{$thisterm.term}>">&nbsp;<{$thisterm.term}></div>
+    <div class="rightheader"><{$lang_modulename}></div>
+    <hr style="clear: both;">
 
+    <{* Alphabet block *}>
+    <div class="clearer">
+        <div class="toprow">
+            <fieldset>
+                <legend>&nbsp;<{$smarty.const._MD_LEXIKON_BROWSELETTER}>&nbsp;</legend>
+                <div class="search_abc_l">
+                    <a href="<{$xoops_url}>/modules/<{$lang_moduledirname}>/letter.php"><abbr name="[&nbsp;<{$publishedwords}>&nbsp;]"><{$smarty.const._MD_LEXIKON_ALL}></abbr></a></div>
+                <div class="search_abc_c">&nbsp;|
+                    <{foreach item=letterlinks from=$alpha.initial}>
+                        <{if $letterlinks.total > 0}>&nbsp;<a href="<{$xoops_url}>/modules/<{$lang_moduledirname}>/letter.php?init=<{$letterlinks.id}>"><abbr name="[&nbsp;<{$letterlinks.total}>&nbsp;]"><{/if}><{$letterlinks.linktext}></abbr>
+                        <{if $letterlinks.total > 0}></a><{/if}>&nbsp;|
+                    <{/foreach}></div>
+                <div class="search_abc_r">
+                    <{if $totalother > 0}>&nbsp;<a href="<{$xoops_url}>/modules/<{$lang_moduledirname}>/letter.php?init=<{$smarty.const._MD_LEXIKON_OTHER}>"><abbr name="[&nbsp;<{$totalother}>&nbsp;]"><{/if}><{$smarty.const._MD_LEXIKON_OTHER}></abbr>
+                        <{if $totalother > 0}></a><{/if}>
+                </div>
+            </fieldset>
+        </div>
+>>>>>>> f647f3534809e24590f87b815c527a51008c378b
+    </div>
+
+<<<<<<< HEAD
 <{* Category block *}>
 <{if $layout == '0'}>
     <{if $multicats == 1 && count($block0.categories) gt 0 }>
@@ -101,10 +129,59 @@
                 <legend><{$smarty.const._MD_LEXIKON_BROWSECAT}></legend>
                 <div class="letters" style="margin:1em 0;width:100%;padding:0;text-align:center;line-height:1.3em;">
                     <{foreach item=catlinks from=$block0.categories}>
+=======
+    <{* Category block *}>
+    <{if $layout == '0'}>
+        <{if $multicats == 1 && count($block0.categories) gt 0 }>
+            <div class="clearer">
+                <fieldset>
+                    <legend>&nbsp;<{$smarty.const._MD_LEXIKON_BROWSECAT}>&nbsp;</legend>
+                    <table id="Lxcategory">
+                        <tr>
+                            <td>
+                                <a href="<{$xoops_url}>/modules/<{$lang_moduledirname}>/category.php"
+                                   title="[&nbsp;<{$publishedwords}>&nbsp;]"><{$smarty.const._MD_LEXIKON_ALLCATS}></a>
+                                [<{$publishedwords}>]
+                            </td>
+                            <!-- Start category loop -->
+                            <{foreach item=catlinks from=$block0.categories}>
+                            <td>
+                                <{if $catlinks.image != "" && $show_screenshot == true}>
+                                    <a href="<{$xoops_url}>/modules/<{$lang_moduledirname}>/category.php?categoryID=<{$catlinks.id}>"
+                                       target="_parent"><img
+                                                src="<{$xoops_url}>/uploads/<{$lang_moduledirname}>/categories/images/<{$catlinks.image}>"
+                                                style="width:<{$logo_maximgwidth}>; text-align: left;" class="floatLeft"
+                                                alt="[&nbsp;<{$catlinks.name}>&nbsp;]&nbsp;[&nbsp;<{$catlinks.total}>&nbsp;]"></a>
+                                <{/if}>
+                                <{if $catlinks.count > 0}>
+                                    <{if $catlinks.total > 0}><a href="<{$xoops_url}>/modules/<{$lang_moduledirname}>/category.php?categoryID=<{$catlinks.id}>" title="[&nbsp;<{$catlinks.total}>&nbsp;]"><{/if}><{$catlinks.linktext}>
+                                    <{if $catlinks.total > 0}></a>&nbsp;<{/if}>[&nbsp;<{$catlinks.total}>&nbsp;]
+                                <{/if}>
+                            </td>
+                            <{if $catlinks.count is div by 4}>
+                        </tr>
+                        <tr>
+                            <{/if}>
+                            <{/foreach}>
+                            <!-- End category loop -->
+            </div>
+            </tr>
+            </table>
+            </fieldset>
+        <{/if}>
+    <{else}>
+        <{if $multicats == 1}>
+            <div class="clearer">
+                <fieldset>
+                    <legend>&nbsp;<{$smarty.const._MD_LEXIKON_BROWSECAT}>&nbsp;</legend>
+                    <div class="letters">
+                        <{foreach item=catlinks from=$block0.categories}>
+>>>>>>> f647f3534809e24590f87b815c527a51008c378b
                         <{if $catlinks.image != "" && $show_screenshot == true}>
                             <a href="<{$xoops_url}>/modules/<{$lang_moduledirname}>/category.php?categoryID=<{$category.id}>"
                                target="_parent">
                                 <img src="<{$xoops_url}>/uploads/<{$lang_moduledirname}>/categories/images/<{$catlinks.image}>"
+<<<<<<< HEAD
                                      width="<{$logo_maximgwidth}>" align="middle"
                                      alt="[<{$catlinks.total}>]"/></A>
                         <{/if}>
@@ -116,8 +193,21 @@
                 </div>
             </fieldset>
         </div>
+=======
+                                     style="width:<{$logo_maximgwidth}> vertical-align:middle;"
+                                     alt="[&nbsp;<{$catlinks.total}>&nbsp;]"></a>
+                        <{/if}>
+                        <{if $catlinks.total > 0}>&nbsp;<a href="<{$xoops_url}>/modules/<{$lang_moduledirname}>/category.php?categoryID=<{$catlinks.id}>" title="[&nbsp;<{$catlinks.total}>&nbsp;]"><{/if}><{$catlinks.linktext}>
+                        <{if $catlinks.total > 0}></a>&nbsp;<{/if}>[&nbsp;<{$catlinks.total}>&nbsp;]
+                        <{/foreach}>&nbsp;
+                        <a href="<{$xoops_url}>/modules/<{$lang_moduledirname}>/category.php"
+                           title="[&nbsp;<{$publishedwords}>&nbsp;]"><{$smarty.const._MD_LEXIKON_ALLCATS}></a>&nbsp;[&nbsp;<{$publishedwords}>&nbsp;]
+                    </div>
+                </fieldset>
+            </div>
+        <{/if}>
+>>>>>>> f647f3534809e24590f87b815c527a51008c378b
     <{/if}>
-<{/if}>
 
 <b>
     <{if $multicats == 1}>
@@ -139,7 +229,11 @@
     <{/if}>
 
     <div class="clearer">
+<<<<<<< HEAD
         <div align="right" style="margin:0 1.0em 0 0;"><br><span class="standard"><span style="color: #4e505c; ">
+=======
+        <div style="margin:0 1.0em 0 0; text-align:right;"><br><span class="standard"><span style="color: #4e505c; ">
+>>>>>>> f647f3534809e24590f87b815c527a51008c378b
 <{$smarty.const._MD_LEXIKON_SUBMITTED}>
                     <{if $showsubmitter }><{$submitter}><{/if}> <{$submittedon}><br>
                     <{$counter}> </span></span></p></div>
@@ -150,6 +244,7 @@
         &nbsp; <!-- AddThis Bookmark Button -->
         <a href="http://www.addthis.com/bookmark.php"
            onclick="addthis_url = location.href; addthis_title = document.title; return addthis_click(this);"
+<<<<<<< HEAD
            target="_blank">
     <img src="assets/images/addthis_button1-bm.gif" align="absmiddle" width="125" height="16" border="0"
          alt="AddThis Social Bookmark Button"/></a>
@@ -167,6 +262,16 @@
 
 
 
+=======
+           target="_blank"><img src="assets/images/addthis_button1-bm.gif" style="vertical-align: middle; width:125px; height:16px;" alt="AddThis Social Bookmark Button"></a>
+        <script type="text/javascript">var addthis_pub = 'JJXUY2C9CQIWTKI1';</script>
+        <script type="text/javascript" src="http://s9.addthis.com/js/widget.php?v=10"></script>
+
+<{elseif $bookmarkme == 4}>
+    &nbsp; <!-- AddThis Bookmark dropdown -->
+
+
+>>>>>>> f647f3534809e24590f87b815c527a51008c378b
         <script type="text/javascript">
       addthis_url = location.href;
       addthis_title = document.title;
@@ -204,7 +309,13 @@
             <!-- end comments loop -->
             <!-- end comments -->
         </div>
+<<<<<<< HEAD
 
         <br>
         <br>
         <{include file='db:system_notification_select.tpl'}>
+=======
+    </div>
+</div>
+<{include file='db:system_notification_select.tpl'}>
+>>>>>>> f647f3534809e24590f87b815c527a51008c378b

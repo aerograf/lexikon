@@ -23,6 +23,8 @@
 // ------------------------------------------------------------------------ //
 //////////////////////////////////////////////////////////////////////////////
 
+use Xmf\Request;
+
 require_once __DIR__ . '/admin_header.php';
 
 $op = '';
@@ -35,7 +37,7 @@ switch ($op) {
     default:
         xoops_cp_header();
         global $xoopsUser, $xoopsConfig, $xoopsDB, $xoopsModuleConfig, $xoopsModule;
-        $myts = MyTextSanitizer::getInstance();
+        $myts = \MyTextSanitizer::getInstance();
 }
 /****
  * Start Import
@@ -46,7 +48,7 @@ switch ($op) {
 function showerror($msg)
 {
     global $xoopsDB;
-    if ($xoopsDB->error() != '') {
+    if ('' != $xoopsDB->error()) {
         echo '<br>' . $msg . ' <br><span style="font-size: xx-small; "> - ' . _AM_LEXIKON_IMPORT_ERROR . ': ' . $xoopsDB->error() . '</span>.';
     } else {
         echo '<br>' . $msg . '' . _AM_LEXIKON_IMPORT_OK;
@@ -68,7 +70,7 @@ function import2db($text)
 function DefinitionImport($delete)
 {
     global $xoopsConfig, $xoopsDB, $xoopsModule;
-    $myts     = MyTextSanitizer::getInstance();
+    $myts     = \MyTextSanitizer::getInstance();
     $sqlQuery = $xoopsDB->query('SELECT count(entryID) AS count FROM ' . $xoopsDB->prefix('xwords_ent'));
     list($count) = $xoopsDB->fetchRow($sqlQuery);
     if ($count < 1) {
@@ -96,12 +98,12 @@ function DefinitionImport($delete)
         // delete notifications
         xoops_notification_deletebymodule($xoopsModule->getVar('mid'));
         //get all entries
-        $result3 = $xoopsDB->query('SELECT entryID FROM ' . $xoopsDB->prefix('lxentries') . '');
+        $result3 = $xoopsDB->query('SELECT entryID FROM ' . $xoopsDB->prefix('lxentries') . ' ');
         //delete comments for each entry
         while (list($entryID) = $xoopsDB->fetchRow($result3)) {
             xoops_comment_delete($xoopsModule->getVar('mid'), $entryID);
         }
-        $resultC = $xoopsDB->query('SELECT categoryID FROM ' . $xoopsDB->prefix('lxcategories') . '');
+        $resultC = $xoopsDB->query('SELECT categoryID FROM ' . $xoopsDB->prefix('lxcategories') . ' ');
         while (list($categoryID) = $xoopsDB->fetchRow($resultC)) {
             // delete permissions
             xoops_groupperm_deletebymoditem($xoopsModule->getVar('mid'), 'lexikon_view', $categoryID);
@@ -224,11 +226,11 @@ function DefinitionImport($delete)
     list($xwdID) = $xoopsDB->fetchRow($sqlQuery);
     echo '<p>' . _AM_LEXIKON_IMPORT_MODULE_ID . ': ' . $xwdID . '</p>';
     echo '<p>' . _AM_LEXIKON_IMPORT_MODULE_LEX_ID . ': ' . $xoopsModule->getVar('mid') . '</p>';
-    echo "<p>" . _AM_LEXIKON_IMPORT_UPDATE_COUNT . "</p>";
-    echo "<p><span style='color:red'>" . _AM_LEXIKON_IMPORT_INCORRECTLY . ": " . $errorcounter . '</span></p>';
-    echo "<p>" . _AM_LEXIKON_IMPORT_PROCESSED . ": " . $glocounter . "</p>";
-    echo "<h3>" . _AM_LEXIKON_IMPORT_FINISH . "</h3>";
-    echo "<br><b><a href='import.php'>" . _AM_LEXIKON_IMPORT_TO_ADMIN . "</a></b><p>";
+    echo '<p>' . _AM_LEXIKON_IMPORT_UPDATE_COUNT . '</p>';
+    echo "<p><span style='color:red'>" . _AM_LEXIKON_IMPORT_INCORRECTLY . ': ' . $errorcounter . '</span></p>';
+    echo '<p>' . _AM_LEXIKON_IMPORT_PROCESSED . ': ' . $glocounter . '</p>';
+    echo '<h3>' . _AM_LEXIKON_IMPORT_FINISH . '</h3>';
+    echo "<br><b><a href='import.php'>" . _AM_LEXIKON_IMPORT_TO_ADMIN . '</a></b><p>';
     require_once __DIR__ . '/admin_footer.php';
 }
 
@@ -240,9 +242,7 @@ function FormImport()
 {
     global $xoopsConfig, $xoopsDB, $xoopsModule;
     //lx_importMenu(9);
-        echo "<strong style='color: #2F5376; margin-top:6px; font-size:medium'>"
-        . _AM_LEXIKON_IMPORT_XWORDS
-        . "</strong><br><br>";
+    echo "<strong style='color: #2F5376; margin-top:6px; font-size:medium'>" . _AM_LEXIKON_IMPORT_XWORDS . '</strong><br><br>';
     /** @var XoopsModuleHandler $moduleHandler */
     $moduleHandler = xoops_getHandler('module');
     $xwordsModule  = $moduleHandler->getByDirname('xwords');
@@ -250,55 +250,33 @@ function FormImport()
     if (is_object($xwordsModule)) {
         echo "<table style='width:100%; border:0;' class='outer'>";
         echo '<tr>';
-        echo "<td colspan='2' class='bg3' style='text-align:left;'><span style='font-size: x-small; '><b>"
-        . _AM_LEXIKON_MODULEHEADIMPORTXWO
-        . '</b></span></td>';
+        echo "<td colspan='2' class='bg3' style='text-align:left;'><span style='font-size: x-small; '><b>" . _AM_LEXIKON_MODULEHEADIMPORTXWO . '</b></span></td>';
         echo '</tr>';
 
         echo '<tr>';
-        echo "<td class='head' style='width:200px; text-align:center;'><img src='"
-             . XOOPS_URL
-             . '/modules/'
-             . $xoopsModule->dirname()
-             . '/assets/images/dialog-important.png'
-             . "' alt='' style='margin-right:10px;  margin-top:20px; text-align:middle;'></td>";
-        echo "<td class='even' style='text-align:center;'><br><b><span style='font-size:x-small; color:red;'>"
-        . _AM_LEXIKON_IMPORTWARN
-        . '</span></b></td>';
+        echo "<td class='head' style='width:200px; text-align:center;'><img src='" . XOOPS_URL . '/modules/' . $xoopsModule->dirname() . '/assets/images/dialog-important.png' . "' alt='' style='margin-right:10px;  margin-top:20px; text-align:middle;'></td>";
+        echo "<td class='even' style='text-align:center;'><br><b><span style='font-size:x-small; color:red;'>" . _AM_LEXIKON_IMPORTWARN . '</span></b></td>';
         echo '</tr>';
 
         echo '<tr>';
-        echo "<td class='head' style='width:200px; text-align:left'><span style='font-size:x-small;'>"
-        . _AM_LEXIKON_IMPORTDELWB
-        . '</span></td>';
+        echo "<td class='head' style='width:200px; text-align:left'><span style='font-size:x-small;'>" . _AM_LEXIKON_IMPORTDELWB . '</span></td>';
         echo "<td class='even' style='text-align:center;'><form action='importdictionary.php?op=import' method=POST>
-        <input type='radio' name='delete' value='1'>&nbsp;"
-        . _YES
-        . "&nbsp;&nbsp;
-        <input type='radio' name='delete' value='0' checked>&nbsp;"
-        . _NO
-        . '</td>';
+        <input type='radio' name='delete' value='1'>&nbsp;" . _YES . "&nbsp;&nbsp;
+        <input type='radio' name='delete' value='0' checked>&nbsp;" . _NO . '</td>';
         echo "</tr><tr><td class='head' style='width:200px; text-align:center;'>&nbsp;</td>";
         echo "<td class='even' style='text-align:center;'>
-        <input type='submit' name='button' id='import' value='"
-        . _AM_LEXIKON_IMPORT
-        . "'>&nbsp;
-        <input type='button' name='cancel' value='"
-        . _CANCEL
-        . "' onclick='history.go(-1);'></td>";
+        <input type='submit' name='button' id='import' value='" . _AM_LEXIKON_IMPORT . "'>&nbsp;
+        <input type='button' name='cancel' value='" . _CANCEL . "' onclick='history.go(-1);'></td>";
         echo "</tr></table><br>\n";
     } else {
-        echo "<br><b><span style='color:red'>"
-        . _AM_LEXIKON_IMPORT_ERROR_MODULE
-        . "</span></b><br><br><a href='import.php'><button>"
-        . _AM_LEXIKON_BACK
-        ."</button></a>";
+        echo "<br><b><span style='color:red'>" . _AM_LEXIKON_IMPORT_ERROR_MODULE . "</span></b><br><br><a href='import.php'><button>" . _AM_LEXIKON_BACK . '</button></a>';
     }
     require_once __DIR__ . '/admin_footer.php';
 }
 
 global $op;
-$op = isset($_GET['op']) ? $_GET['op'] : (isset($_POST['op']) ? $_POST['op'] : '');
+$op = Request::getCmd('op', '');
+
 switch ($op) {
     case 'import':
         $delete = isset($_GET['delete']) ? (int)$_GET['delete'] : (int)$_POST['delete'];

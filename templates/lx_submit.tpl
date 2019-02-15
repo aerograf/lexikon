@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 <table id="moduleheader">
     <tr>
         <td width="100%"><span class="leftheader"><a href="<{$xoops_url}>"><{$smarty.const._MD_LEXIKON_HOME}></a> <img
@@ -9,6 +10,16 @@
         <td width="100"><span class="rightheader"><{$lang_modulename}></span></td>
     </tr>
 </table>
+=======
+<div id="moduleheader">
+    <div class="leftheader"><{$smarty.const._MD_LEXIKON_HOME}></a>&nbsp;<img
+                src='assets/images/arrow.gif' style="vertical-align:middle;" alt="<{$lang_modulename}>">&nbsp;<a
+                href="<{$xoops_url}>/modules/<{$lang_moduledirname}>/index.php"><{$lang_modulename}></a>&nbsp;<img
+                src='assets/images/arrow.gif' style="vertical-align:middle;" alt="<{$lang_modulename}>">&nbsp;<{$smarty.const._MD_LEXIKON_SUBMITART}></div>
+    <div class="rightheader"><{$lang_modulename}></div>
+</div>
+<hr style="clear: both;">
+>>>>>>> f647f3534809e24590f87b815c527a51008c378b
 
 <h3 class="cat"><{$send_def_to}></h3>
 <p class='intro'><{$smarty.const._MD_LEXIKON_GOODDAY}>
