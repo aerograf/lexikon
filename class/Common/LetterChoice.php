@@ -1,4 +1,7 @@
-<?php namespace XoopsModules\Lexikon\Common;
+<?php
+
+namespace XoopsModules\Lexikon\Common;
+
 /*
  You may not change or alter any portion of this comment or credits
  of supporting developers from this source code or any supporting source code
@@ -8,6 +11,7 @@
  but WITHOUT ANY WARRANTY; without even the implied warranty of
  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
  */
+
 /**
  * LetterChoice class
  *
@@ -23,11 +27,12 @@
  * echo $choicebyletter->render();
  */
 
-use XoopsModules\Lexikon;
+use XoopsModules\Lexikon\{
+    Helper
+};
+/** @var Helper $this ->helper */
 
-
-defined('XOOPS_ROOT_PATH') || die('XOOPS root path not defined');
-require_once __DIR__ . '/../../include/common.php';
+// require_once  dirname(dirname(__DIR__)) . '/include/common.php';
 
 /**
  * Class LetterChoice
@@ -38,7 +43,6 @@ class LetterChoice
      * @access public
      */
     public $helper = null;
-
     /**
      * *#@+
      *
@@ -52,9 +56,15 @@ class LetterChoice
     private $url;
     private $extra;
     private $caseSensitive;
-
     /**
      * *#@-
+     * @param mixed      $objHandler
+     * @param null|mixed $criteria
+     * @param null|mixed $field_name
+     * @param mixed      $arg_name
+     * @param null|mixed $url
+     * @param mixed      $extra_arg
+     * @param mixed      $caseSensitive
      */
 
     /**
@@ -62,12 +72,12 @@ class LetterChoice
      *
      * @param \XoopsPersistableObjectHandler $objHandler {@link XoopsPersistableObjectHandler}
      * @param \CriteriaElement               $criteria   {@link CriteriaElement}
-     * @param string                        $field_name search by field
-     * @param array                         $alphabet   array of alphabet letters
-     * @param string                        $arg_name   item on the current page
-     * @param string                        $url
-     * @param string                        $extra_arg  Additional arguments to pass in the URL
-     * @param boolean                       $caseSensitive
+     * @param string                         $field_name search by field
+     * @param array                          $alphabet   array of alphabet letters
+     * @param string                         $arg_name   item on the current page
+     * @param string                         $url
+     * @param string                         $extra_arg  Additional arguments to pass in the URL
+     * @param bool                           $caseSensitive
      */
     public function __construct(
         $objHandler,
@@ -79,17 +89,16 @@ class LetterChoice
         $extra_arg = '',
         $caseSensitive = false
     ) {
-
-        $this->helper     = Lexikon\Helper::getInstance();
+        $this->helper     = Helper::getInstance();
         $this->objHandler = $objHandler;
         $this->criteria   = null === $criteria ? new \CriteriaCompo() : $criteria;
         $this->field_name = null === $field_name ? $this->objHandler->identifierName : $field_name;
-//        $this->alphabet   = (count($alphabet) > 0) ? $alphabet : range('a', 'z'); // is there a way to get locale alphabet?
-//        $this->alphabet       = getLocalAlphabet();
-        $this->alphabet = include __DIR__ . '/../../language/'.$GLOBALS['xoopsConfig']['language'] .'/alphabet.php';
-        $this->arg_name    = $arg_name;
-        $this->url         = null === $url ? $_SERVER['PHP_SELF'] : $url;
-        if ('' !== $extra_arg && ('&amp;' !== substr($extra_arg, -5) || '&' !== substr($extra_arg, -1))) {
+        //        $this->alphabet   = (count($alphabet) > 0) ? $alphabet : range('a', 'z'); // is there a way to get locale alphabet?
+        //        $this->alphabet       = getLocalAlphabet();
+        $this->alphabet = require_once dirname(dirname(__DIR__)) . '/language/' . $GLOBALS['xoopsConfig']['language'] . '/alphabet.php';
+        $this->arg_name = $arg_name;
+        $this->url      = null === $url ? $_SERVER['SCRIPT_NAME'] : $url;
+        if ('' !== $extra_arg && ('&amp;' !== mb_substr($extra_arg, -5) || '&' !== mb_substr($extra_arg, -1))) {
             $this->extra = '&amp;' . $extra_arg;
         }
         $this->caseSensitive = $caseSensitive;
@@ -98,20 +107,21 @@ class LetterChoice
     /**
      * Create choice by letter
      *
+     * @param null $alphaCount
+     * @param null $howmanyother
      * @return string
      */
     public function render($alphaCount = null, $howmanyother = null)
     {
-        $moduleDirName = basename(dirname(dirname(__DIR__)));
-        $moduleDirNameUpper = strtoupper($moduleDirName);
+        $moduleDirName      = basename(dirname(dirname(__DIR__)));
+        $moduleDirNameUpper = mb_strtoupper($moduleDirName);
         xoops_loadLanguage('common', $moduleDirName);
         xoops_loadLanguage('alphabet', $moduleDirName);
-        $all = constant('CO_' . $moduleDirNameUpper . '_ALL');
+        $all   = constant('CO_' . $moduleDirNameUpper . '_ALL');
         $other = constant('CO_' . $moduleDirNameUpper . '_OTHER');
 
-
         $ret = '';
-        //
+
         if (!$this->caseSensitive) {
             $this->criteria->setGroupBy('UPPER(LEFT(' . $this->field_name . ',1))');
         } else {
@@ -121,21 +131,20 @@ class LetterChoice
         $countsByLetters = $this->objHandler->getCounts($this->criteria);
         // fill alphabet array
         $alphabetArray = [];
-        $letter_array = [];
+        $letter_array  = [];
 
-        $letter = 'All';
+        $letter                 = 'All';
         $letter_array['letter'] = $all;
         $letter_array['count']  = $alphaCount;
-        $letter_array['url']    = $this->url ;
+        $letter_array['url']    = $this->url;
         $alphabetArray[$letter] = $letter_array;
-
 
         foreach ($this->alphabet as $letter) {
             $letter_array = [];
             if (!$this->caseSensitive) {
-                if (isset($countsByLetters[strtoupper($letter)])) {
+                if (isset($countsByLetters[mb_strtoupper($letter)])) {
                     $letter_array['letter'] = $letter;
-                    $letter_array['count']  = $countsByLetters[strtoupper($letter)];
+                    $letter_array['count']  = $countsByLetters[mb_strtoupper($letter)];
                     $letter_array['url']    = $this->url . '?' . $this->arg_name . '=' . $letter . $this->extra;
                 } else {
                     $letter_array['letter'] = $letter;
@@ -157,10 +166,9 @@ class LetterChoice
             unset($letter_array);
         }
 
-
         $letter_array['letter'] = $other;
         $letter_array['count']  = $howmanyother;
-        $letter_array['url']    = $this->url. '?init=Other' ;
+        $letter_array['url']    = $this->url . '?init=Other';
         $alphabetArray[$letter] = $letter_array;
 
         // render output

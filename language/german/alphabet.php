@@ -41,6 +41,5 @@ return [
     'Ö',
     'Ü',
     'ß',
-    'Andere'
+    'Andere',
 ];
-

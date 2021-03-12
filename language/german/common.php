@@ -8,18 +8,18 @@
  but WITHOUT ANY WARRANTY; without even the implied warranty of
  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
  */
+
 /**
  * Wfdownloads module
  *
  * @copyright       XOOPS Project (https://xoops.org)
- * @license         GNU GPL 2 or later (http://www.gnu.org/licenses/gpl-2.0.html)
+ * @license         GNU GPL 2 or later (https://www.gnu.org/licenses/gpl-2.0.html)
  * @package         wfdownload
  * @since           3.23
  * @author          Xoops Development Team
  */
-
 $moduleDirName      = basename(dirname(dirname(__DIR__)));
-$moduleDirNameUpper = strtoupper($moduleDirName);
+$moduleDirNameUpper = mb_strtoupper($moduleDirName);
 
 define('CO_' . $moduleDirNameUpper . '_GDLIBSTATUS', 'GD library support: ');
 define('CO_' . $moduleDirNameUpper . '_GDLIBVERSION', 'GD Library version: ');
@@ -72,5 +72,3 @@ define('CO_' . $moduleDirNameUpper . '_SUPPORT', 'Support');
 define('CO_' . $moduleDirNameUpper . '_' . 'BROWSETOTOPIC', "<span style='font-weight: bold;'>Browse items alphabetically</span>");
 define('CO_' . $moduleDirNameUpper . '_OTHER', 'Другое');
 define('CO_' . $moduleDirNameUpper . '_ALL', 'Все');
-
-

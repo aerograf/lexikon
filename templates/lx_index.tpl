@@ -87,7 +87,7 @@
         </div>
 >>>>>>> f647f3534809e24590f87b815c527a51008c378b
     </div>
-    <{if $teaser == true}>
+    <{if $teaser === true}>
         <div class="teaser"><{$teaser}></div>
     <{/if}>
 
@@ -197,7 +197,7 @@
                             <!-- Start category loop -->
                             <{foreach item=catlinks from=$block0.categories}>
                             <td>
-                                <{if $catlinks.image != "" && $show_screenshot == true}>
+                                <{if $catlinks.image != "" && $show_screenshot === true}>
                                     <a href="<{$xoops_url}>/modules/<{$lang_moduledirname}>/category.php?categoryID=<{$catlinks.id}>"
                                        target="_parent"><img
                                                 src="<{$xoops_url}>/uploads/<{$lang_moduledirname}>/categories/images/<{$catlinks.image}>"
@@ -209,7 +209,7 @@
                                     <{if $catlinks.total > 0}></a>&nbsp;<{/if}>[&nbsp;<{$catlinks.total}>&nbsp;]
                                 <{/if}>
                             </td>
-                            <{if $catlinks.count is div by 4}>
+                            <{if $catlinks.count % 4 == 0}>
                         </tr>
                         <tr>
                             <{/if}>
@@ -227,8 +227,12 @@
                     <legend>&nbsp;<{$smarty.const._MD_LEXIKON_BROWSECAT}>&nbsp;</legend>
                     <div class="letters">
                         <{foreach item=catlinks from=$block0.categories}>
+<<<<<<< HEAD
 >>>>>>> f647f3534809e24590f87b815c527a51008c378b
                         <{if $catlinks.image != "" && $show_screenshot == true}>
+=======
+                        <{if $catlinks.image != "" && $show_screenshot === true}>
+>>>>>>> 9284f85619b90994a11e8cfdc14b806f5475a5a0
                             <a href="<{$xoops_url}>/modules/<{$lang_moduledirname}>/category.php?categoryID=<{$category.id}>"
                                target="_parent">
                                 <img src="<{$xoops_url}>/uploads/<{$lang_moduledirname}>/categories/images/<{$catlinks.image}>"
@@ -337,7 +341,7 @@
         <fieldset>
             <legend>&nbsp;<{$smarty.const._MD_LEXIKON_RECENTENT}>&nbsp;</legend>
             <ul>
-                <{foreach item=newentries from=$block.newstuff}>
+                <{foreach item=newentries from=$block.newstuff|default:null}>
                     <li>
                         <a href="<{$xoops_url}>/modules/<{$lang_moduledirname}>/entry.php?entryID=<{$newentries.id}>"><{$newentries.linktext}></a>&nbsp;<{if $showdate == 1}>
                         <span style="font-size: xx-small; color: #456;">[&nbsp;<{$newentries.date}>&nbsp;]</span><{/if}>
@@ -351,7 +355,7 @@
         <fieldset>
             <legend>&nbsp;<{$smarty.const._MD_LEXIKON_POPULARENT}>&nbsp;</legend>
             <ul>
-                <{foreach item=popentries from=$block2.popstuff}>
+                <{foreach item=popentries from=$block2.popstuff|default:null}>
                     <li>
                         <a href="<{$xoops_url}>/modules/<{$lang_moduledirname}>/entry.php?entryID=<{$popentries.id}>"><{$popentries.linktext}></a>&nbsp;<{if $showcount == 1}>
                         <span style="font-size: xx-small; color: #456;">[&nbsp;<{$popentries.counter}>&nbsp;]</span><{/if}>
@@ -384,9 +388,9 @@
                 <{/if}>
             <{/if}>
             <div class="pad4">
-                <h5 class="term"><{$microlinks}><a href="<{$xoops_url}>/modules/<{$lang_moduledirname}>/entry.php?entryID=<{$random.id}>"><{$random.term}></a>
+                <h5 class="term"><{$microlinks|default:''}><a href="<{$xoops_url}>/modules/<{$lang_moduledirname}>/entry.php?entryID=<{$random.id|default:''}>"><{$random.term|default:''}></a>
                 </h5>
-                <div class="nopadding"><{$random.definition}></div>
+                <div class="nopadding"><{$random.definition|default:''}></div>
             </div>
         </fieldset>
     </div>
@@ -408,7 +412,7 @@
                 <div class="submission">
                     <b><{$smarty.const._MD_LEXIKON_SUB}></b>
                     <{if $wehavesubs == '0'}><{$smarty.const._MD_LEXIKON_NOSUB}><{/if}>
-                    <{foreach item=subentries from=$blockS.substuff}>
+                    <{foreach item=subentries from=$blockS.substuff|default:null}>
                         <a href="<{$xoops_url}>/modules/<{$lang_moduledirname}>/admin/entry.php?op=mod&entryID=<{$subentries.id}>"><{$subentries.linktext}></a>
                         &nbsp;
                     <{/foreach}>
@@ -416,7 +420,7 @@
                 <div class="request">
                     <b><{$smarty.const._MD_LEXIKON_REQ}></b>
                     <{if $wehavereqs == '0'}><{$smarty.const._MD_LEXIKON_NOREQ}><{/if}>
-                    <{foreach item=reqentries from=$blockR.reqstuff}>
+                    <{foreach item=reqentries from=$blockR.reqstuff|default:null}>
                         <a href="<{$xoops_url}>/modules/<{$lang_moduledirname}>/admin/entry.php?op=mod&entryID=<{$reqentries.id}>"><{$reqentries.linktext}></a>
                         &nbsp;
                     <{/foreach}>
@@ -435,7 +439,7 @@
                         <span style="font-size:80%;"><{$smarty.const._MD_LEXIKON_REQUESTSUGGEST}></span>
                         <br>
                     <{/if}>
-                    <{foreach item=reqentries from=$blockR.reqstuff}>
+                    <{foreach item=reqentries from=$blockR.reqstuff|default:null}>
                         <a href="<{$xoops_url}>/modules/<{$lang_moduledirname}>/submit.php?suggest=<{$reqentries.id}>"><{$reqentries.linktext}></a>
                         &nbsp;
                     <{/foreach}>
@@ -443,7 +447,7 @@
             </fieldset>
         </div>
     <{/if}>
-    <{if $syndication == true}>
+    <{if $syndication === true}>
         <div class="rss_bottom">
             <a href="rss.php" title="recent glossary definitions"><img src="assets/images/rss.gif" ALT="RSS"></a>
         </div>

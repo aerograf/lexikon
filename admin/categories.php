@@ -15,20 +15,20 @@
  *
  * @category        Module
  * @package         lexikon
- * @author          XOOPS Development Team <name@site.com> - <http://xoops.org>
+ * @author          XOOPS Development Team <name@site.com> - <https://xoops.org>
  * @copyright       {@link https://xoops.org/ XOOPS Project}
  * @license         GPL 2.0 or later
  * @link            https://xoops.org/
  * @since           1.0.0
  */
 
-use Xmf\Module\Admin;
-use Xmf\Database\Tables;
-use Xmf\Debug;
-use Xmf\Module\Helper;
 use Xmf\Module\Helper\Permission;
 use Xmf\Request;
-use XoopsModules\Lexikon;
+use XoopsModules\Lexikon\{
+    Helper,
+    Utility
+};
+/** @var Helper $helper */
 use XoopsModules\Lexikon\Form;
 
 require_once __DIR__ . '/admin_header.php';
@@ -40,7 +40,7 @@ $sort  = Request::getString('sort', '');
 
 $adminObject->displayNavigation(basename(__FILE__));
 /** @var Permission $permHelper */
-$permHelper = new Permission($moduleDirName);
+$permHelper = new \Xmf\Module\Helper\Permission($moduleDirName);
 $uploadDir  = XOOPS_UPLOAD_PATH . '/lexikon/images/';
 $uploadUrl  = XOOPS_UPLOAD_URL . '/lexikon/images/';
 
@@ -58,9 +58,9 @@ switch ($op) {
         $criteria->setLimit($categoriesPaginationLimit);
         $criteria->setStart($start);
         $categoriesTempRows  = $categoriesHandler->getCount();
-        $categoriesTempArray = $categoriesHandler->getAll($criteria);/*
+        $categoriesTempArray = $categoriesHandler->getAll($criteria); /*
 //
-// 
+//
                     <th class='center width5'>".AM_LEXIKON_FORM_ACTION."</th>
 //                    </tr>";
 //            $class = "odd";
@@ -94,8 +94,6 @@ switch ($op) {
         //    for ($i = 0; $i < $fieldsCount; ++$i) {
         if ($categoriesCount > 0) {
             foreach (array_keys($categoriesTempArray) as $i) {
-
-
                 //        $field = explode(':', $fields[$i]);
 
                 $selectorcategoryID = Lexikon\Utility::selectSorting(AM_LEXIKON_CATEGORIES_CATEGORYID, 'categoryID');
@@ -108,7 +106,7 @@ switch ($op) {
 
                 $selectordescription = Lexikon\Utility::selectSorting(AM_LEXIKON_CATEGORIES_DESCRIPTION, 'description');
                 $GLOBALS['xoopsTpl']->assign('selectordescription', $selectordescription);
-                $categoriesArray['description'] = ($categoriesTempArray[$i]->getVar('description'));
+                $categoriesArray['description'] = $categoriesTempArray[$i]->getVar('description');
 
                 $selectortotal = Lexikon\Utility::selectSorting(AM_LEXIKON_CATEGORIES_TOTAL, 'total');
                 $GLOBALS['xoopsTpl']->assign('selectortotal', $selectortotal);
@@ -164,7 +162,6 @@ switch ($op) {
         }
 
         break;
-
     case 'new':
         $adminObject->addItemButton(AM_LEXIKON_CATEGORIES_LIST, 'categories.php', 'list');
         echo $adminObject->displayButton('left');
@@ -173,7 +170,6 @@ switch ($op) {
         $form             = $categoriesObject->getForm();
         $form->display();
         break;
-
     case 'save':
         if (!$GLOBALS['xoopsSecurity']->check()) {
             redirect_header('categories.php', 3, implode(',', $GLOBALS['xoopsSecurity']->getErrors()));
@@ -193,19 +189,19 @@ switch ($op) {
         //===============================================================
 
         $mid = $GLOBALS['xoopsModule']->mid();
-        /** @var XoopsGroupPermHandler $gpermHandler */
-        $gpermHandler = xoops_getHandler('groupperm');
-        $categoryID   = Request::getInt('categoryID', 0);
+        /** @var \XoopsGroupPermHandler $grouppermHandler */
+        $grouppermHandler = xoops_getHandler('groupperm');
+        $categoryID       = Request::getInt('categoryID', 0);
 
         /**
          * @param $myArray
          * @param $permissionGroup
          * @param $categoryID
-         * @param $gpermHandler
+         * @param $grouppermHandler
          * @param $permissionName
          * @param $mid
          */
-        function setPermissions($myArray, $permissionGroup, $categoryID, $gpermHandler, $permissionName, $mid)
+        function setPermissions($myArray, $permissionGroup, $categoryID, $grouppermHandler, $permissionName, $mid)
         {
             $permissionArray = $myArray;
             if ($categoryID > 0) {
@@ -213,33 +209,33 @@ switch ($op) {
                 $GLOBALS['xoopsDB']->query($sql);
             }
             //admin
-            $gperm = $gpermHandler->create();
+            $gperm = $grouppermHandler->create();
             $gperm->setVar('gperm_groupid', XOOPS_GROUP_ADMIN);
             $gperm->setVar('gperm_name', $permissionName);
             $gperm->setVar('gperm_modid', $mid);
             $gperm->setVar('gperm_itemid', $categoryID);
-            $gpermHandler->insert($gperm);
+            $grouppermHandler->insert($gperm);
             unset($gperm);
             //non-Admin groups
             if (is_array($permissionArray)) {
                 foreach ($permissionArray as $key => $cat_groupperm) {
                     if ($cat_groupperm > 0) {
-                        $gperm = $gpermHandler->create();
+                        $gperm = $grouppermHandler->create();
                         $gperm->setVar('gperm_groupid', $cat_groupperm);
                         $gperm->setVar('gperm_name', $permissionName);
                         $gperm->setVar('gperm_modid', $mid);
                         $gperm->setVar('gperm_itemid', $categoryID);
-                        $gpermHandler->insert($gperm);
+                        $grouppermHandler->insert($gperm);
                         unset($gperm);
                     }
                 }
             } elseif ($permissionArray > 0) {
-                $gperm = $gpermHandler->create();
+                $gperm = $grouppermHandler->create();
                 $gperm->setVar('gperm_groupid', $permissionArray);
                 $gperm->setVar('gperm_name', $permissionName);
                 $gperm->setVar('gperm_modid', $mid);
                 $gperm->setVar('gperm_itemid', $categoryID);
-                $gpermHandler->insert($gperm);
+                $grouppermHandler->insert($gperm);
                 unset($gperm);
             }
         }
@@ -249,7 +245,7 @@ switch ($op) {
         $permissionName    = 'lexikon_view';
         $permissionArray   = Request::getArray($permissionGroup, '');
         $permissionArray[] = XOOPS_GROUP_ADMIN;
-        //setPermissions($permissionArray, $permissionGroup, $categoryID, $gpermHandler, $permissionName, $mid);
+        //setPermissions($permissionArray, $permissionGroup, $categoryID, $grouppermHandler, $permissionName, $mid);
         $permHelper->savePermissionForItem($permissionName, $categoryID, $permissionArray);
 
         //setPermissions for Submit items
@@ -257,7 +253,7 @@ switch ($op) {
         $permissionName    = 'lexikon_submit';
         $permissionArray   = Request::getArray($permissionGroup, '');
         $permissionArray[] = XOOPS_GROUP_ADMIN;
-        //setPermissions($permissionArray, $permissionGroup, $categoryID, $gpermHandler, $permissionName, $mid);
+        //setPermissions($permissionArray, $permissionGroup, $categoryID, $grouppermHandler, $permissionName, $mid);
         $permHelper->savePermissionForItem($permissionName, $categoryID, $permissionArray);
 
         //setPermissions for Approve items
@@ -265,7 +261,7 @@ switch ($op) {
         $permissionName    = 'lexikon_approve';
         $permissionArray   = Request::getArray($permissionGroup, '');
         $permissionArray[] = XOOPS_GROUP_ADMIN;
-        //setPermissions($permissionArray, $permissionGroup, $categoryID, $gpermHandler, $permissionName, $mid);
+        //setPermissions($permissionArray, $permissionGroup, $categoryID, $grouppermHandler, $permissionName, $mid);
         $permHelper->savePermissionForItem($permissionName, $categoryID, $permissionArray);
 
         /*
@@ -278,30 +274,30 @@ switch ($op) {
                         $GLOBALS['xoopsDB']->query($sql);
                     }
                     //admin
-                    $gperm = $gpermHandler->create();
+                    $gperm = $grouppermHandler->create();
                     $gperm->setVar('gperm_groupid', XOOPS_GROUP_ADMIN);
                     $gperm->setVar('gperm_name', 'lexikon_view');
                     $gperm->setVar('gperm_modid', $mid);
                     $gperm->setVar('gperm_itemid', $categoryID);
-                    $gpermHandler->insert($gperm);
+                    $grouppermHandler->insert($gperm);
                     unset($gperm);
                     if (is_array($arr_lexikon_view)) {
                         foreach ($arr_lexikon_view as $key => $cat_groupperm) {
-                            $gperm = $gpermHandler->create();
+                            $gperm = $grouppermHandler->create();
                             $gperm->setVar('gperm_groupid', $cat_groupperm);
                             $gperm->setVar('gperm_name', 'lexikon_view');
                             $gperm->setVar('gperm_modid', $mid);
                             $gperm->setVar('gperm_itemid', $categoryID);
-                            $gpermHandler->insert($gperm);
+                            $grouppermHandler->insert($gperm);
                             unset($gperm);
                         }
                     } else {
-                        $gperm = $gpermHandler->create();
+                        $gperm = $grouppermHandler->create();
                         $gperm->setVar('gperm_groupid', $arr_lexikon_view);
                         $gperm->setVar('gperm_name', 'lexikon_view');
                         $gperm->setVar('gperm_modid', $mid);
                         $gperm->setVar('gperm_itemid', $categoryID);
-                        $gpermHandler->insert($gperm);
+                        $grouppermHandler->insert($gperm);
                         unset($gperm);
                     }
         */
@@ -316,7 +312,6 @@ switch ($op) {
         $form = $categoriesObject->getForm();
         $form->display();
         break;
-
     case 'edit':
         $adminObject->addItemButton(AM_LEXIKON_ADD_CATEGORIES, 'categories.php?op=new', 'add');
         $adminObject->addItemButton(AM_LEXIKON_CATEGORIES_LIST, 'categories.php', 'list');
@@ -325,7 +320,6 @@ switch ($op) {
         $form             = $categoriesObject->getForm();
         $form->display();
         break;
-
     case 'delete':
         $categoriesObject = $categoriesHandler->get(Request::getString('categoryID', ''));
         if (1 == Request::getInt('ok', 0)) {
@@ -341,7 +335,6 @@ switch ($op) {
             xoops_confirm(['ok' => 1, 'categoryID' => Request::getString('categoryID', ''), 'op' => 'delete'], Request::getCmd('REQUEST_URI', '', 'SERVER'), sprintf(AM_LEXIKON_FORMSUREDEL, $categoriesObject->getVar('categoryID')));
         }
         break;
-
     case 'clone':
 
         $id_field = Request::getString('categoryID', '');

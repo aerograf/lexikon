@@ -1,12 +1,14 @@
 <?php
 
-defined('XOOPS_ROOT_PATH') || exit('Restricted access.');
+use Xmf\Request;
+
+defined('XOOPS_ROOT_PATH') || exit('Restricted access');
 
 /**
  * @param       $db
  * @param       $gperm_modid
- * @param  null $gperm_name
- * @param  null $gperm_itemid
+ * @param null  $gperm_name
+ * @param null  $gperm_itemid
  * @return bool
  */
 function myDeleteByModule(\XoopsDatabase $db, $gperm_modid, $gperm_name = null, $gperm_itemid = null)
@@ -26,29 +28,31 @@ function myDeleteByModule(\XoopsDatabase $db, $gperm_modid, $gperm_name = null, 
     return true;
 }
 
-// require_once __DIR__ . '/../../../include/cp_header.php'; GIJ
-$modid = isset($_POST['modid']) ? (int)$_POST['modid'] : 1;
+// require_once  dirname(dirname(dirname(__DIR__))) . '/include/cp_header.php'; GIJ
+$modid = Request::getInt('modid', 1, 'POST');
 // we dont want system module permissions to be changed here ( 1 -> 0 GIJ)
 if ($modid <= 0 || !is_object($xoopsUser) || !$xoopsUser->isAdmin($modid)) {
     redirect_header(XOOPS_URL . '/user.php', 1, _NOPERM);
 }
-/** @var XoopsModuleHandler $moduleHandler */
+/** @var \XoopsModuleHandler $moduleHandler */
 $moduleHandler = xoops_getHandler('module');
 $module        = $moduleHandler->get($modid);
 if (!is_object($module) || !$module->getVar('isactive')) {
     redirect_header(XOOPS_URL . '/admin.php', 1, _MODULENOEXIST);
 }
+/** @var \XoopsMemberHandler $memberHandler */
 $memberHandler = xoops_getHandler('member');
 $group_list    = $memberHandler->getGroupList();
 if (is_array($_POST['perms']) && !empty($_POST['perms'])) {
-    $gpermHandler = xoops_getHandler('groupperm');
+    /** @var \XoopsGroupPermHandler $grouppermHandler */
+    $grouppermHandler = xoops_getHandler('groupperm');
     foreach ($_POST['perms'] as $perm_name => $perm_data) {
         foreach ($perm_data['itemname'] as $item_id => $item_name) {
             // checking code
             // echo "<pre>" ;
             // var_dump( $_POST['perms'] ) ;
             // exit ;
-            if (false !== myDeleteByModule($gpermHandler->db, $modid, $perm_name, $item_id)) {
+            if (false !== myDeleteByModule($grouppermHandler->db, $modid, $perm_name, $item_id)) {
                 if (empty($perm_data['groups'])) {
                     continue;
                 }
@@ -67,12 +71,12 @@ if (is_array($_POST['perms']) && !empty($_POST['perms'])) {
                                 }
                             }
                         }
-                        $gperm = $gpermHandler->create();
+                        $gperm = $grouppermHandler->create();
                         $gperm->setVar('gperm_groupid', $group_id);
                         $gperm->setVar('gperm_name', $perm_name);
                         $gperm->setVar('gperm_modid', $modid);
                         $gperm->setVar('gperm_itemid', $item_id);
-                        if (!$gpermHandler->insert($gperm)) {
+                        if (!$grouppermHandler->insert($gperm)) {
                             $msg[] = sprintf(_MD_AM_PERMADDNG, '<b>' . $perm_name . '</b>', '<b>' . $perm_data['itemname'][$item_id] . '</b>', '<b>' . $group_list[$group_id] . '</b>');
                         } else {
                             $msg[] = sprintf(_MD_AM_PERMADDOK, '<b>' . $perm_name . '</b>', '<b>' . $perm_data['itemname'][$item_id] . '</b>', '<b>' . $group_list[$group_id] . '</b>');

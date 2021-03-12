@@ -1,10 +1,11 @@
 <?php
+
 /**
  * Module: Lexikon -  glossary module
  * Author: Yerres
  * Licence: GNU
  */
-defined('XOOPS_ROOT_PATH') || exit('Restricted access.');
+defined('XOOPS_ROOT_PATH') || exit('Restricted access');
 
 /**
  * @param $options
@@ -15,21 +16,23 @@ function b_lxcategories_show($options)
     global $xoopsDB, $xoopsUser;
     $myts = MyTextSanitizer:: getInstance();
 
-    /** @var XoopsModuleHandler $moduleHandler */
+    /** @var \XoopsModuleHandler $moduleHandler */
     $moduleHandler = xoops_getHandler('module');
     $lexikon       = $moduleHandler->getByDirname('lexikon');
     if (!isset($lxConfig)) {
+        /** @var \XoopsConfigHandler $configHandler */
         $configHandler = xoops_getHandler('config');
         $lxConfig      = $configHandler->getConfigsByCat(0, $lexikon->getVar('mid'));
     }
-    $groups       = is_object($xoopsUser) ? $xoopsUser->getGroups() : XOOPS_GROUP_ANONYMOUS;
-    $gpermHandler = xoops_getHandler('groupperm');
-    $module_id    = $lexikon->getVar('mid');
-    $allowed_cats = $gpermHandler->getItemIds('lexikon_view', $groups, $module_id);
-    $catids       = implode(',', $allowed_cats);
-    $catperms     = " categoryID IN ($catids) ";
+    $groups = is_object($xoopsUser) ? $xoopsUser->getGroups() : XOOPS_GROUP_ANONYMOUS;
+    /** @var \XoopsGroupPermHandler $grouppermHandler */
+    $grouppermHandler = xoops_getHandler('groupperm');
+    $module_id        = $lexikon->getVar('mid');
+    $allowed_cats     = $grouppermHandler->getItemIds('lexikon_view', $groups, $module_id);
+    $catids           = implode(',', $allowed_cats);
+    $catperms         = " categoryID IN ($catids) ";
 
-    $cats      = $gpermHandler->getItemIds('lexikon_view', $groups, $module_id);
+    $cats      = $grouppermHandler->getItemIds('lexikon_view', $groups, $module_id);
     $totalcats = count($cats);
 
     $block  = [];
@@ -39,7 +42,7 @@ function b_lxcategories_show($options)
     if ($totalcats > 0) { // If there are categories
         while (list($categoryID, $name, $total) = $xoopsDB->fetchRow($result)) {
             $catlist             = [];
-            $linktext            = $myts->htmlSpecialChars($name);
+            $linktext            = htmlspecialchars($name);
             $catlist['dir']      = $lexikon->dirname();
             $catlist['linktext'] = $linktext;
             $catlist['id']       = (int)$categoryID;

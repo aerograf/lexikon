@@ -1,18 +1,31 @@
 <?php
 /**
- *
  * Module: lexikon
  * Licence: GNU
  */
 
-use XoopsModules\Lexikon;
+use Xmf\Module\Admin;
+use XoopsModules\Lexikon\{
+    Helper
+};
+/** @var Admin $adminObject */
+/** @var Helper $helper */
 
-require_once __DIR__ . '/../class/Helper.php';
-//require_once __DIR__ . '/../include/common.php';
-$helper = Lexikon\Helper::getInstance();
 
-$pathIcon32    = \Xmf\Module\Admin::menuIconPath('');
-$pathModIcon32 = $helper->getModule()->getInfo('modicons32');
+include dirname(__DIR__) . '/preloads/autoloader.php';
+
+$moduleDirName = basename(dirname(__DIR__));
+$moduleDirNameUpper = mb_strtoupper($moduleDirName);
+$helper = Helper::getInstance();
+$helper->loadLanguage('common');
+$helper->loadLanguage('feedback');
+
+$pathIcon32 = Admin::menuIconPath('');
+if (is_object($helper->getModule())) {
+    //    $pathModIcon32 = $helper->getModule()->getInfo('modicons32');
+    $pathModIcon32 = $helper->url($helper->getModule()->getInfo('modicons32'));
+}
+
 
 $adminmenu[] = [
     'title' => _MI_LEXIKON_HOME,
@@ -31,7 +44,6 @@ $adminmenu[] = [
     'link'  => 'admin/category.php',
     'icon'  => $pathIcon32 . '/category.png',
 ];
-
 
 $adminmenu[] = [
     'title' => _MI_LEXIKON_ADMENU3,
@@ -55,15 +67,27 @@ $adminmenu[] = [
     'title' => _MI_LEXIKON_ADMENU9,
     'link'  => 'admin/permissions.php',
     'icon'  => $pathIcon32 . '/permissions.png',
+];
 
+$adminmenu[] = [
+    'title' => _MI_LEXIKON_BLOCKADMIN,
+    'link'  => 'admin/myblocksadmin.php',
+    'icon'  => $pathIcon32 . '/block.png',
 ];
 
 $adminmenu[] = [
     'title' => _MI_LEXIKON_IMPORT,
     'link'  => 'admin/importwordbook.php',
     'icon'  => $pathIcon32 . '/compfile.png',
-
 ];
+
+if (is_object($helper->getModule()) && $helper->getConfig('displayDeveloperTools')) {
+    $adminmenu[] = [
+        'title' => constant('CO_' . $moduleDirNameUpper . '_' . 'ADMENU_MIGRATE'),
+        'link' => 'admin/migrate.php',
+        'icon' => $pathIcon32 . '/database_go.png',
+    ];
+}
 
 $adminmenu[] = [
     'title' => _MI_LEXIKON_ABOUT,

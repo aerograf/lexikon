@@ -11,24 +11,33 @@
 
 /**
  * @copyright    {@link https://xoops.org/ XOOPS Project}
- * @license      {@link http://www.gnu.org/licenses/gpl-2.0.html GNU GPL 2 or later}
+ * @license      {@link https://www.gnu.org/licenses/gpl-2.0.html GNU GPL 2 or later}
  * @package
  * @since
  * @author       XOOPS Development Team
  */
 
-include __DIR__ . '/../../mainfile.php';
-global $xoopsModuleConfig, $xoopsUser;
-$com_itemid = isset($_GET['com_itemid']) ? (int)$_GET['com_itemid'] : 0;
+use Xmf\Request;
+use XoopsModules\Lexikon\{
+    Helper,
+    Utility
+};
+/** @var Helper $helper */
+
+require dirname(dirname(__DIR__)) . '/mainfile.php';
+
+$helper = Helper::getInstance();
+global $xoopsUser;
+$com_itemid = Request::getInt('com_itemid', 0, 'GET');
 //--- verify that the user can post comments
-if (!isset($xoopsModuleConfig)) {
-    die();
-}
-if (0 == $xoopsModuleConfig['com_rule']) {
-    die();
+//if (!isset($xoopsModuleConfig)) {
+//    exit();
+//}
+if (0 == $helper->getConfig('com_rule')) {
+    exit();
 }    // Comments deactivated
-if (0 == $xoopsModuleConfig['com_anonpost'] && !is_object($xoopsUser)) {
-    die();
+if (0 == $helper->getConfig('com_anonpost') && !is_object($xoopsUser)) {
+    exit();
 } // Anonymous users can't post
 
 if ($com_itemid > 0) {
@@ -37,10 +46,10 @@ if ($com_itemid > 0) {
     $result = $xoopsDB->query($sql);
     $row    = $xoopsDB->fetchArray($result);
     if (!$row['entryID']) {
-        redirect_header('javascript:history.go(-1)', 3, _NOPERM);
+        redirect_header('<script>javascript:history.go(-1)</script>', 3, _NOPERM);
     }
     $com_replytitle = $row['term'];
-    include XOOPS_ROOT_PATH . '/include/comment_new.php';
+    require XOOPS_ROOT_PATH . '/include/comment_new.php';
 } else {
     exit();
 }

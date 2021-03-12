@@ -1,6 +1,5 @@
 <?php
 /**
- *
  * Module: lexikon
  * Version: v 1.00
  * Release Date: 18 Dec 2011
@@ -8,11 +7,22 @@
  * Licence: GNU
  */
 
-require_once __DIR__ . '/../../../include/cp_header.php';
-xoops_cp_header();
+use Xmf\Request;
+use XoopsModules\Lexikon\{
+    Helper,
+    Utility
+};
+/** @var Helper $helper */
+
 require_once __DIR__ . '/admin_header.php';
-global $xoopsModuleConfig, $xoopsUser, $xoopsModule, $xoopsDB;
-$go = isset($_POST['go']) ? $_POST['go'] : 0;
+
+xoops_cp_header();
+
+
+$helper = Helper::getInstance();
+
+global $xoopsUser, $xoopsModule, $xoopsDB;
+$go = Request::getInt('go', 0, 'POST');
 
 /**
  * @param $msg
@@ -41,11 +51,13 @@ if ($go) {
         }
 
         // 2) if multicats OFF set categoryID to '1' (prior '0')
-        if (0 == $xoopsModuleConfig['multicats']) {
-            $result = $xoopsDB->query('SELECT COUNT(*)
+        if (0 == $helper->getConfig('multicats')) {
+            $result = $xoopsDB->query(
+                'SELECT COUNT(*)
                                            FROM ' . $xoopsDB->prefix('lxentries') . '
-                                           WHERE categoryID = 0  ');
-            list($totals) = $xoopsDB->fetchRow($result);
+                                           WHERE categoryID = 0  '
+            );
+            [$totals] = $xoopsDB->fetchRow($result);
             if ($totals > 0) {
                 $xoopsDB->queryF('UPDATE ' . $xoopsDB->prefix('lxentries') . ' SET categoryID = 1 WHERE categoryID = 0 ');
                 showerror('Update table "lxentries" ...');

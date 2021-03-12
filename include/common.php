@@ -11,46 +11,49 @@
 
 /**
  * @copyright    XOOPS Project https://xoops.org/
- * @license      GNU GPL 2 or later (http://www.gnu.org/licenses/gpl-2.0.html)
+ * @license      GNU GPL 2 or later (https://www.gnu.org/licenses/gpl-2.0.html)
  * @package
  * @since
  * @author       XOOPS Development Team
  */
 
-use XoopsModules\Lexikon;
+use Xmf\Module\Admin;
+use XoopsModules\Lexikon\{
+    Common\Configurator,
+    Helper,
+    Utility,
+    EntriesHandler,
+    CategoriesHandler
+};
+/** @var Helper $helper */
+/** @var Utility $utility */
 
-include __DIR__ . '/../preloads/autoloader.php';
+require dirname(__DIR__) . '/preloads/autoloader.php';
 
-$moduleDirName = basename(dirname(__DIR__));
-$moduleDirNameUpper = strtoupper($moduleDirName);
-
+$moduleDirName      = basename(dirname(__DIR__));
+$moduleDirNameUpper = mb_strtoupper($moduleDirName);
 
 /** @var \XoopsDatabase $db */
-/** @var  Lexikon\Helper $helper */
-/** @var Lexikon\Utility $utility */
-
-$db     = \XoopsDatabaseFactory::getDatabaseConnection();
-$helper = Lexikon\Helper::getInstance();
-$utility = new Lexikon\Utility();
-//$configurator = new Lexikon\Common\Configurator();
+$db      = \XoopsDatabaseFactory::getDatabaseConnection();
+$helper  = Helper::getInstance();
+$utility = new Utility();
+//$configurator = new Configurator();
 
 $helper->loadLanguage('common');
 
+$entriesHandler    = new EntriesHandler($db);
+$categoriesHandler = new CategoriesHandler($db);
 
-$entriesHandler     = new Lexikon\EntriesHandler($db);
-$categoriesHandler     = new Lexikon\CategoriesHandler($db);
-
-$pathIcon16    = Xmf\Module\Admin::iconUrl('', 16);
-$pathIcon32    = Xmf\Module\Admin::iconUrl('', 32);
+$pathIcon16 = Admin::iconUrl('', 16);
+$pathIcon32 = Admin::iconUrl('', 32);
 //$pathModIcon16 = $helper->getModule()->getInfo('modicons16');
 //$pathModIcon32 = $helper->getModule()->getInfo('modicons32');
 
-
 if (!defined($moduleDirNameUpper . '_CONSTANTS_DEFINED')) {
     define($moduleDirNameUpper . '_DIRNAME', basename(dirname(__DIR__)));
-    define($moduleDirNameUpper . '_ROOT_PATH', XOOPS_ROOT_PATH . '/modules/' . $moduleDirName );
-    define($moduleDirNameUpper . '_PATH', XOOPS_ROOT_PATH . '/modules/' . $moduleDirName );
-    define($moduleDirNameUpper . '_URL', XOOPS_URL . '/modules/' . $moduleDirName );
+    define($moduleDirNameUpper . '_ROOT_PATH', XOOPS_ROOT_PATH . '/modules/' . $moduleDirName);
+    define($moduleDirNameUpper . '_PATH', XOOPS_ROOT_PATH . '/modules/' . $moduleDirName);
+    define($moduleDirNameUpper . '_URL', XOOPS_URL . '/modules/' . $moduleDirName);
     define($moduleDirNameUpper . '_IMAGES_URL', constant($moduleDirNameUpper . '_URL') . '/assets/images/');
     define($moduleDirNameUpper . '_IMAGES_PATH', constant($moduleDirNameUpper . '_ROOT_PATH') . '/assets/images/');
     define($moduleDirNameUpper . '_ADMIN_URL', constant($moduleDirNameUpper . '_URL') . '/admin/');
@@ -65,7 +68,6 @@ if (!defined($moduleDirNameUpper . '_CONSTANTS_DEFINED')) {
     define($moduleDirNameUpper . '_AUTHOR_LOGOIMG', $pathIcon32 . '/xoopsmicrobutton.gif');
     define($moduleDirNameUpper . '_CONSTANTS_DEFINED', 1);
 }
-
 
 $icons = [
     'edit'    => "<img src='" . $pathIcon16 . "/edit.png'  alt=" . _EDIT . "' align='middle'>",

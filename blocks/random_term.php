@@ -1,11 +1,11 @@
 <?php
+
 /**
  * Module: Lexikon - glossary module
  * Author: hsalazar
  * Licence: GNU
  */
-
-defined('XOOPS_ROOT_PATH') || exit('Restricted access.');
+defined('XOOPS_ROOT_PATH') || exit('Restricted access');
 
 /**
  * @return array
@@ -15,30 +15,31 @@ function b_lxentries_random_show()
     global $xoopsDB, $xoopsUser, $xoopsConfig, $xoopsModule;
     $myts = \MyTextSanitizer::getInstance();
 
-    /** @var XoopsModuleHandler $moduleHandler */
+    /** @var \XoopsModuleHandler $moduleHandler */
     $moduleHandler = xoops_getHandler('module');
     $lexikon       = $moduleHandler->getByDirname('lexikon');
 
     if (!isset($lxConfig)) {
+        /** @var \XoopsConfigHandler $configHandler */
         $configHandler = xoops_getHandler('config');
         $lxConfig      = $configHandler->getConfigsByCat(0, $lexikon->getVar('mid'));
     }
-    $groups       = is_object($xoopsUser) ? $xoopsUser->getGroups() : XOOPS_GROUP_ANONYMOUS;
-    $gpermHandler = xoops_getHandler('groupperm');
-    $module_id    = $lexikon->getVar('mid');
-    $allowed_cats = $gpermHandler->getItemIds('lexikon_view', $groups, $module_id);
-    $catids       = implode(',', $allowed_cats);
-    $catperms     = " AND categoryID IN ($catids) ";
+    $groups = is_object($xoopsUser) ? $xoopsUser->getGroups() : XOOPS_GROUP_ANONYMOUS;
+    /** @var \XoopsGroupPermHandler $grouppermHandler */
+    $grouppermHandler = xoops_getHandler('groupperm');
+    $module_id        = $lexikon->getVar('mid');
+    $allowed_cats     = $grouppermHandler->getItemIds('lexikon_view', $groups, $module_id);
+    $catids           = implode(',', $allowed_cats);
+    $catperms         = " AND categoryID IN ($catids) ";
 
     $adminlinks     = '';
     $block          = [];
     $block['title'] = _MB_LEXIKON_RANDOMTITLE;
 
-    list($numrows) = $xoopsDB->fetchRow($xoopsDB->query('SELECT COUNT(entryID) FROM ' . $xoopsDB->prefix('lxentries') . " WHERE offline= '0' AND block = '1' " . $catperms . ' '));
+    [$numrows] = $xoopsDB->fetchRow($xoopsDB->query('SELECT COUNT(entryID) FROM ' . $xoopsDB->prefix('lxentries') . " WHERE offline= '0' AND block = '1' " . $catperms . ' '));
 
     if ($numrows > 1) {
         --$numrows;
-        mt_srand((double)microtime() * 1000000);
         $entrynumber = mt_rand(0, $numrows);
     } else {
         $entrynumber = 0;
@@ -46,7 +47,7 @@ function b_lxentries_random_show()
 
     $result = $xoopsDB->query('SELECT entryID, categoryID, term, definition FROM ' . $xoopsDB->prefix('lxentries') . " WHERE offline = '0' AND block = '1' " . $catperms . " LIMIT $entrynumber, 1");
 
-    while ($myrow = $xoopsDB->fetchArray($result)) {
+    while (false !== ($myrow = $xoopsDB->fetchArray($result))) {
         //$entryID = (int)($entryID);
         $entryID = (int)$myrow['entryID'];
         $term    = ucfirst($myts->displayTarea($myrow['term']));
@@ -58,7 +59,7 @@ function b_lxentries_random_show()
 
         $categoryID = $myrow['categoryID'];
         $result_cat = $xoopsDB->query('SELECT categoryID, name FROM ' . $xoopsDB->prefix('lxcategories') . " WHERE categoryID = $categoryID");
-        list($categoryID, $name) = $xoopsDB->fetchRow($result_cat);
+        [$categoryID, $name] = $xoopsDB->fetchRow($result_cat);
         $categoryname = $myts->displayTarea($name);
 
         //TODO switch to central icons repository

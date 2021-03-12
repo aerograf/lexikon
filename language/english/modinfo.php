@@ -1,6 +1,5 @@
 <?php
 /**
- *
  * Module: Lexikon - glossary module
  * Version: v 1.00
  * Release Date: 8 May 2004
@@ -248,7 +247,6 @@ define('_MI_LEXIKON_TERM_APPROVE_NOTIFYCAP', 'Notify me when this term is approv
 define('_MI_LEXIKON_TERM_APPROVE_NOTIFYDSC', 'Receive notification when this term is approved.');
 define('_MI_LEXIKON_TERM_APPROVE_NOTIFYSBJ', '[{X_SITENAME}] {X_MODULE} auto-notify : Term approved');
 
-//
 define('_MI_LEXIKON_IMPORT', 'Import');
 
 //1.52
@@ -260,13 +258,19 @@ define('_MI_LEXIKON_HELP_OVERVIEW', 'Overview');
 define('_MI_LEXIKON_NAME', 'Lexikon');
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 //Menu
 =======
 >>>>>>> f647f3534809e24590f87b815c527a51008c378b
+=======
+define('_MI_LEXIKON_BLOCKADMIN', 'Blocks Admin');
+
+>>>>>>> 9284f85619b90994a11e8cfdc14b806f5475a5a0
 define('_MI_LEXIKON_SHOWSUBMISSIONS', 'Submissions');
 define('_MI_LEXIKON_HOME', 'Home');
 define('_MI_LEXIKON_ABOUT', 'About');
 
+<<<<<<< HEAD
 <<<<<<< HEAD
 //Lang Symbol
 define('_MI_LEXIKON_LANG_SYMBOL', 'Show inactive characters');
@@ -298,6 +302,8 @@ define('_MI_LEXIKON_LANG_SYMBOLDSC_DEF_OUT', 'Number of characters in the alphab
 
 
 
+=======
+>>>>>>> 9284f85619b90994a11e8cfdc14b806f5475a5a0
 // Admin
 define('MI_LEXIKON_NAME', 'Lexikon');
 define('MI_LEXIKON_DESC', 'This module is for doing following...');
@@ -375,15 +381,13 @@ define('MI_LEXIKON_FILE_APPROVE_NOTIFY_SUBJECT', 'Allow Facebook comments in the
 
 // Help
 define('MI_LEXIKON_DIRNAME', basename(dirname(dirname(__DIR__))));
-define('MI_LEXIKON_HELP_HEADER', __DIR__.'/help/helpheader.tpl');
+define('MI_LEXIKON_HELP_HEADER', __DIR__ . '/help/helpheader.tpl');
 define('MI_LEXIKON_BACK_2_ADMIN', 'Back to Administration of ');
 define('MI_LEXIKON_OVERVIEW', 'Overview');
 // The name of this module
 //define('MI_LEXIKON_NAME', 'YYYYY Module Name');
 
-
 //define('MI_LEXIKON_HELP_DIR', __DIR__);
-
 
 //help multi-page
 define('MI_LEXIKON_DISCLAIMER', 'Disclaimer');

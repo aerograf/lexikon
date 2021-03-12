@@ -2,7 +2,7 @@
 //
 // ------------------------------------------------------------------------ //
 // XOOPS - PHP Content Management System                                    //
-// Copyright (c) 2000-2016 XOOPS.org                                             //
+// Copyright (c) 2000-2020 XOOPS.org                                             //
 // <https://xoops.org>                                                  //
 // ------------------------------------------------------------------------ //
 // This program is free software; you can redistribute it and/or modify     //
@@ -26,7 +26,13 @@
 // ------------------------------------------------------------------------ //
 // adapted from News 1.5
 
-use XoopsModules\Lexikon;
+use Xmf\Module\Admin;
+use Xmf\Request;
+use XoopsModules\Lexikon\{
+    Helper,
+    Utility
+};
+/** @var Helper $helper */
 
 require_once __DIR__ . '/admin_header.php';
 require_once XOOPS_ROOT_PATH . '/class/xoopstree.php';
@@ -34,15 +40,15 @@ require_once XOOPS_ROOT_PATH . '/class/xoopslists.php';
 require_once XOOPS_ROOT_PATH . '/class/xoopsform/grouppermform.php';
 $myts = \MyTextSanitizer::getInstance();
 xoops_cp_header();
-$adminObject  = \Xmf\Module\Admin::getInstance();
+$adminObject = Admin::getInstance();
 $adminObject->displayNavigation(basename(__FILE__));
 
-$permtoset                = isset($_POST['permtoset']) ? (int)$_POST['permtoset'] : 1;
+$permtoset                = Request::getInt('permtoset', 1, 'POST');
 $selected                 = [
     '',
     '',
     '',
-    ''
+    '',
 ];
 $selected[$permtoset - 1] = ' selected';
 echo "<div style='clear:both;'><form method='post' name='fselperm' action='permissions.php'>
@@ -76,13 +82,13 @@ switch ($permtoset) {
         $permdesc  = _AM_LEXIKON_REQUESTFORM_DSC;
         break;
 }
-$modid    = $xoopsModule->getVar('mid');
+$modid      = $xoopsModule->getVar('mid');
 $permform   = new \XoopsGroupPermForm($title, $modid, $perm_name, $permdesc, 'admin/permissions.php');
 $catstree   = new Lexikon\LexikonTree($xoopsDB->prefix('lxcategories'), 'categoryID', '');
 $catsresult = $xoopsDB->query('SELECT categoryID, name FROM ' . $xoopsDB->prefix('lxcategories') . ' ORDER BY weight');
-while ($myrow = $xoopsDB->fetchArray($catsresult)) {
+while (false !== ($myrow = $xoopsDB->fetchArray($catsresult))) {
     $catid    = $myrow['categoryID'];
-    $cattitle = $myts->htmlSpecialChars($myrow['name']);
+    $cattitle = htmlspecialchars($myrow['name']);
     $permform->addItem($catid, $cattitle);
 }
 

@@ -11,7 +11,7 @@
 
 /**
  * @copyright    {@link https://xoops.org/ XOOPS Project}
- * @license      {@link http://www.gnu.org/licenses/gpl-2.0.html GNU GPL 2 or later}
+ * @license      {@link https://www.gnu.org/licenses/gpl-2.0.html GNU GPL 2 or later}
  * @package
  * @since
  * @author       XOOPS Development Team
@@ -25,10 +25,12 @@
  * @param $xoopsModule
  * @return bool
  */
-function xoops_module_install_lexikon(XoopsObject $xoopsModule)
+function xoops_module_install_lexikon(\XoopsObject $xoopsModule)
 {
-    $module_id     = $xoopsModule->getVar('mid');
-    $gpermHandler  = xoops_getHandler('groupperm');
+    $module_id = $xoopsModule->getVar('mid');
+    /** @var \XoopsGroupPermHandler $grouppermHandler */
+    $grouppermHandler = xoops_getHandler('groupperm');
+    /** @var \XoopsConfigHandler $configHandler */
     $configHandler = xoops_getHandler('config');
 
     /**
@@ -36,18 +38,18 @@ function xoops_module_install_lexikon(XoopsObject $xoopsModule)
      */
 
     // Access right
-    $gpermHandler->addRight('lexikon_view', 1, XOOPS_GROUP_ADMIN, $module_id);
-    $gpermHandler->addRight('lexikon_view', 1, XOOPS_GROUP_USERS, $module_id);
-    $gpermHandler->addRight('lexikon_view', 1, XOOPS_GROUP_ANONYMOUS, $module_id);
+    $grouppermHandler->addRight('lexikon_view', 1, XOOPS_GROUP_ADMIN, $module_id);
+    $grouppermHandler->addRight('lexikon_view', 1, XOOPS_GROUP_USERS, $module_id);
+    $grouppermHandler->addRight('lexikon_view', 1, XOOPS_GROUP_ANONYMOUS, $module_id);
 
     // Public submit
-    $gpermHandler->addRight('lexikon_submit', 1, XOOPS_GROUP_ADMIN, $module_id);
-    $gpermHandler->addRight('lexikon_submit', 1, XOOPS_GROUP_USERS, $module_id);
+    $grouppermHandler->addRight('lexikon_submit', 1, XOOPS_GROUP_ADMIN, $module_id);
+    $grouppermHandler->addRight('lexikon_submit', 1, XOOPS_GROUP_USERS, $module_id);
 
     // Public request
-    $gpermHandler->addRight('lexikon_request', 1, XOOPS_GROUP_ADMIN, $module_id);
-    $gpermHandler->addRight('lexikon_request', 1, XOOPS_GROUP_USERS, $module_id);
-    $gpermHandler->addRight('lexikon_request', 1, XOOPS_GROUP_ANONYMOUS, $module_id);
+    $grouppermHandler->addRight('lexikon_request', 1, XOOPS_GROUP_ADMIN, $module_id);
+    $grouppermHandler->addRight('lexikon_request', 1, XOOPS_GROUP_USERS, $module_id);
+    $grouppermHandler->addRight('lexikon_request', 1, XOOPS_GROUP_ANONYMOUS, $module_id);
 
     /**
      * Create default upload directories

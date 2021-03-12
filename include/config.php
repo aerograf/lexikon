@@ -11,19 +11,19 @@
 
 /**
  * @copyright    XOOPS Project https://xoops.org/
- * @license      GNU GPL 2 or later (http://www.gnu.org/licenses/gpl-2.0.html)
+ * @license      GNU GPL 2 or later (https://www.gnu.org/licenses/gpl-2.0.html)
  * @package
  * @since
  * @author       XOOPS Development Team
  */
 
-$moduleDirName = basename(dirname(__DIR__));
-$moduleDirNameUpper = strtoupper($moduleDirName);
+use Xmf\Module\Admin;
 
+$moduleDirName      = basename(dirname(__DIR__));
+$moduleDirNameUpper = mb_strtoupper($moduleDirName);
 
-//Configurator
 return (object)[
-    'name'           => strtoupper($moduleDirName) . ' Module Configurator',
+    'name'           => $moduleDirNameUpper . ' Module Configurator',
     'paths'          => [
         'dirname'    => $moduleDirName,
         'admin'      => XOOPS_ROOT_PATH . '/modules/' . $moduleDirName . '/admin',
@@ -32,14 +32,14 @@ return (object)[
         'uploadPath' => XOOPS_UPLOAD_PATH . '/' . $moduleDirName,
         'uploadUrl'  => XOOPS_UPLOAD_URL . '/' . $moduleDirName,
     ],
-    'uploadFolders' => [
+    'uploadFolders'  => [
         XOOPS_UPLOAD_PATH . '/' . $moduleDirName,
         XOOPS_UPLOAD_PATH . '/' . $moduleDirName . '/categories',
         XOOPS_UPLOAD_PATH . '/' . $moduleDirName . '/categories/images',
         XOOPS_UPLOAD_PATH . '/' . $moduleDirName . '/entries',
         XOOPS_UPLOAD_PATH . '/' . $moduleDirName . '/entries/images',
     ],
-    'copyBlankFiles'     => [
+    'copyBlankFiles' => [
         XOOPS_UPLOAD_PATH . '/' . $moduleDirName . '/categories',
         XOOPS_UPLOAD_PATH . '/' . $moduleDirName . '/categories/images',
         XOOPS_UPLOAD_PATH . '/' . $moduleDirName . '/entries',
@@ -54,27 +54,32 @@ return (object)[
         [
             XOOPS_ROOT_PATH . '/modules/' . $moduleDirName . '/testdata/thumbs',
             XOOPS_UPLOAD_PATH . '/' . $moduleDirName . '/thumbs',
-        ]
+        ],
     ],
 
     'templateFolders' => [
         '/templates/',
         '/templates/blocks/',
-        '/templates/admin/'
-
+        '/templates/admin/',
     ],
     'oldFiles'        => [
         '/include/update_functions.php',
-        '/include/install_functions.php'
+        '/include/install_functions.php',
     ],
-    'oldFolders'        => [
+    'oldFolders'      => [
         '/images',
         '/css',
         '/js',
         '/tcpdf',
         '/images',
     ],
+    'renameTables'    => [//         'XX_archive'     => 'ZZZZ_archive',
+    ],
+    'moduleStats'     => [
+        //            'totalcategories' => $helper->getHandler('Category')->getCategoriesCount(-1),
+        //            'totalitems'      => $helper->getHandler('Item')->getItemsCount(),
+        //            'totalsubmitted'  => $helper->getHandler('Item')->getItemsCount(-1, [Constants::PUBLISHER_STATUS_SUBMITTED]),
+    ],
     'modCopyright'    => "<a href='https://xoops.org' title='XOOPS Project' target='_blank'>
-                     <img src='" . constant($moduleDirNameUpper . '_AUTHOR_LOGOIMG') . '\' alt=\'XOOPS Project\' /></a>',
-
+                     <img src='" . Admin::iconUrl('xoopsmicrobutton.gif') . "' alt='XOOPS Project'></a>",
 ];

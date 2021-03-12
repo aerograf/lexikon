@@ -1,6 +1,5 @@
 <?php
 /**
- *
  * Module: Lexikon - glossary module
  * Version: v 1.00
  * Release Date: 8 May 2004
@@ -8,11 +7,20 @@
  * Licence: GNU
  */
 
-use XoopsModules\Lexikon;
-
-include __DIR__ . '/header.php';
+use XoopsModules\Lexikon\{
+    Common\LetterChoice,
+    Helper,
+    Utility
+};
 
 $GLOBALS['xoopsOption']['template_main'] = 'lx_index.tpl';
+
+require __DIR__ . '/header.php';
+
+
+$helper = Helper::getInstance();
+$utility = new Utility();
+
 require_once XOOPS_ROOT_PATH . '/header.php';
 require_once XOOPS_ROOT_PATH . '/modules/lexikon/include/common.inc.php';
 global $xoTheme, $xoopsUser;
@@ -22,18 +30,19 @@ $myts = \MyTextSanitizer::getInstance();
 //$xoopsConfig["module_cache"][$xoopsModule->getVar("mid")] = 0;
 
 $utility::calculateTotals();
-$xoopsTpl->assign('multicats', (int)$xoopsModuleConfig['multicats']);
-$rndlength = !empty($xoopsModuleConfig['rndlength']) ? (int)$xoopsModuleConfig['rndlength'] : 150;
+$xoopsTpl->assign('multicats', (int)$helper->getConfig('multicats'));
+$rndlength = !empty($helper->getConfig('rndlength')) ? (int)$helper->getConfig('rndlength') : 150;
 
 //permissions
-$gpermHandler = xoops_getHandler('groupperm');
-$groups       = is_object($xoopsUser) ? $xoopsUser->getGroups() : XOOPS_GROUP_ANONYMOUS;
-$module_id    = $xoopsModule->getVar('mid');
-$perm_itemid  = isset($categoryID) ? $categoryID : 0;
-if (!$gpermHandler->checkRight('lexikon_view', $perm_itemid, $groups, $module_id)) {
-    redirect_header('javascript:history.go(-1)', 2, _NOPERM);
+/** @var \XoopsGroupPermHandler $grouppermHandler */
+$grouppermHandler = xoops_getHandler('groupperm');
+$groups           = is_object($xoopsUser) ? $xoopsUser->getGroups() : XOOPS_GROUP_ANONYMOUS;
+$module_id        = $xoopsModule->getVar('mid');
+$perm_itemid      = isset($categoryID) ? $categoryID : 0;
+if (!$grouppermHandler->checkRight('lexikon_view', $perm_itemid, $groups, $module_id)) {
+    redirect_header('<script>javascript:history.go(-1)</script>', 2, _NOPERM);
 }
-$allowed_cats = $gpermHandler->getItemIds('lexikon_view', $groups, $module_id);
+$allowed_cats = $grouppermHandler->getItemIds('lexikon_view', $groups, $module_id);
 if (count($allowed_cats) > 0) {
     $catids   = implode(',', $allowed_cats);
     $catperms = " AND categoryID IN ($catids) ";
@@ -50,13 +59,14 @@ if (!function_exists('mb_ucfirst') && function_exists('mb_substr')) {
     {
         $string = mb_ereg_replace("^[\ ]+", '', $string);
         $string = mb_strtoupper(mb_substr($string, 0, 1, 'UTF-8'), 'UTF-8') . mb_substr($string, 1, mb_strlen($string), 'UTF-8');
+
         return $string;
     }
 }
 
 // Counts
-$xoopsTpl->assign('multicats', (int)$xoopsModuleConfig['multicats']);
-if (1 == $xoopsModuleConfig['multicats']) {
+$xoopsTpl->assign('multicats', (int)$helper->getConfig('multicats'));
+if (1 == $helper->getConfig('multicats')) {
     $xoopsTpl->assign('totalcats', (int)$utility::countCats());
 }
 $publishedwords = $utility::countWords();
@@ -76,40 +86,35 @@ $alpha = $utility::getAlphaArray();
 $xoopsTpl->assign('alpha', $alpha);
 $alphaCount = count($alpha);
 
-list($howmanyother) = $xoopsDB->fetchRow($xoopsDB->query('SELECT COUNT(*) FROM ' . $xoopsDB->prefix('lxentries') . " WHERE init = '#' AND offline ='0' " . $catperms . ' '));
+[$howmanyother] = $xoopsDB->fetchRow($xoopsDB->query('SELECT COUNT(*) FROM ' . $xoopsDB->prefix('lxentries') . " WHERE init = '#' AND offline ='0' " . $catperms . ' '));
 $xoopsTpl->assign('totalother', $howmanyother);
 
 //-----------------------------------------
 
-
-
 // Letter Choice Start ---------------------------------------
 
-$moduleDirName = basename(__DIR__);
-$moduleDirNameUpper = strtoupper($moduleDirName);
+$moduleDirName      = basename(__DIR__);
+$moduleDirNameUpper = mb_strtoupper($moduleDirName);
 
-Lexikon\Helper::getInstance()->loadLanguage('common');
+Helper::getInstance()->loadLanguage('common');
 $xoopsTpl->assign('letterChoiceTitle', constant('CO_' . $moduleDirNameUpper . '_' . 'BROWSETOTOPIC'));
 /** @var \XoopsDatabase $db */
-$db           = \XoopsDatabaseFactory::getDatabase();
-$objHandler =  Lexikon\Helper::getInstance()->getHandler('Entries');
-$choicebyletter = new Lexikon\Common\LetterChoice($objHandler, null, null, range('a', 'z'), 'init', LEXIKON_URL . '/letter.php');
-$catarray['letters']  = $choicebyletter->render($alphaCount, $howmanyother);
+$db                  = \XoopsDatabaseFactory::getDatabaseConnection();
+$objHandler          = Helper::getInstance()->getHandler('Entries');
+$choicebyletter      = new LetterChoice($objHandler, null, null, range('a', 'z'), 'init', LEXIKON_URL . '/letter.php');
+$catarray['letters'] = $choicebyletter->render($alphaCount, $howmanyother);
 $xoopsTpl->assign('catarray', $catarray);
 
 // Letter Choice End ------------------------------------
 
-
-
-
 //---------------------------------------------
 // To display the tree of categories
-if (1 == $xoopsModuleConfig['multicats']) {
+if (1 == $helper->getConfig('multicats')) {
     $xoopsTpl->assign('block0', $utility::getCategoryArray());
     $xoopsTpl->assign('layout', CONFIG_CATEGORY_LAYOUT_PLAIN);
-    if (1 == $xoopsModuleConfig['useshots']) {
+    if (1 == $helper->getConfig('useshots')) {
         $xoopsTpl->assign('show_screenshot', true);
-        $xoopsTpl->assign('logo_maximgwidth', $xoopsModuleConfig['logo_maximgwidth']);
+        $xoopsTpl->assign('logo_maximgwidth', $helper->getConfig('logo_maximgwidth'));
         $xoopsTpl->assign('lang_noscreenshot', _MD_LEXIKON_NOSHOTS);
     } else {
         $xoopsTpl->assign('show_screenshot', false);
@@ -117,14 +122,17 @@ if (1 == $xoopsModuleConfig['multicats']) {
 }
 // To display the recent entries block
 $block1   = [];
-$result05 = $xoopsDB->query('SELECT entryID, categoryID, term, datesub FROM ' . $xoopsDB->prefix('lxentries') . ' WHERE datesub < ' . time() . " AND datesub > 0 AND submit = '0' AND offline = '0' AND request = '0' " . $catperms . ' ORDER BY datesub DESC', (int)$xoopsModuleConfig['blocksperpage'],
-                            0);
+$result05 = $xoopsDB->query(
+    'SELECT entryID, categoryID, term, datesub FROM ' . $xoopsDB->prefix('lxentries') . ' WHERE datesub < ' . time() . " AND datesub > 0 AND submit = '0' AND offline = '0' AND request = '0' " . $catperms . ' ORDER BY datesub DESC',
+    (int)$helper->getConfig('blocksperpage'),
+    0
+);
 if ($publishedwords > 0) { // If there are definitions
     //while (list( $entryID, $term, $datesub ) = $xoopsDB->fetchRow($result05)) {
     while (list($entryID, $categoryID, $term, $datesub) = $xoopsDB->fetchRow($result05)) {
         $newentries             = [];
         $xoopsModule            = XoopsModule::getByDirname('lexikon');
-        $linktext               = mb_ucfirst($myts->htmlSpecialChars($term));
+        $linktext               = mb_ucfirst(htmlspecialchars($term));
         $newentries['linktext'] = $linktext;
         $newentries['id']       = $entryID;
         $newentries['date']     = formatTimestamp($datesub, 's');
@@ -136,13 +144,13 @@ if ($publishedwords > 0) { // If there are definitions
 
 // To display the most read entries block
 $block2   = [];
-$result06 = $xoopsDB->query('SELECT entryID, term, counter FROM ' . $xoopsDB->prefix('lxentries') . ' WHERE datesub < ' . time() . " AND datesub > 0 AND submit = '0' AND offline = '0' AND request = '0' " . $catperms . ' ORDER BY counter DESC', (int)$xoopsModuleConfig['blocksperpage'], 0);
+$result06 = $xoopsDB->query('SELECT entryID, term, counter FROM ' . $xoopsDB->prefix('lxentries') . ' WHERE datesub < ' . time() . " AND datesub > 0 AND submit = '0' AND offline = '0' AND request = '0' " . $catperms . ' ORDER BY counter DESC', (int)$helper->getConfig('blocksperpage'), 0);
 // If there are definitions
 if ($publishedwords > 0) {
     while (list($entryID, $term, $counter) = $xoopsDB->fetchRow($result06)) {
         $popentries             = [];
         $xoopsModule            = XoopsModule::getByDirname('lexikon');
-        $linktext               = mb_ucfirst($myts->htmlSpecialChars($term));
+        $linktext               = mb_ucfirst(htmlspecialchars($term));
         $popentries['linktext'] = $linktext;
         $popentries['id']       = $entryID;
         $popentries['counter']  = (int)$counter;
@@ -153,10 +161,9 @@ if ($publishedwords > 0) {
 }
 
 // To display the random term block
-list($numrows) = $xoopsDB->fetchRow($xoopsDB->query('SELECT COUNT(*) FROM ' . $xoopsDB->prefix('lxentries') . " WHERE submit = 'O' AND offline = '0' " . $catperms . ' '));
+[$numrows] = $xoopsDB->fetchRow($xoopsDB->query('SELECT COUNT(*) FROM ' . $xoopsDB->prefix('lxentries') . " WHERE submit = 'O' AND offline = '0' " . $catperms . ' '));
 if ($numrows > 1) {
     --$numrows;
-    mt_srand((double)microtime() * 1000000);
     $entrynumber = mt_rand(0, $numrows);
 } else {
     $entrynumber = 0;
@@ -166,7 +173,7 @@ $resultZ = $xoopsDB->query('SELECT entryID, categoryID, term, definition, html, 
 
 $zerotest = $xoopsDB->getRowsNum($resultZ);
 if (0 != $zerotest) {
-    while ($myrow = $xoopsDB->fetchArray($resultZ)) {
+    while (false !== ($myrow = $xoopsDB->fetchArray($resultZ))) {
         $random         = [];
         $random['id']   = $myrow['entryID'];
         $random['term'] = mb_ucfirst($myrow['term']);
@@ -175,11 +182,11 @@ if (0 != $zerotest) {
             $random['definition'] = $myts->displayTarea(xoops_substr($myrow['definition'], 0, $rndlength - 1), $myrow['html'], $myrow['smiley'], $myrow['xcodes'], 1, $myrow['breaks']);
         }
 
-        if (1 == $xoopsModuleConfig['multicats']) {
+        if (1 == $helper->getConfig('multicats')) {
             $random['categoryID'] = $myrow['categoryID'];
 
             $resultY = $xoopsDB->query('SELECT categoryID, name FROM ' . $xoopsDB->prefix('lxcategories') . ' WHERE categoryID = ' . $myrow['categoryID'] . ' ');
-            list($categoryID, $name) = $xoopsDB->fetchRow($resultY);
+            [$categoryID, $name] = $xoopsDB->fetchRow($resultY);
             $random['categoryname'] = $myts->displayTarea($name);
         }
     }
@@ -199,7 +206,7 @@ if ($xoopsUser && $xoopsUser->isAdmin()) {
         while (list($entryID, $term) = $xoopsDB->fetchRow($resultS)) {
             $subentries             = [];
             $xoopsModule            = XoopsModule::getByDirname('lexikon');
-            $linktext               = mb_ucfirst($myts->htmlSpecialChars($term));
+            $linktext               = mb_ucfirst(htmlspecialchars($term));
             $subentries['linktext'] = $linktext;
             $subentries['id']       = $entryID;
 
@@ -219,7 +226,7 @@ if ($xoopsUser && $xoopsUser->isAdmin()) {
         while (list($entryID, $term) = $xoopsDB->fetchRow($resultR)) {
             $reqentries             = [];
             $xoopsModule            = XoopsModule::getByDirname('lexikon');
-            $linktext               = mb_ucfirst($myts->htmlSpecialChars($term));
+            $linktext               = mb_ucfirst(htmlspecialchars($term));
             $reqentries['linktext'] = $linktext;
             $reqentries['id']       = $entryID;
 
@@ -240,7 +247,7 @@ if ($xoopsUser && $xoopsUser->isAdmin()) {
         while (list($entryID, $term) = $xoopsDB->fetchRow($resultR)) {
             $reqentries             = [];
             $xoopsModule            = XoopsModule::getByDirname('lexikon');
-            $linktext               = mb_ucfirst($myts->htmlSpecialChars($term));
+            $linktext               = mb_ucfirst(htmlspecialchars($term));
             $reqentries['linktext'] = $linktext;
             $reqentries['id']       = $entryID;
 
@@ -257,21 +264,21 @@ $xoopsTpl->assign('lang_modulename', $xoopsModule->name());
 $xoopsTpl->assign('lang_moduledirname', $xoopsModule->getVar('dirname'));
 if (0 != $publishedwords) {
     $xoopsTpl->assign('microlinks', $microlinks);
-    $xoopsTpl->assign('showdate', (int)$xoopsModuleConfig['showdate']);
-    $xoopsTpl->assign('showcount', (int)$xoopsModuleConfig['showcount']);
+    $xoopsTpl->assign('showdate', (int)$helper->getConfig('showdate'));
+    $xoopsTpl->assign('showcount', (int)$helper->getConfig('showcount'));
 }
 $xoopsTpl->assign('alpha', $alpha);
 $xoopsTpl->assign('teaser', $utility::getModuleOption('teaser'));
-if (1 == $xoopsModuleConfig['syndication']) {
+if (1 == $helper->getConfig('syndication')) {
     $xoopsTpl->assign('syndication', true);
 }
 if ($xoopsUser) {
     $xoopsTpl->assign('syndication', true);
 }
-$xoopsTpl->assign('xoops_pagetitle', $myts->htmlSpecialChars($xoopsModule->name()));
+$xoopsTpl->assign('xoops_pagetitle', htmlspecialchars($xoopsModule->name()));
 
 // Meta data
-$meta_description = $myts->htmlSpecialChars($xoopsModule->name());
+$meta_description = htmlspecialchars($xoopsModule->name());
 if (isset($xoTheme) && is_object($xoTheme)) {
     $xoTheme->addMeta('meta', 'description', $meta_description);
 } else {
@@ -279,4 +286,4 @@ if (isset($xoTheme) && is_object($xoTheme)) {
 }
 $xoopsTpl->assign('xoops_module_header', '<link rel="stylesheet" type="text/css" href="assets/css/style.css">');
 
-include XOOPS_ROOT_PATH . '/footer.php';
+require XOOPS_ROOT_PATH . '/footer.php';

@@ -146,7 +146,7 @@
                             <!-- Start category loop -->
                             <{foreach item=catlinks from=$block0.categories}>
                             <td>
-                                <{if $catlinks.image != "" && $show_screenshot == true}>
+                                <{if $catlinks.image != "" && $show_screenshot === true}>
                                     <a href="<{$xoops_url}>/modules/<{$lang_moduledirname}>/category.php?categoryID=<{$catlinks.id}>"
                                        target="_parent"><img
                                                 src="<{$xoops_url}>/uploads/<{$lang_moduledirname}>/categories/images/<{$catlinks.image}>"
@@ -158,7 +158,7 @@
                                     <{if $catlinks.total > 0}></a>&nbsp;<{/if}>[&nbsp;<{$catlinks.total}>&nbsp;]
                                 <{/if}>
                             </td>
-                            <{if $catlinks.count is div by 4}>
+                            <{if $catlinks.count % 4 == 0}>
                         </tr>
                         <tr>
                             <{/if}>
@@ -176,8 +176,12 @@
                     <legend>&nbsp;<{$smarty.const._MD_LEXIKON_BROWSECAT}>&nbsp;</legend>
                     <div class="letters">
                         <{foreach item=catlinks from=$block0.categories}>
+<<<<<<< HEAD
 >>>>>>> f647f3534809e24590f87b815c527a51008c378b
                         <{if $catlinks.image != "" && $show_screenshot == true}>
+=======
+                        <{if $catlinks.image != "" && $show_screenshot === true}>
+>>>>>>> 9284f85619b90994a11e8cfdc14b806f5475a5a0
                             <a href="<{$xoops_url}>/modules/<{$lang_moduledirname}>/category.php?categoryID=<{$category.id}>"
                                target="_parent">
                                 <img src="<{$xoops_url}>/uploads/<{$lang_moduledirname}>/categories/images/<{$catlinks.image}>"
@@ -285,7 +289,7 @@
         <{if $bookmarkme == 2}>
             <{include file="db:lx_bookmark.tpl"}>
         <{/if}>
-        <{if $tagbar}>
+        <{if $tagbar|default:false}>
             <div class="letters">
                 <{include file="db:lx_tag_bar.tpl"}>
             </div>

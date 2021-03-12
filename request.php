@@ -6,27 +6,35 @@
  */
 
 use Xmf\Request;
+use XoopsModules\Lexikon\{
+    Helper,
+    Utility
+};
+/** @var Helper $helper */
 
-include __DIR__ . '/header.php';
+require __DIR__ . '/header.php';
 
-global $xoTheme, $xoopsUser, $xoopsModuleConfig, $xoopsModule;
+
+$helper = Helper::getInstance();
+global $xoTheme, $xoopsUser, $xoopsModule;
 
 // permissions
-$gpermHandler = xoops_getHandler('groupperm');
-$groups       = is_object($xoopsUser) ? $xoopsUser->getGroups() : XOOPS_GROUP_ANONYMOUS;
-$module_id    = $xoopsModule->getVar('mid');
-$perm_itemid  = Request::getInt('categoryID', 0, 'POST');
-if (!$gpermHandler->checkRight('lexikon_request', $perm_itemid, $groups, $module_id)) {
+/** @var \XoopsGroupPermHandler $grouppermHandler */
+$grouppermHandler = xoops_getHandler('groupperm');
+$groups           = is_object($xoopsUser) ? $xoopsUser->getGroups() : XOOPS_GROUP_ANONYMOUS;
+$module_id        = $xoopsModule->getVar('mid');
+$perm_itemid      = Request::getInt('categoryID', 0, 'POST');
+if (!$grouppermHandler->checkRight('lexikon_request', $perm_itemid, $groups, $module_id)) {
     redirect_header('history.go(-1)', 3, _ERRORS);
 }
 if (!Request::hasVar('submit', 'POST')) {
     $GLOBALS['xoopsOption']['template_main'] = 'lx_request.tpl';
-    include XOOPS_ROOT_PATH . '/header.php';
+    require_once XOOPS_ROOT_PATH . '/header.php';
     require_once XOOPS_ROOT_PATH . '/class/xoopsformloader.php';
     $username_v = !empty($xoopsUser) ? $xoopsUser->getVar('uname', 'E') : '';
     $usermail_v = !empty($xoopsUser) ? $xoopsUser->getVar('email', 'E') : '';
     $notifypub  = '1';
-    include __DIR__ . '/include/requestform.php';
+    require_once __DIR__ . '/include/requestform.php';
     $xoopsTpl->assign('modulename', $xoopsModule->dirname());
 
     $rform->assign($xoopsTpl);
@@ -34,16 +42,16 @@ if (!Request::hasVar('submit', 'POST')) {
     $xoopsTpl->assign('lang_modulename', $xoopsModule->name());
     $xoopsTpl->assign('lang_moduledirname', $xoopsModule->getVar('dirname'));
 
-    $xoopsTpl->assign('xoops_pagetitle', $myts->htmlSpecialChars($xoopsModule->name()) . ' - ' . _MD_LEXIKON_ASKFORDEF);
+    $xoopsTpl->assign('xoops_pagetitle', htmlspecialchars($xoopsModule->name()) . ' - ' . _MD_LEXIKON_ASKFORDEF);
     $xoopsTpl->assign('xoops_module_header', '<link rel="stylesheet" type="text/css" href="assets/css/style.css">');
     // Meta data
-    $meta_description = _MD_LEXIKON_ASKFORDEF . ' - ' . $myts->htmlSpecialChars($xoopsModule->name());
+    $meta_description = _MD_LEXIKON_ASKFORDEF . ' - ' . htmlspecialchars($xoopsModule->name());
     if (isset($xoTheme) && is_object($xoTheme)) {
         $xoTheme->addMeta('meta', 'description', $meta_description);
     } else {
         $xoopsTpl->assign('xoops_meta_description', $meta_description);
     }
-    include XOOPS_ROOT_PATH . '/footer.php';
+    require_once XOOPS_ROOT_PATH . '/footer.php';
 } else {
     //    extract($_POST);
 
@@ -67,14 +75,17 @@ if (!Request::hasVar('submit', 'POST')) {
     $request = 1;
     $ref     = '';
     $url     = '';
-    $init    = substr($reqterm, 0, 1);
+    $init    = mb_substr($reqterm, 0, 1);
 
-    $xoopsDB->query('INSERT INTO '
-                    . $xoopsDB->prefix('lxentries')
-                    . " (entryID, term, init, ref, url, uid, submit, datesub, html, smiley, xcodes, offline, notifypub, request ) VALUES ('', '$reqterm', '$init', '$ref', '$url', '$user', '$submit', '$date', '$html', '$smiley', '$xcodes', '$offline', '$notifypub', '$request' )");
+    $xoopsDB->query(
+        'INSERT INTO '
+        . $xoopsDB->prefix('lxentries')
+        . " (entryID, term, init, ref, url, uid, submit, datesub, html, smiley, xcodes, offline, notifypub, request ) VALUES ('', '$reqterm', '$init', '$ref', '$url', '$user', '$submit', '$date', '$html', '$smiley', '$xcodes', '$offline', '$notifypub', '$request' )"
+    );
     $newid = $xoopsDB->getInsertId();
     // Increment author's posts count
     if (is_object($xoopsUser) && !empty($user)) {
+        /** @var \XoopsMemberHandler $memberHandler */
         $memberHandler = xoops_getHandler('member');
         $submitter     = $memberHandler->getUser($user);
         if (is_object($submitter)) {
@@ -84,11 +95,12 @@ if (!Request::hasVar('submit', 'POST')) {
         }
     }
     // trigger Notification
-    if (!empty($xoopsModuleConfig['notification_enabled'])) {
+    if (!empty($helper->getConfig('notification_enabled'))) {
         global $xoopsModule;
         if (0 == $newid) {
             $newid = $xoopsDB->getInsertId();
         }
+        /** @var \XoopsNotificationHandler $notificationHandler */
         $notificationHandler = xoops_getHandler('notification');
         $tags                = [];
         $tags['ITEM_NAME']   = $reqterm;
@@ -106,12 +118,12 @@ if (!Request::hasVar('submit', 'POST')) {
 
     if ($xoopsUser) {
         $result = $xoopsDB->query('select email from ' . $xoopsDB->prefix('users') . " where uname='$logname'");
-        list($address) = $xoopsDB->fetchRow($result);
+        [$address] = $xoopsDB->fetchRow($result);
     } else {
         $address = $xoopsConfig['adminmail'];
     }
 
-    if (1 == $xoopsModuleConfig['mailtoadmin']) {
+    if (1 == $helper->getConfig('mailtoadmin')) {
         $adminMessage = sprintf(_MD_LEXIKON_WHOASKED, $logname);
         $adminMessage .= '' . $reqterm . "\n";
         $adminMessage .= '' . _MD_LEXIKON_EMAILLEFT . " $address\n";
@@ -131,7 +143,7 @@ if (!Request::hasVar('submit', 'POST')) {
         $xoopsMailer->send();
     }
     //send 'received!' mail
-    if (1 == $xoopsModuleConfig['mailtosender'] && $address) {
+    if (1 == $helper->getConfig('mailtosender') && $address) {
         $conf_subject = _MD_LEXIKON_THANKS2;
         $userMessage  = sprintf(_MD_LEXIKON_GOODDAY2, $logname);
         $userMessage  .= "\n\n";

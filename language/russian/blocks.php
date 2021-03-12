@@ -7,6 +7,7 @@
  * Author: hsalazar
  * Licence: GNU
  */
+
 // Blocks
 <<<<<<< HEAD
 define("_MB_LEXIKON_DATE","Дата публикации");

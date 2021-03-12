@@ -1,11 +1,11 @@
 <?php
+
 /**
  * Module: Lexikon - glossary module
  * Author: hsalazar
  * Licence: GNU
  */
-
-defined('XOOPS_ROOT_PATH') || exit('Restricted access.');
+defined('XOOPS_ROOT_PATH') || exit('Restricted access');
 
 /**
  * @param $options
@@ -17,19 +17,21 @@ function b_lxentries_new_show($options)
 
     $myts = MyTextSanitizer:: getInstance();
 
-    /** @var XoopsModuleHandler $moduleHandler */
+    /** @var \XoopsModuleHandler $moduleHandler */
     $moduleHandler = xoops_getHandler('module');
     $lexikon       = $moduleHandler->getByDirname('lexikon');
     if (!isset($lxConfig)) {
+        /** @var \XoopsConfigHandler $configHandler */
         $configHandler = xoops_getHandler('config');
         $lxConfig      = $configHandler->getConfigsByCat(0, $lexikon->getVar('mid'));
     }
-    $groups       = is_object($xoopsUser) ? $xoopsUser->getGroups() : XOOPS_GROUP_ANONYMOUS;
-    $gpermHandler = xoops_getHandler('groupperm');
-    $module_id    = $lexikon->getVar('mid');
-    $allowed_cats = $gpermHandler->getItemIds('lexikon_view', $groups, $module_id);
-    $catids       = implode(',', $allowed_cats);
-    $catperms     = " AND categoryID IN ($catids) ";
+    $groups = is_object($xoopsUser) ? $xoopsUser->getGroups() : XOOPS_GROUP_ANONYMOUS;
+    /** @var \XoopsGroupPermHandler $grouppermHandler */
+    $grouppermHandler = xoops_getHandler('groupperm');
+    $module_id        = $lexikon->getVar('mid');
+    $allowed_cats     = $grouppermHandler->getItemIds('lexikon_view', $groups, $module_id);
+    $catids           = implode(',', $allowed_cats);
+    $catperms         = " AND categoryID IN ($catids) ";
 
     $words      = $xoopsDB->query('SELECT entryID FROM ' . $xoopsDB->prefix('lxentries') . " WHERE offline = '0' AND submit='0' AND request='0' AND block = '1' ");
     $totalwords = $xoopsDB->getRowsNum($words);
@@ -48,7 +50,7 @@ function b_lxentries_new_show($options)
     if ($totalwords > 0) { // If there are definitions
         while (list($entryID, $categoryID, $term, $datesub) = $xoopsDB->fetchRow($result)) {
             $newentries             = [];
-            $linktext               = ucfirst($myts->htmlSpecialChars($term));
+            $linktext               = ucfirst(htmlspecialchars($term));
             $newentries['dir']      = $lexikon->dirname();
             $newentries['linktext'] = $linktext;
             $newentries['id']       = (int)$entryID;

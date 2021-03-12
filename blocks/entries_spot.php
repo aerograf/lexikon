@@ -1,11 +1,11 @@
 <?php
+
 /**
  * Module: Lexikon
  * credits: hsalazar, Smartfactory, Eric Juden & ackbarr ->Project XHelp
  * Licence: GNU
  */
-
-defined('XOOPS_ROOT_PATH') || exit('Restricted access.');
+defined('XOOPS_ROOT_PATH') || exit('Restricted access');
 
 /* This function spotlights a category, with a spotlight definition and links to others */
 /**
@@ -19,17 +19,19 @@ function b_lxspot_show($options)
     xoops_load('XoopsUserUtility');
 
     $module_name = 'lexikon';
-    /** @var XoopsModuleHandler $moduleHandler */
+    /** @var \XoopsModuleHandler $moduleHandler */
     $moduleHandler = xoops_getHandler('module');
     $lexikon       = $moduleHandler->getByDirname('lexikon');
     if (!isset($lxConfig)) {
+        /** @var \XoopsConfigHandler $configHandler */
         $configHandler = xoops_getHandler('config');
         $lxConfig      = $configHandler->getConfigsByCat(0, $lexikon->getVar('mid'));
     }
 
-    $gpermHandler = xoops_getHandler('groupperm');
-    $groups       = is_object($xoopsUser) ? $xoopsUser->getGroups() : XOOPS_GROUP_ANONYMOUS;
-    $module_id    = $lexikon->getVar('mid');
+    /** @var \XoopsGroupPermHandler $grouppermHandler */
+    $grouppermHandler = xoops_getHandler('groupperm');
+    $groups           = is_object($xoopsUser) ? $xoopsUser->getGroups() : XOOPS_GROUP_ANONYMOUS;
+    $module_id        = $lexikon->getVar('mid');
 
     $block = [];
 
@@ -61,13 +63,16 @@ function b_lxspot_show($options)
     }
 
     // Retrieve the latest terms in the selected category
-    $resultA = $xoopsDB->query('SELECT entryID, categoryID, term, definition, uid, datesub, counter, html, smiley, xcodes, breaks, comments
+    $resultA = $xoopsDB->query(
+        'SELECT entryID, categoryID, term, definition, uid, datesub, counter, html, smiley, xcodes, breaks, comments
                                  FROM ' . $xoopsDB->prefix('lxentries') . '
                                  WHERE categoryID = ' . $options[0] . " AND submit = '0' AND offline = 0 AND block= 1
                                  ORDER BY datesub DESC", //ORDER BY " . $options[7] . " DESC ",
-                               1, 0);
+        1,
+        0
+    );
 
-    list($entryID, $categoryID, $term, $definition, $authorID, $datesub, $counter, $html, $smiley, $xcodes, $breaks, $comments) = $xoopsDB->fetchRow($resultA);
+    [$entryID, $categoryID, $term, $definition, $authorID, $datesub, $counter, $html, $smiley, $xcodes, $breaks, $comments] = $xoopsDB->fetchRow($resultA);
     $eID = (int)$entryID;
     // If there's no result - which means there's no definition yet...
     if (0 == $eID) {
@@ -78,17 +83,18 @@ function b_lxspot_show($options)
 
     // Retrieve the category name
     $resultB = $xoopsDB->query('SELECT name, logourl FROM ' . $xoopsDB->prefix('lxcategories') . ' WHERE categoryID = ' . $options[0] . ' ');
-    list($name, $logourl) = $xoopsDB->fetchRow($resultB);
-    if ($lexikon = $moduleHandler->getByDirname('lexikon')) {
-        if ($gpermHandler->checkRight('lexikon_view', $options[0], $groups, $module_id)) {
+    [$name, $logourl] = $xoopsDB->fetchRow($resultB);
+    $lexikon = $moduleHandler->getByDirname('lexikon');
+    if ($lexikon) {
+        if ($grouppermHandler->checkRight('lexikon_view', $options[0], $groups, $module_id)) {
             // get the items
             $block['userID']     = ((int)$authorID);
-            $block['authorname'] = XoopsUserUtility::getUnameFromId((int)$authorID);
+            $block['authorname'] = \XoopsUserUtility::getUnameFromId((int)$authorID);
             $block['name']       = xoops_substr($name, 0, (int)$options[9]);
             $block['catID']      = (int)$options[0];
             $block['catimage']   = stripslashes($logourl);
             $block['termID']     = (int)$entryID;
-            $block['title']      = $myts->htmlSpecialChars($term);
+            $block['title']      = htmlspecialchars($term);
             $block['introtext']  = xoops_substr($myts->displayTarea($definition, $html, 1, $xcodes, 1, $breaks), 0, (int)$options[8]);
 
             $block['moduledir'] = $lexikon->dirname();
@@ -107,11 +113,11 @@ function b_lxspot_show($options)
             $resultC = $xoopsDB->query('SELECT entryID, term, datesub FROM ' . $xoopsDB->prefix('lxentries') . ' WHERE categoryID = ' . $options[0] . ' AND entryID != ' . $block['termID'] . ' AND submit = 0 AND offline = 0 AND block= 1 ORDER BY ' . $options[7] . ' DESC ', $options[1], 0);
 
             $i = 0;
-            while ($myrow = $xoopsDB->fetchArray($resultC)) {
+            while (false !== ($myrow = $xoopsDB->fetchArray($resultC))) {
                 if ($i < $options[1]) {
                     $morelinks         = [];
                     $morelinks['id']   = $myrow['entryID'];
-                    $morelinks['head'] = xoops_substr($myts->htmlSpecialChars($myrow['term']), 0, (int)$options[9]);
+                    $morelinks['head'] = xoops_substr(htmlspecialchars($myrow['term']), 0, (int)$options[9]);
 
                     $morelinks['subdate'] = formatTimestamp($datesub, 'd M Y');
                     ++$i;
@@ -171,8 +177,8 @@ function b_lxspot_edit($options)
     $form .= "<option value='term' " . (('term' === $options[7]) ? ' selected' : '') . '>' . _MB_LEXIKON_NAME . "</option>\n";
     $form .= "</select>\n";
 
-    $form .= "&nbsp;<tr><td style='vertical-align: top;'>" . _MB_LEXIKON_CHARS . "</td><td>&nbsp;<input type='text' name='options[8]' value='" . $myts->htmlSpecialChars($options[8]) . "' >&nbsp;" . _MB_LEXIKON_LENGTH . '';
-    $form .= "&nbsp;<tr><td style='vertical-align: top;'>" . _MB_LEXIKON_CHARSTERM . "</td><td>&nbsp;<input type='text' name='options[9]' value='" . $myts->htmlSpecialChars($options[9]) . "' >&nbsp;" . _MB_LEXIKON_LENGTH . '';
+    $form .= "&nbsp;<tr><td style='vertical-align: top;'>" . _MB_LEXIKON_CHARS . "</td><td>&nbsp;<input type='text' name='options[8]' value='" . htmlspecialchars($options[8]) . "' >&nbsp;" . _MB_LEXIKON_LENGTH . '';
+    $form .= "&nbsp;<tr><td style='vertical-align: top;'>" . _MB_LEXIKON_CHARSTERM . "</td><td>&nbsp;<input type='text' name='options[9]' value='" . htmlspecialchars($options[9]) . "' >&nbsp;" . _MB_LEXIKON_LENGTH . '';
 
     $form .= '</td></tr>';
     $form .= '</table>';
